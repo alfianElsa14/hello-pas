@@ -28,6 +28,12 @@ module.exports = {
       price: {
         type: Sequelize.INTEGER
       },
+      yearExperience: {
+        type: Sequelize.INTEGER
+      },
+      practiceAt: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
