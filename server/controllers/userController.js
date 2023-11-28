@@ -1,5 +1,5 @@
 const { User } = require('../models')
-const { handleServerError, handleClientError } = require("../helper/handleError")
+const { handleServerError, handleClientError, handleNotFoundError, handleValidationError } = require("../helper/handleError")
 const Joi = require('joi');
 const { compare } = require('../helper/bycrpt');
 const { generateToken } = require('../helper/jwt');
@@ -12,16 +12,16 @@ exports.registerUser = async (req, res) => {
             email: Joi.string().email().required(),
             password: Joi.string().required(),
             phoneNumber: Joi.string().required(),
-          });
+        });
 
         const { error } = schema.validate(req.body);
         if (error) {
-            return res.status(400).json({status: 'Validation Failed', message: error.details[0].message,});
+            return res.status(400).json({ status: 'Validation Failed', message: error.details[0].message, });
         }
 
         const existingPhone = await User.findOne({
             where: {
-              phoneNumber: phoneNumber,
+                phoneNumber: phoneNumber,
             },
         });
 
@@ -31,7 +31,7 @@ exports.registerUser = async (req, res) => {
 
         const existingUser = await User.findOne({
             where: {
-              email: email,
+                email: email,
             },
         });
         if (existingUser) {
@@ -43,11 +43,11 @@ exports.registerUser = async (req, res) => {
                 username,
                 email,
                 password,
-                phoneNumber
+                phoneNumber,
             },
             {
                 attributes: {
-                  exclude: ['createdAt', 'updatedAt'],
+                    exclude: ['createdAt', 'updatedAt'],
                 },
             }
         )
@@ -61,6 +61,7 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
+        console.log(email)
 
         const schema = Joi.object({
             email: Joi.string().email().required(),
@@ -69,14 +70,18 @@ exports.loginUser = async (req, res) => {
 
         const { error } = schema.validate(req.body);
         if (error) {
-            return res.status(400).json({status: 'Validation Failed', message: error.details[0].message,});
+            return res.status(400).json({ status: 'Validation Failed', message: error.details[0].message, });
         }
 
         const user = await User.findOne({
             where: {
-              email: email,
+                email: email,
             },
         });
+
+        if(!user) {
+            return handleClientError(res, 400, 'User not found')
+        }
 
         const passwordMatch = compare(password, user.password)
 
@@ -99,7 +104,77 @@ exports.loginUser = async (req, res) => {
             data: dataResponse,
         });
     } catch (error) {
-        console.error(error);
-        return  handleServerError(res)
+        console.log(error);
+        return handleServerError(res)
+    }
+}
+
+exports.editUser = async (req, res) => {
+    try {
+        const { userId } = req.params
+        const newData = req.body
+        const userData = await User.findByPk(userId)
+
+        if (!userData) {
+            return handleNotFoundError(res, 'User');
+        }
+
+        const schema = Joi.object({
+            username: Joi.string().required(),
+            email: Joi.string().required(),
+            phoneNumber: Joi.string().required()
+        })
+
+        const { error } = schema.validate(newData)
+
+        if (error) {
+            return handleValidationError(res, error)
+        }
+
+        const updatedImg = `http://localhost:3300/${req.file.path}`
+
+        console.log(updatedImg, "<<<<");
+
+        const result = await User.update({
+            username: newData.username,
+            email: newData.email,
+            phoneNumber: newData.phoneNumber,
+            image: updatedImg
+        }, {
+            where: {
+                id: userId
+            }
+        })
+
+        res.status(200).json({ message: 'success', result })
+    } catch (error) {
+        console.log(error);
+        return handleServerError(res)
+    }
+}
+
+exports.getAllUser = async (req, res) => {
+    try {
+        const data = await User.findAll()
+        res.status(200).json(data)
+    } catch (error) {
+        console.log(error);
+        return handleServerError(res)
+    }
+}
+
+exports.getUserById = async (req, res) => {
+    try {
+        const {userId} = req.params
+        const userData = await User.findByPk(userId)
+
+        if (!userData) {
+            return handleNotFoundError(res, 'User');
+        }
+
+        res.status(200).json(userData)
+    } catch (error) {
+        console.log(error);
+        return handleServerError(res)
     }
 }
