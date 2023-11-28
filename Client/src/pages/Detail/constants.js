@@ -1,0 +1,6 @@
+export const GET_ALL_REVIEWS = 'GET_ALL_REVIEWS'
+export const SET_ALL_REVIEWS = 'SET_ALL_REVIEWS'
+
+export const ADD_REVIEW = 'ADD_REVIEW'
+
+export const DELETE_REVIEW = 'DELETE_REVIEW'

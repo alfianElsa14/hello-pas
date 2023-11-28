@@ -7,12 +7,16 @@ import languageReducer from '@containers/Language/reducer';
 import { mapWithPersistor } from './persistence';
 import registerUserReducer from '@pages/RegisterPatient/reducer';
 import registerDoctorReducer from '@pages/RegisterDoctor/reducer';
+import detailReducer from '@pages/Detail/reducer';
+import profileReducer from '@pages/EditUser/reducer';
 
 const storedReducers = {
   app: { reducer: appReducer, whitelist: storedAppState },
   client: { reducer: clientReducer, whitelist: storedClientState },
   registerPatient: {reducer: registerUserReducer},
-  registerDoctor: {reducer: registerDoctorReducer}
+  registerDoctor: {reducer: registerDoctorReducer},
+  detail: {reducer: detailReducer},
+  profile: {reducer: profileReducer}
 };
 
 const temporaryReducers = {

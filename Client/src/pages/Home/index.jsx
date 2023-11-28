@@ -7,9 +7,9 @@ import { ping } from '@containers/App/actions';
 const Home = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(ping());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(ping());
+  // }, [dispatch]);
 
   return (
     <div>
