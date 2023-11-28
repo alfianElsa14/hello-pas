@@ -1,0 +1,80 @@
+@import '@styles/base';
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120vh;
+
+    .wrapper {
+        padding: 0px 20px 10px;
+        width: 25%;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        h1 {
+            text-align: center;
+            font-size: 1.2rem
+        }
+
+        form {
+            @include directionY;
+
+            .inputItem {
+                @include directionY;
+
+                label {
+                    font-size: 0.6rem;
+                    font-weight: 700;
+                }
+
+                input {
+                    padding: 0.3rem;
+                    font-size: 0.6rem;
+                    margin-bottom: 1rem;
+                    border-radius: 5px;
+                    background-color: rgb(211, 211, 211);
+                }
+
+                select {
+                    padding: 0.3rem;
+                    font-size: 0.6rem;
+                    margin-bottom: 1rem;
+                    border-radius: 5px;
+                    background-color: rgb(211, 211, 211);
+                    cursor: pointer;
+                    option {
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            button {
+                padding: 0.5rem;
+                background-color: blue;
+                color: white;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .buttonRegister {
+                margin: 1rem 0 1rem;
+                cursor: pointer;
+            }
+        }
+
+        p {
+            font-size: 12px;
+            text-align: center;
+        }
+    }
+}
+
+@media (max-width: 450px) {
+    .container {
+
+        .wrapper {
+            padding: 10px;
+            width: 80%;
+        }
+    }
+}
