@@ -1,0 +1,42 @@
+@import '@styles/base';
+
+.container{
+    height: 80vh;
+    border: 1px solid red;
+    @include center;
+    .wrapper {
+        padding: 1rem;
+        margin: auto;
+        border-radius: 10px;
+        width: 25%;
+        background-color: white;
+        a {
+            text-decoration: none;
+            color: inherit; 
+        }
+        .title {
+            font-size: 1.5rem;
+            padding-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .subtitle {
+            font-size: 0.7rem;
+            padding-bottom: 0.5rem
+        }
+        
+        .cardContainer{
+            @include directionY;
+            // border: 1px solid green;
+            .cardWrapper{
+                @include directionX;
+                img {
+                    width: 60px;
+                    @include center;
+                }
+                .text{
+                    @include center;
+                }
+            }
+        }
+    }
+}
