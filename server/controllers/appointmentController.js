@@ -31,10 +31,6 @@ exports.getAppointmentUser = async(req, res) => {
   }
 }
 
-exports.getAvailableAppointment = async(req, res) => {
-  
-}
-
 exports.getAppointmentDoctor = async(req, res) => {
   try {
     const { doctorId } = req.params;
@@ -56,6 +52,63 @@ exports.getAppointmentDoctor = async(req, res) => {
 
     return res.status(200).json({ data: appointments, status: 'Success' });
   
+  } catch (error) {
+    console.error(error);
+    handleServerError(res);
+  }
+}
+
+exports.getAvailableAppointments = async(req, res) => {
+  try {
+    const { doctorId } = req.params;
+
+    const foundDoctor = await Doctor.findByPk(doctorId);
+    if (!foundDoctor)
+      return handleClientError(res, 404, "Doctor Not Found");
+
+    const now = new Date();
+    now.setMinutes(0, 0, 0);
+
+    // Add 13 hours because we just set minutes to zero
+    const twelveHoursFromNow = new Date(now.getTime() + 13 * 60 * 60 * 1000);
+
+    // Add one more day because we will set the hour to zero (so it makes 14 days)
+    const twoWeeksFromNow = new Date(now.getTime() + 15 * 24 * 60 * 60 * 1000);
+    twoWeeksFromNow.setHours(0);
+    const existingAppointments = await Appointment.findAll({ 
+      where: {
+        [Op.or]: [{userId: req.user.id}, {doctorId}],
+        startTime: {[Op.gt]: twelveHoursFromNow}
+      }, 
+      attributes: ['startTime', 'endTime'],
+      order: [['startTime']]
+    });
+
+    const availableAppointments = [];
+
+    // Generate available appointments within the specified time range
+    for (let currentTime = twelveHoursFromNow.getTime(); currentTime < twoWeeksFromNow.getTime(); currentTime += 15 * 60 * 1000) {
+      const startTime = new Date(currentTime);
+      const endTime = new Date(currentTime + 60 * 60 * 1000); // 1 hour duration
+
+      // Check if the current appointment conflicts with any existing appointments
+      const conflicts = existingAppointments.some(appointment => {
+        const existingStartTime = new Date(appointment.startTime).getTime();
+        const existingEndTime = new Date(appointment.endTime).getTime();
+        return (startTime < existingEndTime && endTime > existingStartTime);
+      });
+
+      // If no conflicts, add the appointment to the available list
+      if (!conflicts) {
+        availableAppointments.push({
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString()
+        });
+      }
+    }
+    
+    res.status(200).json({ data: availableAppointments, status: 'Success' });
+
   } catch (error) {
     console.error(error);
     handleServerError(res);
