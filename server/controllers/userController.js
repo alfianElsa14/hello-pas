@@ -99,6 +99,7 @@ exports.loginUser = async (req, res) => {
             data: dataResponse,
         });
     } catch (error) {
+        console.error(error);
         return  handleServerError(res)
     }
 }

@@ -8,7 +8,8 @@ exports.getAppointmentUser = async(req, res) => {
   try {
     const { userId } = req.params;
 
-    // TODO: Authorization (only user or admin can access)
+    if (req.user.role !== 'admin' && (req.user.role === 'user' && req.user.id != userId))
+      return handleClientError(res, 400, "Not Authorized");
 
     const foundUser = await User.findByPk(userId);
     if (!foundUser)
@@ -17,8 +18,8 @@ exports.getAppointmentUser = async(req, res) => {
     const appointments = await Appointment.findAll({
       where: {userId},  
       include: [
-        { model: User },
-        { model: Doctor },
+        { model: User, attributes: {exclude: ['password']} },
+        { model: Doctor, attributes: {exclude: ['password']} },
       ]
     });
     
@@ -30,11 +31,16 @@ exports.getAppointmentUser = async(req, res) => {
   }
 }
 
+exports.getAvailableAppointment = async(req, res) => {
+  
+}
+
 exports.getAppointmentDoctor = async(req, res) => {
   try {
     const { doctorId } = req.params;
 
-    // TODO: Authorization (only user or admin can access)
+    if (req.user.role !== 'admin' && (req.user.role === 'doctor' && req.user.id != doctorId))
+      return handleClientError(res, 400, "Not Authorized");
 
     const foundDoctor = await Doctor.findByPk(doctorId);
     if (!foundDoctor)
@@ -43,8 +49,8 @@ exports.getAppointmentDoctor = async(req, res) => {
     const appointments = await Appointment.findAll({
       where: {doctorId},
       include: [
-        { model: User },
-        { model: Doctor },
+        { model: User, attributes: {exclude: ['password']} },
+        { model: Doctor, attributes: {exclude: ['password']} },
       ]
     });
 
@@ -60,7 +66,6 @@ exports.createAppointment = async (req, res) => {
   try {
     const newData = req.body;
     const scheme = Joi.object({
-      userId: Joi.number().required(),        // TODO: read from token
       doctorId: Joi.number().required(),
       complaint: Joi.string().required(),
       startTime: Joi.date().iso().required().custom((value, helpers) => {
@@ -86,10 +91,6 @@ exports.createAppointment = async (req, res) => {
     if (error) 
       return res.status(400).json({ status: 'Validation Failed', message: error.details[0].message })
 
-    const foundUser = await User.findByPk(newData.userId);
-    if (!foundUser)
-      return handleClientError(res, 404, "User Not Found");
-
     const foundDoctor = await Doctor.findByPk(newData.doctorId);
     if (!foundDoctor)
       return handleClientError(res, 404, "Doctor Not Found");
@@ -97,7 +98,7 @@ exports.createAppointment = async (req, res) => {
     const existBlockedAppointment = await Appointment.findOne({ where: 
       {
         [Op.or]: [{
-          userId: newData.userId,
+          userId: req.user.id,
           [Op.or]: [
             {
               startTime: {[Op.lte]: newData.startTime},
@@ -124,7 +125,7 @@ exports.createAppointment = async (req, res) => {
       }
     });
     if (existBlockedAppointment) {
-      if (newData.userId === existBlockedAppointment.userId)
+      if (req.user.id === existBlockedAppointment.userId)
         return handleClientError(res, 400, "There is a schedule conflic on user!")
       else
         return handleClientError(res, 400, "There is a schedule conflic on doctor!")
@@ -141,17 +142,21 @@ exports.createAppointment = async (req, res) => {
 
 exports.acceptAppointment = async(req, res) => {
   try {
-    // TODO: can only be accepted by appointment's doctor
-
     const { appointmentId } = req.params;
     const foundAppointment = await Appointment.findByPk(appointmentId, {include: [
-      { model: User },
-      { model: Doctor },
+      { model: User, attributes: {exclude: ['password']} },
+      { model: Doctor, attributes: {exclude: ['password']} },
     ]});
     if (!foundAppointment)
       return handleClientError(res, 404, "Appointment Not Found");
     if (foundAppointment.status !== 'pending')
       return handleClientError(res, 400, `Appointment is in status: ${foundAppointment.status}`);
+
+    console.log(foundAppointment.doctorId, "<< DOCTOR ID");
+    console.log(req.user.id, "<< USER ID");
+
+    if (foundAppointment.doctorId != req.user.id)
+      return handleClientError(res, 400, "Not Authorized");
 
     foundAppointment.status = 'accepted';
     await foundAppointment.save();
@@ -170,15 +175,16 @@ exports.payAppointment = async(req, res) => {
 
     const { appointmentId } = req.params;
     const foundAppointment = await Appointment.findByPk(appointmentId, {include: [
-      { model: User },
-      { model: Doctor },
+      { model: User, attributes: {exclude: ['password']} },
+      { model: Doctor, attributes: {exclude: ['password']} },
     ]});
     if (!foundAppointment)
       return handleClientError(res, 404, "Appointment Not Found");
     if (foundAppointment.status !== 'accepted')
       return handleClientError(res, 400, `Appointment is in status: ${foundAppointment.status}`);
 
-    // TODO : Check appointment is still at the future
+    if (new Date() >= new Date(foundAppointment.startTime))
+      return handleClientError(res, 400, "Appointment has passed");
 
     // TODO: Do the payment??
 
@@ -195,21 +201,23 @@ exports.payAppointment = async(req, res) => {
 
 exports.denyAppointment = async(req, res) => {
   try {
-    // TODO: can only be denied by appointment's doctor
-
     const { appointmentId } = req.params;
+    console.log(appointmentId, "<< APPOINTMENT ID");
     const foundAppointment = await Appointment.findByPk(appointmentId, {include: [
       { model: User },
       { model: Doctor },
     ]});
-    if (foundAppointment)
+    if (!foundAppointment)
       return handleClientError(res, 404, "Appointment Not Found");
+
+    if (foundAppointment.doctorId != req.user.id)
+      return handleClientError(res, 400, "Not Authorized");
 
     await Appointment.destroy({where: {id: appointmentId}});
     // TODO: Send an email to appointment's user 
 
     return res.status(200).json({ 
-      message: `Success delete appointmentId:${appointmentId}`, status: 'Success' 
+      message: `Success delete appointmentId: ${appointmentId}`, status: 'Success' 
     });
 
   } catch (error) {

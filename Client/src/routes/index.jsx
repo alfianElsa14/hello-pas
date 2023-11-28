@@ -20,7 +20,7 @@ const routes = [
   {
     path: '/user/appointment',
     name: 'User Appointment',
-    protected: false, // TODO: Change into protected
+    protected: true,
     component: UserAppointment,
     layout: MainLayout,
   },
