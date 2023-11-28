@@ -7,6 +7,7 @@ import Login from '@pages/Login';
 import LoginDoctor from '@pages/LoginDoctor';
 import LoginPatient from '@pages/LoginPatient';
 import NotFound from '@pages/NotFound';
+import UserAppointment from '@pages/UserAppointment';
 import RegisterDoctor from '@pages/RegisterDoctor';
 import RegisterPatient from '@pages/RegisterPatient';
 
@@ -16,6 +17,13 @@ const routes = [
     name: 'Home',
     protected: true,
     component: Home,
+    layout: MainLayout,
+  },
+  {
+    path: '/user/appointment',
+    name: 'User Appointment',
+    protected: true,
+    component: UserAppointment,
     layout: MainLayout,
   },
   {
