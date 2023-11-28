@@ -43,7 +43,7 @@ exports.registerUser = async (req, res) => {
                 username,
                 email,
                 password,
-                phoneNumber
+                phoneNumber,
             },
             {
                 attributes: {
@@ -61,6 +61,7 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
+        console.log(email)
 
         const schema = Joi.object({
             email: Joi.string().email().required(),
@@ -77,6 +78,10 @@ exports.loginUser = async (req, res) => {
                 email: email,
             },
         });
+
+        if(!user) {
+            return handleClientError(res, 400, 'User not found')
+        }
 
         const passwordMatch = compare(password, user.password)
 

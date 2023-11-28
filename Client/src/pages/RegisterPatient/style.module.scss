@@ -25,6 +25,15 @@
                 label {
                     font-size: 0.6rem;
                     font-weight: 700;
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                .error {
+                    // border: 1px red solid;
+                    color: red;
+                    font-size: 0.4rem;
+                    font-weight: 400;
                 }
 
                 input {
@@ -50,7 +59,7 @@
 
             button {
                 padding: 0.5rem;
-                background-color: blue;
+                background-color: green;
                 color: white;
                 border-radius: 4px;
                 cursor: pointer;
