@@ -1,4 +1,6 @@
 import MainLayout from '@layouts/MainLayout';
+import Detail from '@pages/Detail';
+import EditUser from '@pages/EditUser';
 
 import Home from '@pages/Home';
 import Login from '@pages/Login';
@@ -12,14 +14,28 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    protected: false,
+    protected: true,
     component: Home,
     layout: MainLayout,
   },
   {
+    path: '/detail',
+    name: 'detail',
+    protected: true,
+    component: Detail,
+    layout: MainLayout,
+  },
+  {
+    path: '/edit',
+    name: 'edit',
+    protected: true,
+    component: EditUser,
+    layout: MainLayout,
+  },
+  {
     path: '/login',
-    name: 'Login',
-    protected: false,
+    name: 'login',
+    protected: true,
     component: Login,
     layout: MainLayout,
   },
