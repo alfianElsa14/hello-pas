@@ -20,7 +20,7 @@ exports.addReview = async (req, res) => {
         const dataUser = await User.findByPk(1)
 
         if (!dataUser) {
-            res.status(404).json({message: 'user not found'})
+            return res.status(404).json({ message: 'user not found' })
         }
 
         const dataDoctor = await Doctor.findOne({
@@ -30,7 +30,7 @@ exports.addReview = async (req, res) => {
         })
 
         if (!dataDoctor) {
-            res.status(404).json({message: 'doctor not found'})
+            return res.status(404).json({ message: 'doctor not found' })
         }
 
         const result = await Review.create({
@@ -41,7 +41,7 @@ exports.addReview = async (req, res) => {
 
         console.log(theReview.comment);
 
-        res.status(201).json({message: 'sukses', theReview})
+        res.status(201).json({ message: 'sukses', theReview })
     } catch (error) {
         console.log(error);
         return handleInternalError(res)
@@ -50,6 +50,7 @@ exports.addReview = async (req, res) => {
 
 exports.getAllReviews = async (req, res) => {
     try {
+        const { doctorId } = req.params
         const dataReview = await Review.findAll({
             include: [
                 {
@@ -59,8 +60,34 @@ exports.getAllReviews = async (req, res) => {
                     model: Doctor
                 }
             ]
+        }, {
+            where: {
+                doctorId
+            }
         })
         res.status(200).json(dataReview)
+    } catch (error) {
+        console.log(error);
+        return handleInternalError(res)
+    }
+}
+
+exports.deleteReview = async (req, res) => {
+    try {
+        const { reviewId } = req.params
+        const dataReview = await Review.findByPk(reviewId)
+
+        if (!dataReview) {
+            return res.status(404).json({ message: 'user not found' })
+        }
+
+        const result = await Review.destroy({
+            where: {
+                id: reviewId
+            }
+        })
+
+        res.status(200).json({message: "sukses delete", dataReview})
     } catch (error) {
         console.log(error);
         return handleInternalError(res)

@@ -5,6 +5,7 @@ import request from '@utils/request';
 
 const urls = {
   ping: 'ping.json',
+  reviews: 'reviews'
 };
 
 export const callAPI = async (endpoint, method, header = {}, params = {}, data = {}) => {
@@ -28,3 +29,9 @@ export const callAPI = async (endpoint, method, header = {}, params = {}, data =
 };
 
 export const ping = () => callAPI(urls.ping, 'get');
+
+export const getAllReviews = (id) => callAPI(`${urls.reviews}/getReviews/${id}`, 'get');
+
+export const addReview = (id, data) => callAPI(`${urls.reviews}/addReview/${id}`, 'post', {}, {}, data)
+
+export const deleteReview = (id) => callAPI(`${urls.reviews}/deleteReview/${id}`, 'delete')
