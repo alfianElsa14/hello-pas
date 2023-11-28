@@ -7,11 +7,13 @@ import { selectReviews } from './selector';
 import { addReview, deleteReview, getAllReviews } from './actions';
 import { calculateTimeDifference } from '@utils/calculateDate';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { selectUser } from '@containers/Client/selectors';
 
 
-function Detail({ reviews }) {
+function Detail({ reviews, user }) {
     const dispatch = useDispatch();
     const id = 1
+    const userId = user.id
     const [newComment, setNewComment] = useState('');
 
     const handleCommentSubmit = (e) => {
@@ -22,12 +24,13 @@ function Detail({ reviews }) {
 
     const handleDelete = (reviewId) => {
         dispatch(deleteReview(reviewId))
-    } 
+    }
 
 
     useEffect(() => {
         dispatch(getAllReviews(id))
     }, [id])
+
 
     return (
         <div className={classes.detailContainer}>
@@ -56,7 +59,7 @@ function Detail({ reviews }) {
                         <div className={classes.commentList}>
                             <div className={classes.userComment}>
                                 <div className={classes.picture}>
-                                    <img src="https://cdn.idntimes.com/content-images/post/20221104/download-65049cac42b21fd08b36c35ae6eca9ce_600x400.jpeg" alt="" />
+                                    <img src={el.User.image} alt="" />
                                 </div>
                                 <div className={classes.isiComment}>
                                     <p className={classes.username}>{el.User.username}</p>
@@ -65,9 +68,13 @@ function Detail({ reviews }) {
                             </div>
                             <div className={classes.date}>
                                 <p>{calculateTimeDifference(el.createdAt)}</p>
-                            <button><DeleteIcon className={classes.delete}
-                            onClick={() => handleDelete(el.id)}
-                            /></button>
+                                {
+                                    userId === el.User.id && (
+                                        <button><DeleteIcon className={classes.delete}
+                                            onClick={() => handleDelete(el.id)}
+                                        /></button>
+                                    )
+                                }
                             </div>
                         </div>
                     ))
@@ -88,11 +95,13 @@ function Detail({ reviews }) {
 }
 
 Detail.propTypes = {
-    reviews: PropTypes.array
+    reviews: PropTypes.array,
+    user: PropTypes.object
 };
 
 const mapStateToProps = createStructuredSelector({
-    reviews: selectReviews
+    reviews: selectReviews,
+    user: selectUser
 });
 
 export default connect(mapStateToProps)(Detail);

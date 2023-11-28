@@ -1,14 +1,15 @@
-const { handleValidationError, handleInternalError } = require('../middleware/errorHandler')
+const { handleValidationError, handleServerError } = require('../helper/handleError')
 const { Review, Doctor, User } = require('../models')
-const joi = require('joi')
+const Joi = require('joi')
 
 exports.addReview = async (req, res) => {
     try {
         const theReview = req.body
         const { doctorId } = req.params
+        const userId = req.user.id
 
-        const schema = joi.object({
-            comment: joi.string().required()
+        const schema = Joi.object({
+            comment: Joi.string().required()
         })
 
         const { error } = schema.validate(theReview)
@@ -17,7 +18,7 @@ exports.addReview = async (req, res) => {
             return handleValidationError(res, error)
         }
 
-        const dataUser = await User.findByPk(1)
+        const dataUser = await User.findByPk(userId)
 
         if (!dataUser) {
             return res.status(404).json({ message: 'user not found' })
@@ -34,17 +35,15 @@ exports.addReview = async (req, res) => {
         }
 
         const result = await Review.create({
-            userId: dataUser.id,
+            userId: userId,
             doctorId: doctorId,
             comment: theReview.comment
         })
 
-        console.log(theReview.comment);
-
         res.status(201).json({ message: 'sukses', theReview })
     } catch (error) {
         console.log(error);
-        return handleInternalError(res)
+        return handleServerError(res)
     }
 }
 
@@ -68,7 +67,7 @@ exports.getAllReviews = async (req, res) => {
         res.status(200).json(dataReview)
     } catch (error) {
         console.log(error);
-        return handleInternalError(res)
+        return handleServerError(res)
     }
 }
 
@@ -90,6 +89,6 @@ exports.deleteReview = async (req, res) => {
         res.status(200).json({message: "sukses delete", dataReview})
     } catch (error) {
         console.log(error);
-        return handleInternalError(res)
+        return handleServerError(res)
     }
 }

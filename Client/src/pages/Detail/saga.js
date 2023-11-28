@@ -54,7 +54,7 @@ export function* doDeleteReview({ id }) {
 
 
 
-export default function* detailSaga() {
+export function* detailSaga() {
     yield takeLatest(GET_ALL_REVIEWS, doGetAllReviews)
     yield takeLatest(ADD_REVIEW, doAddReviews)
     yield takeLatest(DELETE_REVIEW, doDeleteReview)

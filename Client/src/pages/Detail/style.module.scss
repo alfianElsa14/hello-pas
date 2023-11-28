@@ -13,18 +13,13 @@
         width: 80%;
         border: 5px solid rgb(0, 210, 133);
         border-radius: 10px;
-        // justify-content: center;
-        // align-items: center;
-        // padding: 20px 30px;
 
         .profileDoc {
             display: flex;
             flex-direction: row;
-            // justify-content: center;
             align-items: center;
             padding: 20px;
             padding-left: 20px;
-            // padding-right: 40px;
             gap: 100px;
 
             .leftSide {
@@ -55,7 +50,6 @@
 
         .commentList {
             display: flex;
-            // background-color: aqua;
             justify-content: space-between;
             border: 3px solid aqua;
             border-radius: 5px;
@@ -113,19 +107,19 @@
 
                 button {
                     border: none;
+                    background-color: transparent;
+
                     .delete {
                         width: 25px;
                         height: 25px;
                         cursor: pointer
                     }
+
                     .delete:hover {
                         color: rgb(207, 0, 0);
                     }
                 }
-                
             }
-
-
         }
 
         .formComment {

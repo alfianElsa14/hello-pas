@@ -1,5 +1,9 @@
-exports.handleInternalError = (res) => {
-    res.status(500).json({ message: 'Internal server Error' });
+exports.handleServerError = (res) => {
+    return res.status(500).json({ message: 'Internal server error' });
+};
+  
+exports.handleClientError = (res, status, message) => {
+    return res.status(status).json({ message });
 };
 
 exports.handleValidationError = (res, error) => {
@@ -17,3 +21,5 @@ exports.handleLoginError = (res) => {
 exports.handleNotFoundError = (res, data) => {
     res.status(404).json({ status: 'Error', message: `${data} tidak ditemukan` });
 };
+
+  
