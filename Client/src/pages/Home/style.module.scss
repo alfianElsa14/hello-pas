@@ -83,7 +83,8 @@
         }
 
         button:hover {
-            background-color: #1768b9;
+            background-color: #407000;
+            color: white;
         }
     }
 
@@ -108,16 +109,11 @@
             height: 200px;
             border-radius: 5px;
             cursor: pointer;
+            gap: 30px;
 
             @include apply-at-xs2-size {
-                border: 3px solid #8CCA3C;
-                display: flex;
-                align-items: center;
-                padding: 20px;
                 width: 700px;
                 height: 200px;
-                border-radius: 5px;
-                cursor: pointer;
             }
 
             img {
@@ -139,8 +135,13 @@
                 }
 
                 .address {
-                    font-size: 15px;
+                    font-size: 10px;
                     font-style: italic;
+
+                    @include apply-at-xs2-size {
+                        font-size: 15px;
+                        font-style: italic;
+                    }
                 }
             }
         }
