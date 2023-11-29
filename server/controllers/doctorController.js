@@ -1,8 +1,18 @@
-const { Doctor } = require('../models')
-const { handleServerError, handleClientError } = require("../helper/handleError")
+const { Doctor, Review, User } = require('../models')
+const { handleServerError, handleClientError, handleValidationError } = require("../helper/handleError")
 const Joi = require('joi');
 const { compare } = require('../helper/bycrpt');
 const { generateToken } = require('../helper/jwt');
+
+exports.verifyTokenDoctor = async (req, res) => {
+    try {
+      return res.status(200).json({ status: 'Success' });
+  
+    } catch (error) {
+      console.error(error);
+      handleServerError(res);
+    }
+};
 
 exports.registerDoctor = async (req, res) => {
     try {
@@ -112,5 +122,62 @@ exports.loginDoctor = async (req, res) => {
     } catch (error) {
         console.log(error)
         return  handleServerError(res)
+    }
+}
+
+exports.getAllDoctor = async (req, res) => {
+    try {
+        const data = await Doctor.findAll({
+            attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+        })
+        res.status(200).json(data)
+    } catch (error) {
+        console.log(error);
+        return handleServerError(res)
+    }
+}
+
+exports.getDoctorById = async (req, res) => {
+    try {
+        const {doctorId} = req.params;
+        const doctorData = await Doctor.findByPk(doctorId, {
+            attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+        });
+
+        if (!doctorData) {
+            return handleNotFoundError(res, 'Doctor');
+        }
+
+        res.status(200).json(doctorData)
+    } catch (error) {
+        return handleServerError(res)
+    }
+}
+
+exports.getProfileDoctor = async (req, res) => {
+    try {
+        const doctorId = req.user.id
+        const doctorData = await Doctor.findByPk(doctorId, {
+            attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+            include: [
+                {
+                    model: Review,
+                    attributes: ['comment'],
+                        include: {
+                            model: User,
+                            attributes: ['username', 'image']
+                        }
+                }
+            ]
+        });
+
+        if (!doctorData) {
+            return handleNotFoundError(res, 'Doctor');
+        }
+
+        res.status(200).json(doctorData)
+    } catch (error) {
+        console.log(error);
+        return handleServerError(res)
     }
 }

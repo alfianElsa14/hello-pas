@@ -10,6 +10,7 @@ import registerDoctorReducer from '@pages/RegisterDoctor/reducer';
 import detailReducer from '@pages/Detail/reducer';
 import profileReducer from '@pages/EditUser/reducer';
 import { mapWithPersistor } from './persistence';
+import detailProfileReducer from '@pages/Profile/reducer';
 
 const storedReducers = {
   app: { reducer: appReducer, whitelist: storedAppState },
@@ -19,6 +20,7 @@ const storedReducers = {
   registerDoctor: { reducer: registerDoctorReducer },
   detail: { reducer: detailReducer },
   profile: { reducer: profileReducer },
+  detailProfile: {reducer: detailProfileReducer}
 };
 
 const temporaryReducers = {
