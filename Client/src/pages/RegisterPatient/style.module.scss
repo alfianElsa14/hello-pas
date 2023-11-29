@@ -4,16 +4,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    height: 110vh;
 
     .wrapper {
-        padding: 0px 20px 10px;
-        width: 25%;
+        padding: 10px 20px 10px;
+        width: 80%;
+        max-width: 20rem;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         h1 {
+            padding: 10px;
             text-align: center;
-            font-size: 1.2rem
+            font-size: 1.2rem;
         }
 
         form {
@@ -30,9 +32,8 @@
                 }
 
                 .error {
-                    // border: 1px red solid;
                     color: red;
-                    font-size: 0.4rem;
+                    font-size: 0.6rem;
                     font-weight: 400;
                 }
 
@@ -74,16 +75,6 @@
         p {
             font-size: 12px;
             text-align: center;
-        }
-    }
-}
-
-@media (max-width: 450px) {
-    .container {
-
-        .wrapper {
-            padding: 10px;
-            width: 80%;
         }
     }
 }

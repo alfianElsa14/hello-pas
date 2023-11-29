@@ -19,6 +19,7 @@ const RegisterDoctor = ({ isSuccess }) => {
     yearExperience: '',
     practiceAt: '',
     price: '',
+    image: null,
   });
   const [errors, setErrors] = useState({
     username: '',
@@ -28,11 +29,16 @@ const RegisterDoctor = ({ isSuccess }) => {
     yearExperience: '',
     practiceAt: '',
     price: '',
+    image: '',
   });
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setInputs({ ...inputs, [name]: value });
+    const { name, value, type } = e.target;
+    if (type === 'file') {
+      setInputs({ ...inputs, [name]: e.target.files[0] });
+    } else {
+      setInputs({ ...inputs, [name]: value });
+    }
   };
 
   const validateInputs = () => {
@@ -45,6 +51,7 @@ const RegisterDoctor = ({ isSuccess }) => {
       yearExperience: '',
       practiceAt: '',
       price: '',
+      image: '',
     };
 
     if (!inputs.username) {
@@ -91,6 +98,11 @@ const RegisterDoctor = ({ isSuccess }) => {
       newErrors.price = 'Price is required';
     }
 
+    if (!inputs.image) {
+      valid = false;
+      newErrors.image = 'Photo is required';
+    }
+
     setErrors(newErrors);
     return valid;
   };
@@ -99,7 +111,13 @@ const RegisterDoctor = ({ isSuccess }) => {
     e.preventDefault();
 
     if (validateInputs()) {
-      dispatch(register(inputs));
+      const formData = new FormData();
+
+      Object.keys(inputs).forEach((key) => {
+        formData.append(key, inputs[key]);
+      });
+
+      dispatch(register(formData));
     }
   };
 
@@ -183,6 +201,13 @@ const RegisterDoctor = ({ isSuccess }) => {
               {errors.price && <p className={classes.error}>{errors.price}</p>}
             </label>
             <input id="price" name="price" type="text" value={inputs.price} onChange={handleInputChange} />
+          </div>
+          <div className={classes.inputItem}>
+            <label htmlFor="image">
+              Photo Doctor
+              {errors.image && <p className={classes.error}>{errors.image}</p>}
+            </label>
+            <input id="image" name="image" type="file" accept="image/*" onChange={handleInputChange} />
           </div>
           <button type="submit" className={classes.buttonRegister}>
             <FormattedMessage id="app_register" />
