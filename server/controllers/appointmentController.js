@@ -89,10 +89,18 @@ exports.getAvailableAppointments = async (req, res) => {
 
     const availableAppointments = [];
 
+    const workStartTime = 8; // 8 AM
+    const workEndTime = 20; // 8 PM
+
     // Generate available appointments within the specified time range
     for (let currentTime = twelveHoursFromNow.getTime(); currentTime < twoWeeksFromNow.getTime(); currentTime += 15 * 60 * 1000) {
       const startTime = new Date(currentTime);
       const endTime = new Date(currentTime + 60 * 60 * 1000); // 1 hour duration
+
+      // Check if the current appointment is within work hours
+      if (startTime.getHours() < workStartTime || startTime.getHours() >= workEndTime) {
+        continue;
+      }
 
       // Check if the current appointment conflicts with any existing appointments
       const conflicts = existingAppointments.some(appointment => {
@@ -188,7 +196,7 @@ exports.createAppointment = async (req, res) => {
         return handleClientError(res, 400, "There is a schedule conflic on doctor!")
     }
 
-    const createdAppointment = await Appointment.create(newData);
+    const createdAppointment = await Appointment.create({...newData, userId: req.user.id});
     res.status(201).json({ data: createdAppointment, status: 'Success' });
 
   } catch (error) {
@@ -210,9 +218,6 @@ exports.acceptAppointment = async (req, res) => {
       return handleClientError(res, 404, "Appointment Not Found");
     if (foundAppointment.status !== 'pending')
       return handleClientError(res, 400, `Appointment is in status: ${foundAppointment.status}`);
-
-    console.log(foundAppointment.doctorId, "<< DOCTOR ID");
-    console.log(req.user.id, "<< USER ID");
 
     if (foundAppointment.doctorId != req.user.id)
       return handleClientError(res, 400, "Not Authorized");
