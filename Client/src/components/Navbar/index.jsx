@@ -58,7 +58,7 @@ const Navbar = ({ login, user, title, locale, theme }) => {
     <div className={classes.headerWrapper} data-testid="navbar">
       <div className={classes.contentWrapper}>
         <div className={classes.logoImage} onClick={goHome}>
-          <img src="/vite.svg" alt="logo" className={classes.logo} />
+          <img src="/examination.svg" alt="logo" className={classes.logo} />
           <div className={classes.title}>{title}</div>
         </div>
         <div className={classes.toolbar}>
