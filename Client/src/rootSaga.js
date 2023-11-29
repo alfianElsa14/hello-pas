@@ -9,16 +9,20 @@ import { loginUserSaga } from '@pages/LoginPatient/saga';
 import { loginDoctorSaga } from '@pages/LoginDoctor/saga';
 import { registerDoctorSaga } from '@pages/RegisterDoctor/saga';
 import { editSaga } from '@pages/EditUser/saga';
+import { profileSaga } from '@pages/Profile/saga';
+import { clientSaga } from '@containers/Client/saga';
 
 export default function* rootSaga() {
   yield all([
     appSaga(),
+    clientSaga(),
     userAppointmentSaga(),
     detailSaga(),
     registerUserSaga(),
     loginUserSaga(),
     registerDoctorSaga(),
     loginDoctorSaga(),
-    editSaga()
+    profileSaga(),
+    editSaga(),
   ]);
 }

@@ -9,7 +9,7 @@ const generateToken = (userId, userRole) => {
     role: userRole,
   };
 
-  const token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
+  const token = jwt.sign(payload, secretKey, { expiresIn: '2h' });
 
   return token;
 };

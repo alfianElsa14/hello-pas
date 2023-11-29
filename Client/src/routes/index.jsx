@@ -10,6 +10,7 @@ import NotFound from '@pages/NotFound';
 import UserAppointment from '@pages/UserAppointment';
 import RegisterDoctor from '@pages/RegisterDoctor';
 import RegisterPatient from '@pages/RegisterPatient';
+import Profile from '@pages/Profile';
 
 const routes = [
   {
@@ -73,6 +74,13 @@ const routes = [
     name: 'RegisterDoctor',
     protected: false,
     component: RegisterDoctor,
+    layout: MainLayout,
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    protected: true,
+    component: Profile,
     layout: MainLayout,
   },
   { path: '*', name: 'Not Found', component: NotFound, layout: MainLayout, protected: false },

@@ -17,6 +17,7 @@ import { formatDate, formatHour } from '@utils/formatDate';
 import { selectUser } from '@containers/Client/selectors';
 
 import classes from "./style.module.scss";
+import TimeTable from '../../components/TimeTable';
 
 const UserAppointment = ({ user, appointments }) => {
   const navigate = useNavigate();
@@ -33,12 +34,19 @@ const UserAppointment = ({ user, appointments }) => {
     if (user && user.id)
       dispatch(getAppointments({ userId: user.id }));
   }, []);
-
-  // console.log(appointments, "<< APPOINTMENTS");
+  
   const acceptedFutureAppointments = appointments.filter(
     (appointment) => appointment.status === 'accepted' && new Date(appointment.startTime) > new Date()
   );
-  // console.log(acceptedFutureAppointments, "<< ACCEPTED APPOINTMENTS");
+
+  const formattedAppointments = appointments.map((appointment) => ({
+    id: appointment.id,
+    title: appointment.Doctor.username,
+    startDate: appointment.startTime,
+    endDate: appointment.endTime,
+    status: appointment.status,
+    location: appointment.Doctor.practiceAt,
+  }));
 
   return (
     <main className={classes.main}>
@@ -90,36 +98,7 @@ const UserAppointment = ({ user, appointments }) => {
         </section>
         <section>
           <h2>Appointments</h2>
-          <div className={classes.acceptedAppointments}>
-            {/* TODO: Create the calendar */}
-            TBD dulu, taruh beginian dulu
-            {appointments.map((appointment) => (
-              <div key={appointment.id} className={classes.card}>
-                <div className={classes.leftCard}>
-                  <div className={classes.cardImage}>
-                    {appointment.Doctor.image ?
-                      <img src={`${config.api.host}${appointment.Doctor.image}`} alt='' /> :
-                      <Avatar className={classes.img} />
-                    }
-                  </div>
-                  <div className={classes.description}>
-                    <div className={classes.name}>
-                      {appointment.Doctor.username}
-                    </div>
-                    <div className={classes.scheduleDay}>
-                      Hari, Tanggal: {formatDate(appointment.startTime)}
-                    </div>
-                    <div className={classes.scheduleHour}>
-                      Jam: {formatHour(appointment.startTime)} - {formatHour(appointment.endTime)} WIB
-                    </div>
-                    <div className={classes.complaint}>
-                      Keluhan: {appointment.complaint}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <TimeTable appointments={formattedAppointments} />
         </section>
       </div>
     </main>
