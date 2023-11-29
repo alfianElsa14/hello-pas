@@ -16,7 +16,7 @@ exports.registerUser = async (req, res) => {
 
         const { error } = schema.validate(req.body);
         if (error) {
-            return res.status(400).json({ status: 'Validation Failed', message: error.details[0].message, });
+            return handleValidationError(res, error)
         }
 
         const existingPhone = await User.findOne({
@@ -70,7 +70,7 @@ exports.loginUser = async (req, res) => {
 
         const { error } = schema.validate(req.body);
         if (error) {
-            return res.status(400).json({ status: 'Validation Failed', message: error.details[0].message, });
+            return handleValidationError(res, error)
         }
 
         const user = await User.findOne({

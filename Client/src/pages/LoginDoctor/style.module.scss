@@ -2,15 +2,17 @@
 
 .container {
     @include center;
-    height: 90vh;
+    height: 110vh;
 
     .wrapper {
         padding: 20px;
-        width: 25%;
+        width: 80%;
+        max-width: 20rem;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         h1 {
             text-align: center;
+            padding-bottom: 10px;
         }
 
         form {
@@ -28,7 +30,7 @@
 
                 .error {
                     color: red;
-                    font-size: 0.4rem;
+                    font-size: 0.6rem;
                     font-weight: 400;
                 }
 
@@ -58,16 +60,6 @@
         p {
             font-size: 12px;
             text-align: center;
-        }
-    }
-}
-
-@media (max-width: 450px) {
-    .container {
-
-        .wrapper {
-            padding: 10px;
-            width: 80%;
         }
     }
 }
