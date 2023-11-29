@@ -1,10 +1,13 @@
 const Joi = require("joi");
 const { Op } = require("sequelize");
+const midtransClient = require('midtrans-client');
 
 const { Appointment, User, Doctor } = require("../models");
 const { handleServerError, handleClientError } = require("../helper/handleError");
+// const SERVER_KEY_MIDTRANS = process.env.SERVER_KEY_MIDTRANS
+const SERVER_KEY_MIDTRANS = 'SB-Mid-server-4-lfGto43qBv8JfHyBuIc2Uc'
 
-exports.getAppointmentUser = async(req, res) => {
+exports.getAppointmentUser = async (req, res) => {
   try {
     const { userId } = req.params;
 
@@ -16,13 +19,13 @@ exports.getAppointmentUser = async(req, res) => {
       return handleClientError(res, 404, "User Not Found");
 
     const appointments = await Appointment.findAll({
-      where: {userId},  
+      where: { userId },
       include: [
-        { model: User, attributes: {exclude: ['password']} },
-        { model: Doctor, attributes: {exclude: ['password']} },
+        { model: User, attributes: { exclude: ['password'] } },
+        { model: Doctor, attributes: { exclude: ['password'] } },
       ]
     });
-    
+
     return res.status(200).json({ data: appointments, status: 'Success' });
 
   } catch (error) {
@@ -31,7 +34,7 @@ exports.getAppointmentUser = async(req, res) => {
   }
 }
 
-exports.getAppointmentDoctor = async(req, res) => {
+exports.getAppointmentDoctor = async (req, res) => {
   try {
     const { doctorId } = req.params;
 
@@ -43,22 +46,22 @@ exports.getAppointmentDoctor = async(req, res) => {
       return handleClientError(res, 404, "Doctor Not Found");
 
     const appointments = await Appointment.findAll({
-      where: {doctorId},
+      where: { doctorId },
       include: [
-        { model: User, attributes: {exclude: ['password']} },
-        { model: Doctor, attributes: {exclude: ['password']} },
+        { model: User, attributes: { exclude: ['password'] } },
+        { model: Doctor, attributes: { exclude: ['password'] } },
       ]
     });
 
     return res.status(200).json({ data: appointments, status: 'Success' });
-  
+
   } catch (error) {
     console.error(error);
     handleServerError(res);
   }
 }
 
-exports.getAvailableAppointments = async(req, res) => {
+exports.getAvailableAppointments = async (req, res) => {
   try {
     const { doctorId } = req.params;
 
@@ -75,11 +78,11 @@ exports.getAvailableAppointments = async(req, res) => {
     // Add one more day because we will set the hour to zero (so it makes 14 days)
     const twoWeeksFromNow = new Date(now.getTime() + 15 * 24 * 60 * 60 * 1000);
     twoWeeksFromNow.setHours(0);
-    const existingAppointments = await Appointment.findAll({ 
+    const existingAppointments = await Appointment.findAll({
       where: {
-        [Op.or]: [{userId: req.user.id}, {doctorId}],
-        startTime: {[Op.gt]: twelveHoursFromNow}
-      }, 
+        [Op.or]: [{ userId: req.user.id }, { doctorId }],
+        startTime: { [Op.gt]: twelveHoursFromNow }
+      },
       attributes: ['startTime', 'endTime'],
       order: [['startTime']]
     });
@@ -106,7 +109,7 @@ exports.getAvailableAppointments = async(req, res) => {
         });
       }
     }
-    
+
     res.status(200).json({ data: availableAppointments, status: 'Success' });
 
   } catch (error) {
@@ -124,15 +127,15 @@ exports.createAppointment = async (req, res) => {
       startTime: Joi.date().iso().required().custom((value, helpers) => {
         // Get the current time
         const currentTime = new Date();
-    
+
         // Calculate the minimum allowed start time (12 hours ahead)
         const minStartTime = new Date(currentTime.getTime() + 12 * 60 * 60 * 1000);
-    
+
         // Compare the provided startTime with the minimum allowed start time
         if (value < minStartTime) {
           return helpers.error('date.startTimeInvalid', { minStartTime });
         }
-    
+
         return value;
       }),
       endTime: Joi.date().iso().required(),
@@ -141,37 +144,38 @@ exports.createAppointment = async (req, res) => {
     });
 
     const { error } = scheme.validate(newData);
-    if (error) 
+    if (error)
       return res.status(400).json({ status: 'Validation Failed', message: error.details[0].message })
 
     const foundDoctor = await Doctor.findByPk(newData.doctorId);
     if (!foundDoctor)
       return handleClientError(res, 404, "Doctor Not Found");
 
-    const existBlockedAppointment = await Appointment.findOne({ where: 
+    const existBlockedAppointment = await Appointment.findOne({
+      where:
       {
         [Op.or]: [{
           userId: req.user.id,
           [Op.or]: [
             {
-              startTime: {[Op.lte]: newData.startTime},
-              endTime: {[Op.gt]: newData.startTime},
+              startTime: { [Op.lte]: newData.startTime },
+              endTime: { [Op.gt]: newData.startTime },
             },
             {
-              startTime: {[Op.lte]: newData.endTime},
-              endTime: {[Op.gt]: newData.endTime},
+              startTime: { [Op.lte]: newData.endTime },
+              endTime: { [Op.gt]: newData.endTime },
             }
           ]
         }, {
           doctorId: newData.doctorId,
           [Op.or]: [
             {
-              startTime: {[Op.lte]: newData.startTime},
-              endTime: {[Op.gt]: newData.startTime},
+              startTime: { [Op.lte]: newData.startTime },
+              endTime: { [Op.gt]: newData.startTime },
             },
             {
-              startTime: {[Op.lte]: newData.endTime},
-              endTime: {[Op.gt]: newData.endTime},
+              startTime: { [Op.lte]: newData.endTime },
+              endTime: { [Op.gt]: newData.endTime },
             }
           ]
         }]
@@ -182,7 +186,7 @@ exports.createAppointment = async (req, res) => {
         return handleClientError(res, 400, "There is a schedule conflic on user!")
       else
         return handleClientError(res, 400, "There is a schedule conflic on doctor!")
-    } 
+    }
 
     const createdAppointment = await Appointment.create(newData);
     res.status(201).json({ data: createdAppointment, status: 'Success' });
@@ -193,13 +197,15 @@ exports.createAppointment = async (req, res) => {
   }
 }
 
-exports.acceptAppointment = async(req, res) => {
+exports.acceptAppointment = async (req, res) => {
   try {
     const { appointmentId } = req.params;
-    const foundAppointment = await Appointment.findByPk(appointmentId, {include: [
-      { model: User, attributes: {exclude: ['password']} },
-      { model: Doctor, attributes: {exclude: ['password']} },
-    ]});
+    const foundAppointment = await Appointment.findByPk(appointmentId, {
+      include: [
+        { model: User, attributes: { exclude: ['password'] } },
+        { model: Doctor, attributes: { exclude: ['password'] } },
+      ]
+    });
     if (!foundAppointment)
       return handleClientError(res, 404, "Appointment Not Found");
     if (foundAppointment.status !== 'pending')
@@ -222,15 +228,17 @@ exports.acceptAppointment = async(req, res) => {
   }
 }
 
-exports.payAppointment = async(req, res) => {
+exports.payAppointment = async (req, res) => {
   try {
     // TODO: can only be done by appointment's user (not mytrans??)
 
     const { appointmentId } = req.params;
-    const foundAppointment = await Appointment.findByPk(appointmentId, {include: [
-      { model: User, attributes: {exclude: ['password']} },
-      { model: Doctor, attributes: {exclude: ['password']} },
-    ]});
+    const foundAppointment = await Appointment.findByPk(appointmentId, {
+      include: [
+        { model: User, attributes: { exclude: ['password'] } },
+        { model: Doctor, attributes: { exclude: ['password'] } },
+      ]
+    });
     if (!foundAppointment)
       return handleClientError(res, 404, "Appointment Not Found");
     if (foundAppointment.status !== 'accepted')
@@ -252,27 +260,75 @@ exports.payAppointment = async(req, res) => {
   }
 }
 
-exports.denyAppointment = async(req, res) => {
+exports.denyAppointment = async (req, res) => {
   try {
     const { appointmentId } = req.params;
     console.log(appointmentId, "<< APPOINTMENT ID");
-    const foundAppointment = await Appointment.findByPk(appointmentId, {include: [
-      { model: User },
-      { model: Doctor },
-    ]});
+    const foundAppointment = await Appointment.findByPk(appointmentId, {
+      include: [
+        { model: User },
+        { model: Doctor },
+      ]
+    });
     if (!foundAppointment)
       return handleClientError(res, 404, "Appointment Not Found");
 
     if (foundAppointment.doctorId != req.user.id)
       return handleClientError(res, 400, "Not Authorized");
 
-    await Appointment.destroy({where: {id: appointmentId}});
+    await Appointment.destroy({ where: { id: appointmentId } });
     // TODO: Send an email to appointment's user 
 
-    return res.status(200).json({ 
-      message: `Success delete appointmentId: ${appointmentId}`, status: 'Success' 
+    return res.status(200).json({
+      message: `Success delete appointmentId: ${appointmentId}`, status: 'Success'
     });
 
+  } catch (error) {
+    console.error(error);
+    handleServerError(res);
+  }
+}
+
+exports.midtransPayment = async (req, res) => {
+  try {
+    const { appointmentId } = req.params
+    const userData = await User.findByPk(req.user.id)
+
+    const myAppointment = await Appointment.findOne({
+      where: {
+        id: appointmentId
+      },
+      include: [
+        {
+          model: Doctor
+        }
+      ]
+    })
+    // console.log(userData, "<<<<<<<<");
+    if (!myAppointment) {
+      return handleClientError(res, 404, "Appointment Not Found");
+    }
+
+    let snap = new midtransClient.Snap({
+      isProduction: false,
+      serverKey: SERVER_KEY_MIDTRANS,
+    });
+
+    let parameter = {
+      "transaction_details": {
+        "order_id": "TRANSACTION" + Math.floor(1000000 + Math.random() * 9000000),
+        "gross_amount": myAppointment.Doctor.price,
+      },
+      "credit_card": {
+        "secure": true
+      },
+      "customer_details": {
+        "email": userData.email,
+      }
+    };
+
+    const midtransToken = await snap.createTransaction(parameter)
+    res.status(200).json(midtransToken)
   } catch (error) {
     console.error(error);
     handleServerError(res);

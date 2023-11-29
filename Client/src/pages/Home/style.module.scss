@@ -1,1 +1,152 @@
 @import '@styles/base';
+
+
+.container {
+    padding: 10px;
+    margin-top: 70px;
+
+    @include apply-at-xs2-size {
+        padding: 10px 50px;
+    }
+
+    .banner {
+        border: 5px solid #8CCA3C;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 300px;
+        border-radius: 5px;
+
+        .contentHeader {
+            display: flex;
+
+            .iconList {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                padding-right: 5px;
+
+                @include apply-at-xs2-size {
+                    padding: 50px;
+                    padding-right: 50px;
+                }
+
+                img {
+                    width: 50px;
+
+                    @include apply-at-xs2-size {
+                        width: 70px;
+                    }
+                }
+
+                p {
+                    font-size: 10px;
+                    margin-top: 20px;
+                    font-weight: 500;
+
+                    @include apply-at-xs2-size {
+                        font-size: 15px;
+                        margin-top: 20px;
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+    }
+
+    .search {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+
+        input {
+            width: 1000px;
+            height: 40px;
+            border: none;
+            border-radius: 5px 0px 0px 5px;
+            padding: 20px;
+
+        }
+
+        button {
+            background-color: #8CCA3C;
+            color: black;
+            border: none;
+            height: 40px;
+            cursor: pointer;
+            width: 136px;
+            border-radius: 0px 5px 5px 0px;
+        }
+
+        button:hover {
+            background-color: #1768b9;
+        }
+    }
+
+    .card {
+        margin-top: 50px;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(1, 1fr);
+
+        @include apply-at-xs2-size {
+            margin-top: 50px;
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .cardList {
+            border: 3px solid #8CCA3C;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            height: 200px;
+            border-radius: 5px;
+            cursor: pointer;
+
+            @include apply-at-xs2-size {
+                border: 3px solid #8CCA3C;
+                display: flex;
+                align-items: center;
+                padding: 20px;
+                width: 700px;
+                height: 200px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            img {
+                width: 150px;
+                height: 150px;
+                object-fit: contain;
+                border: none;
+                border-radius: 5px;
+            }
+
+            .data {
+
+                p {
+                    margin-bottom: 15px;
+                }
+
+                .name {
+                    font-weight: 700;
+                }
+
+                .address {
+                    font-size: 15px;
+                    font-style: italic;
+                }
+            }
+        }
+
+        .cardList:hover {
+            background-color: #8CCA3C;
+        }
+    }
+}
