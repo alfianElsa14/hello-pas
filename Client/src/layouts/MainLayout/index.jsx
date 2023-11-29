@@ -6,21 +6,27 @@ import { createStructuredSelector } from 'reselect';
 import { selectLocale, selectTheme } from '@containers/App/selectors';
 
 import Navbar from '@components/Navbar';
+import { selectLogin, selectUser } from '@containers/Client/selectors';
 
-const MainLayout = ({ children, locale, theme, intl: { formatMessage } }) => (
+// eslint-disable-next-line no-unused-vars
+const MainLayout = ({ children, login, user, locale, theme, intl: { formatMessage } }) => (
   <div>
-    <Navbar title={formatMessage({ id: 'app_title_header' })} locale={locale} theme={theme} />
+    <Navbar login={login} user={user} title="Hello Pas" locale={locale} theme={theme} />
     {children}
   </div>
 );
 
 const mapStateToProps = createStructuredSelector({
+  login: selectLogin,
+  user: selectUser,
   locale: selectLocale,
   theme: selectTheme,
 });
 
 MainLayout.propTypes = {
   children: PropTypes.element.isRequired,
+  login: PropTypes.bool.isRequired,
+  user: PropTypes.object,
   locale: PropTypes.string,
   theme: PropTypes.string,
   intl: PropTypes.object,
