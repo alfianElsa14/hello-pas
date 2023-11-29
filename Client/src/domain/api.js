@@ -33,6 +33,14 @@ export const callAPI = async (endpoint, method, header = {}, params = {}, data =
 
 export const ping = () => callAPI(urls.ping, 'get');
 
+export const testValidateTokenUser = (token) => callAPI(
+  `${urls.user}/verify-token`, 'POST', { authorization: `Bearer ${token}` }
+);
+
+export const testValidateTokenDoctor = (token) => callAPI(
+  `${urls.user}/verify-token`, 'POST', { authorization: `Bearer ${token}` }
+);
+
 export const getAllReviews = (id) => callAPI(`${urls.reviews}/getReviews/${id}`, 'get');
 
 export const addReview = (id, data) => callAPI(`${urls.reviews}/addReview/${id}`, 'post', {}, {}, data);
@@ -48,6 +56,10 @@ export const registerDoctor = (data) => callAPI(`${urls.doctor}/register`, 'post
 export const loginDoctor = (data) => callAPI(`${urls.doctor}/login`, 'post', {}, {}, data);
 
 export const userById = (id) => callAPI(`${urls.user}/${id}`, 'get');
+
+export const userProfile = () => callAPI(urls.user, 'get')
+
+export const doctorProfile = () => callAPI(urls.doctor, 'get')
 
 export const editUser = (id, data) => callAPI(`${urls.user}/editUser/${id}`, 'put', {}, {}, data);
 
