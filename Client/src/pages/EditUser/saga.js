@@ -11,7 +11,13 @@ export function* doEditUser({id, data}) {
         const result = yield call(userById, id)
         yield put(setUserById(result))
     } catch (error) {
-        console.log(error);
+        console.log(error.response.status);
+        if (error.response.status === 400) {
+            const errorMessage = error.response.data.message || "Email or Password required";
+            Swal.fire(errorMessage);
+        } else {
+            Swal.fire("failed edit profile");
+        }
     }
 }
 

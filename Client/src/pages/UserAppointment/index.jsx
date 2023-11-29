@@ -10,7 +10,7 @@ import paidOffImage from '@static/images/paid-off.png';
 
 import config from '@config/index';
 import { selectAppointments } from '@pages/UserAppointment/selectors';
-import { getAppointments } from '@pages/UserAppointment/actions';
+import { editStatusAppointment, getAppointments, midtransPayment } from '@pages/UserAppointment/actions';
 
 import { Avatar, Button } from '@mui/material';
 import { formatDate, formatHour } from '@utils/formatDate';
@@ -22,6 +22,13 @@ import TimeTable from '../../components/TimeTable';
 const UserAppointment = ({ user, appointments }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handleCheckout = (appointmentId) => {
+    dispatch(midtransPayment(appointmentId, () => {
+      console.log('callback');
+      dispatch(editStatusAppointment(appointmentId))
+    }));
+  };
 
   useEffect(() => {
     if (user && user.id)
@@ -58,7 +65,7 @@ const UserAppointment = ({ user, appointments }) => {
                   <div key={appointment.id} className={classes.card}>
                     <div className={classes.leftCard}>
                       <div className={classes.cardImage}>
-                        {appointment.Doctor.image ? 
+                        {appointment.Doctor.image ?
                           <img src={`${config.api.host}${appointment.Doctor.image}`} alt='' /> :
                           <Avatar className={classes.img} />
                         }
@@ -78,7 +85,11 @@ const UserAppointment = ({ user, appointments }) => {
                         </div>
                       </div>
                     </div>
-                    <Button variant='outlined' className={classes.btn}>Bayar</Button>
+                    <Button
+                      variant='outlined'
+                      className={classes.btn}
+                      onClick={() => handleCheckout(appointment.id)}
+                    >Bayar</Button>
                   </div>
                 ))}
               </div>
