@@ -1,4 +1,12 @@
-import { LOGIN_DOCTOR, LOGIN_USER, LOGOUT, SET_LOGIN, SET_TOKEN, SET_USER } from '@containers/Client/constants';
+import {
+  LOGIN_DOCTOR,
+  LOGIN_USER,
+  LOGOUT,
+  SET_LOGIN,
+  SET_TOKEN,
+  SET_USER,
+  VERIFY_TOKEN,
+} from '@containers/Client/constants';
 
 export const setLogin = (login) => ({
   type: SET_LOGIN,
@@ -27,4 +35,10 @@ export const logout = () => ({
 export const loginDoctor = (data) => ({
   type: LOGIN_DOCTOR,
   data,
+});
+
+export const verifyToken = (user, navigate) => ({
+  type: VERIFY_TOKEN,
+  user,
+  navigate,
 });

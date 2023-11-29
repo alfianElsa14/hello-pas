@@ -4,6 +4,16 @@ const Joi = require('joi');
 const { compare } = require('../helper/bycrpt');
 const { generateToken } = require('../helper/jwt');
 
+exports.verifyTokenUser = async (req, res) => {
+    try {
+      return res.status(200).json({ status: 'Success' });
+  
+    } catch (error) {
+      console.error(error);
+      handleServerError(res);
+    }
+  };
+
 exports.registerUser = async (req, res) => {
     try {
         const { username, email, password, phoneNumber } = req.body;
@@ -155,7 +165,9 @@ exports.editUser = async (req, res) => {
 
 exports.getAllUser = async (req, res) => {
     try {
-        const data = await User.findAll()
+        const data = await User.findAll({
+            attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+        })
         res.status(200).json(data)
     } catch (error) {
         console.log(error);
@@ -163,10 +175,12 @@ exports.getAllUser = async (req, res) => {
     }
 }
 
-exports.getUserById = async (req, res) => {
+exports.getProfileUser = async (req, res) => {
     try {
-        const {userId} = req.params
-        const userData = await User.findByPk(userId)
+        const userId = req.user.id
+        const userData = await User.findByPk(userId, {
+            attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+        });
 
         if (!userData) {
             return handleNotFoundError(res, 'User');
