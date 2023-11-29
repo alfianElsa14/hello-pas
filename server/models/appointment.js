@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Appointment',
   });
   Appointment.beforeCreate((appointment) => {
-    appointment.status = 'Pending'
+    appointment.status = 'pending'
   })
   return Appointment;
 };

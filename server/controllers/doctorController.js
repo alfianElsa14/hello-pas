@@ -7,13 +7,14 @@ const { generateToken } = require('../helper/jwt');
 exports.registerDoctor = async (req, res) => {
     try {
         const { username, email, password, phoneNumber, yearExperience, practiceAt, price } = req.body;
+        
         const schema = Joi.object({
             username: Joi.string().required(),
             email: Joi.string().email().required(),
             password: Joi.string().required(),
             phoneNumber: Joi.string().required(),
-            // yearExperience: Joi.number().required(),
-            // practiceAt: Joi.string().required(),
+            yearExperience: Joi.number().required(),
+            practiceAt: Joi.string().required(),
             price: Joi.number().required()
           });
 
@@ -47,6 +48,8 @@ exports.registerDoctor = async (req, res) => {
                 email,
                 password,
                 phoneNumber,
+                yearExperience,
+                practiceAt,
                 price
             },
             {
@@ -66,6 +69,7 @@ exports.loginDoctor = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        console.log(req.body)
         const schema = Joi.object({
             email: Joi.string().email().required(),
             password: Joi.string().required(),
@@ -81,6 +85,10 @@ exports.loginDoctor = async (req, res) => {
               email: email,
             },
         });
+
+        if(!user) {
+            return handleClientError(res, 400, 'User not found')
+        }
 
         const passwordMatch = compare(password, user.password)
 

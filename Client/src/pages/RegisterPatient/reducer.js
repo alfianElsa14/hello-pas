@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { USER_REGISTER_SUCCESS } from './constants';
+import { RESET_REGISTER_STATUS, USER_REGISTER_SUCCESS } from './constants';
 
 export const initialState = {
   user: {},
@@ -14,6 +14,9 @@ const registerUserReducer = (state = initialState, action) =>
       case USER_REGISTER_SUCCESS:
         draft.isSucces = true;
         draft.message = 'Register Successfully';
+        break;
+      case RESET_REGISTER_STATUS:
+        draft.isSucces = false;
         break;
     }
   });

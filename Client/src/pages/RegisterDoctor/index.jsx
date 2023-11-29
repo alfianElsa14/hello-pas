@@ -1,10 +1,14 @@
-import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import { connect, useDispatch } from 'react-redux';
 import classes from './style.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { register } from './actions';
+import { useEffect, useState } from 'react';
+import { register, resetRegisterStatus } from './actions';
+import { selectRegisterDoctorSucces } from './selector';
+import { createStructuredSelector } from 'reselect';
+import { FormattedMessage } from 'react-intl';
 
-const RegisterDoctor = () => {
+const RegisterDoctor = ({ isSuccess }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
@@ -12,8 +16,8 @@ const RegisterDoctor = () => {
     email: '',
     password: '',
     phoneNumber: '',
-    // yearExperience: '',
-    // practiceAt: '',
+    yearExperience: '',
+    practiceAt: '',
     price: '',
   });
   const [errors, setErrors] = useState({
@@ -21,49 +25,124 @@ const RegisterDoctor = () => {
     email: '',
     password: '',
     phoneNumber: '',
+    yearExperience: '',
+    practiceAt: '',
+    price: '',
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setInputs({ ...inputs, [name]: value });
   };
-  console.log(inputs);
+
+  const validateInputs = () => {
+    let valid = true;
+    const newErrors = {
+      username: '',
+      email: '',
+      password: '',
+      phoneNumber: '',
+      yearExperience: '',
+      practiceAt: '',
+      price: '',
+    };
+
+    if (!inputs.username) {
+      valid = false;
+      newErrors.username = 'Username is required';
+    }
+
+    if (!inputs.email) {
+      valid = false;
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(inputs.email)) {
+      valid = false;
+      newErrors.email = 'Invalid email format';
+    }
+
+    if (!inputs.password) {
+      valid = false;
+      newErrors.password = 'Password is required';
+    } else if (inputs.password.length < 6) {
+      valid = false;
+      newErrors.password = 'Password should be at least 6 characters long';
+    }
+
+    if (!inputs.phoneNumber) {
+      valid = false;
+      newErrors.phoneNumber = 'Phone number is required';
+    } else if (!/^\d+$/.test(inputs.phoneNumber)) {
+      valid = false;
+      newErrors.phoneNumber = 'Phone number should contain only numbers';
+    }
+
+    if (!inputs.yearExperience) {
+      valid = false;
+      newErrors.yearExperience = 'Year Experience is required';
+    }
+
+    if (!inputs.practiceAt) {
+      valid = false;
+      newErrors.practiceAt = 'Practice At is required';
+    }
+
+    if (!inputs.price) {
+      valid = false;
+      newErrors.price = 'Price is required';
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const { username, email, password, phoneNumber } = inputs;
-    if (!username || !email || !password || !phoneNumber) {
-      alert('Semua field harus diisi');
-      return;
-    }
 
-    if (password.length < 6) {
-      alert('Password harus minimal 6 karakter');
-      return;
+    if (validateInputs()) {
+      dispatch(register(inputs));
     }
-
-    dispatch(register(inputs));
-    navigate('/login/doctor');
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/login/doctor');
+      dispatch(resetRegisterStatus());
+    }
+  }, [isSuccess, dispatch, navigate]);
+
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
-        <h1>Register Doctor</h1>
+        <h1>
+          <FormattedMessage id="app_register_doctor" />
+        </h1>
         <form onSubmit={handleFormSubmit}>
           <div className={classes.inputItem}>
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">
+              <FormattedMessage id="app_username" />
+              {errors.username && <p className={classes.error}>{errors.username}</p>}
+            </label>
             <input id="username" name="username" type="text" value={inputs.username} onChange={handleInputChange} />
           </div>
           <div className={classes.inputItem}>
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">
+              <FormattedMessage id="app_email" />
+              {errors.email && <p className={classes.error}>{errors.email}</p>}
+            </label>
             <input id="email" name="email" type="text" value={inputs.email} onChange={handleInputChange} />
           </div>
           <div className={classes.inputItem}>
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">
+              <FormattedMessage id="app_password" />
+              {errors.password && <p className={classes.error}>{errors.password}</p>}
+            </label>
             <input id="password" name="password" type="password" value={inputs.password} onChange={handleInputChange} />
           </div>
           <div className={classes.inputItem}>
-            <label htmlFor="phoneNumber">Phone Number</label>
+            <label htmlFor="phoneNumber">
+              <FormattedMessage id="app_phone_number" />
+              {errors.phoneNumber && <p className={classes.error}>{errors.phoneNumber}</p>}
+            </label>
             <input
               id="phoneNumber"
               name="phoneNumber"
@@ -72,8 +151,11 @@ const RegisterDoctor = () => {
               onChange={handleInputChange}
             />
           </div>
-          {/* <div className={classes.inputItem}>
-            <label htmlFor="yearExperience">Year Experience</label>
+          <div className={classes.inputItem}>
+            <label htmlFor="yearExperience">
+              <FormattedMessage id="app_year_exp" />
+              {errors.yearExperience && <p className={classes.error}>{errors.yearExperience}</p>}
+            </label>
             <input
               id="yearExperience"
               name="yearExperience"
@@ -83,7 +165,10 @@ const RegisterDoctor = () => {
             />
           </div>
           <div className={classes.inputItem}>
-            <label htmlFor="practiceAt">Practice At</label>
+            <label htmlFor="practiceAt">
+              <FormattedMessage id="app_practice_at" />
+              {errors.practiceAt && <p className={classes.error}>{errors.practiceAt}</p>}
+            </label>
             <input
               id="practiceAt"
               name="practiceAt"
@@ -91,13 +176,16 @@ const RegisterDoctor = () => {
               value={inputs.practiceAt}
               onChange={handleInputChange}
             />
-          </div> */}
+          </div>
           <div className={classes.inputItem}>
-            <label htmlFor="price">Price</label>
+            <label htmlFor="price">
+              <FormattedMessage id="app_price" />
+              {errors.price && <p className={classes.error}>{errors.price}</p>}
+            </label>
             <input id="price" name="price" type="text" value={inputs.price} onChange={handleInputChange} />
           </div>
           <button type="submit" className={classes.buttonRegister}>
-            Register
+            <FormattedMessage id="app_register" />
           </button>
         </form>
       </div>
@@ -105,4 +193,12 @@ const RegisterDoctor = () => {
   );
 };
 
-export default RegisterDoctor;
+RegisterDoctor.propTypes = {
+  isSuccess: PropTypes.bool,
+};
+
+const mapStateToProps = createStructuredSelector({
+  isSuccess: selectRegisterDoctorSucces,
+});
+
+export default connect(mapStateToProps)(RegisterDoctor);
