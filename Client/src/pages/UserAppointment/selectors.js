@@ -8,3 +8,4 @@ export const selectAcceptedAppointments = createSelector(
   selectUserAppointmentState,
   (state) => state.acceptedAppointments
 );
+export const selectMidtransToken = createSelector(selectUserAppointmentState, (state) => state.midtransToken);

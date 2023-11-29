@@ -8,7 +8,7 @@ export function* doGetAllReviews({ id }) {
     try {
         const response = yield call(getAllReviews, id)
         yield put(setAllReviews(response))
-        // console.log(response, "<<<<< di saga");
+        console.log(response, "<<<<< di saga");
     } catch (error) {
         console.log(error);
     }

@@ -52,3 +52,7 @@ export const userById = (id) => callAPI(`${urls.user}/${id}`, 'get');
 export const editUser = (id, data) => callAPI(`${urls.user}/editUser/${id}`, 'put', {}, {}, data);
 
 export const getAppointmentsByUserID = (userId) => callAPI(`${urls.appointment}/user/${userId}`, 'GET');
+
+export const midtransPayment = (id) => callAPI(`${urls.appointment}/midtransToken/${id}`, 'post')
+
+export const appointmentStatus = (id) => callAPI(`${urls.appointment}/pay/${id}`, 'put')
