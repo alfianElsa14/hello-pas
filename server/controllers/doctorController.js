@@ -20,7 +20,7 @@ exports.registerDoctor = async (req, res) => {
 
         const { error } = schema.validate(req.body);
         if (error) {
-            return res.status(400).json({status: 'Validation Failed', message: error.details[0].message,});
+            return handleValidationError(res, error)
         }
 
         const existingUser = await Doctor.findOne({
@@ -42,6 +42,9 @@ exports.registerDoctor = async (req, res) => {
             return handleClientError(res, 400, 'Phone number already exists');
         }
 
+        const uploadedImg = `http://localhost:3300/${req.file.path}`
+        console.log(uploadedImg)
+
         const newDoctor = await Doctor.create(
             {
                 username,
@@ -50,12 +53,8 @@ exports.registerDoctor = async (req, res) => {
                 phoneNumber,
                 yearExperience,
                 practiceAt,
-                price
-            },
-            {
-                attributes: {
-                    exclude: ['updatedAt', 'createdAt']
-                },
+                price,
+                image: uploadedImg
             }
         );
 
@@ -77,7 +76,7 @@ exports.loginDoctor = async (req, res) => {
 
         const { error } = schema.validate(req.body);
         if (error) {
-            return res.status(400).json({status: 'Validation Failed', message: error.details[0].message,});
+            return handleValidationError(res, error)
         }
 
         const user = await Doctor.findOne({

@@ -4,16 +4,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 130vh;
+    height: 160vh;
 
     .wrapper {
         padding: 0px 20px 10px;
-        width: 25%;
+        width: 80%;
+        max-width: 20rem;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         h1 {
+            padding: 10px;
             text-align: center;
-            font-size: 1.2rem
+            font-size: 1.2rem;
         }
 
         form {
@@ -31,7 +33,7 @@
 
                 .error {
                     color: red;
-                    font-size: 0.4rem;
+                    font-size: 0.6rem;
                     font-weight: 400;
                 }
 
@@ -77,9 +79,9 @@
     }
 }
 
-@media (max-width: 450px) {
+@media (max-width: $screen-md-limit) {
     .container {
-
+        height: 130vh;
         .wrapper {
             padding: 10px;
             width: 80%;
