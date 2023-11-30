@@ -30,4 +30,10 @@ export default {
   app_profile_and_reviews: 'Profile & Reviews',
   app_appointments: 'Appointments',
   app_logout: 'Logout',
+  app_edit_profile: 'Edit Profile',
+  app_change_password: 'Change Password',
+  app_old_password: 'Old Password',
+  app_new_password: 'New Password',
+  app_change: 'Change',
+  app_reviews: 'Reviews',
 };

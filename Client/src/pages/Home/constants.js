@@ -1,0 +1,2 @@
+export const GET_ALL_DOCTORS = 'GET_ALL_DOCTORS';
+export const SET_ALL_DOCTORS = 'SET_ALL_DOCTORS';

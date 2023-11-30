@@ -11,16 +11,20 @@ import detailReducer from '@pages/Detail/reducer';
 import profileReducer from '@pages/EditUser/reducer';
 import { mapWithPersistor } from './persistence';
 import detailProfileReducer from '@pages/Profile/reducer';
+import homeReducer from '@pages/Home/reducer';
+import changePasswordReducer from '@pages/ChangePassword/reducer';
 
 const storedReducers = {
   app: { reducer: appReducer, whitelist: storedAppState },
   client: { reducer: clientReducer, whitelist: storedClientState },
+  home: { reducer: homeReducer },
   userAppointment: { reducer: userAppointmentReducer, whitelist: storedUserAppointmentState },
   registerPatient: { reducer: registerUserReducer },
   registerDoctor: { reducer: registerDoctorReducer },
   detail: { reducer: detailReducer },
   profile: { reducer: profileReducer },
-  detailProfile: {reducer: detailProfileReducer}
+  detailProfile: {reducer: detailProfileReducer},
+  changePassword: {reducer: changePasswordReducer}
 };
 
 const temporaryReducers = {

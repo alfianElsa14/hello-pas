@@ -1,7 +1,7 @@
 const { Doctor, Review, User } = require('../models')
-const { handleServerError, handleClientError, handleValidationError } = require("../helper/handleError")
+const { handleServerError, handleClientError, handleValidationError, handleNotFoundError } = require("../helper/handleError")
 const Joi = require('joi');
-const { compare } = require('../helper/bycrpt');
+const { compare, hash } = require('../helper/bycrpt');
 const { generateToken } = require('../helper/jwt');
 
 exports.verifyTokenDoctor = async (req, res) => {
@@ -93,6 +93,7 @@ exports.loginDoctor = async (req, res) => {
             where: {
               email: email,
             },
+            attributes: { exclude: [ 'createdAt', 'updatedAt'] }
         });
 
         if(!user) {
@@ -105,19 +106,14 @@ exports.loginDoctor = async (req, res) => {
             return handleClientError(res, 401, 'Invalid password');
         }
 
+        const formatedUser = user.toJSON()
+        delete formatedUser.password;
         const token = generateToken(user.id, 'doctor')
-
-        const dataResponse = {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-        }
 
         res.status(200).json({
             token: token,
             message: 'Login successful',
-            data: dataResponse,
+            data: formatedUser,
         });
     } catch (error) {
         console.log(error)
@@ -178,6 +174,30 @@ exports.getProfileDoctor = async (req, res) => {
         res.status(200).json(doctorData)
     } catch (error) {
         console.log(error);
+        return handleServerError(res)
+    }
+}
+
+exports.changePasswordDoctor = async (req, res) => {
+    try {
+        const doctorId = req.user.id
+        const { oldPassword, newPassword } = req.body;
+
+        const doctor = await Doctor.findByPk(doctorId);
+        if (!doctor) {
+            return handleNotFoundError(res, 'Doctor');
+        }
+
+        const passwordMatch = compare(oldPassword, doctor.password);
+        if (!passwordMatch) {
+            return handleClientError(res, 401, 'Invalid old password');
+        }
+
+        doctor.password = hash(newPassword);
+        await doctor.save();
+
+        res.status(200).json({ message: 'Change password successfully' });
+    } catch (error) {
         return handleServerError(res)
     }
 }
