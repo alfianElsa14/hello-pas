@@ -23,7 +23,7 @@ export function* doAddReviews({ id, data }) {
     }
 }
 
-export function* doDeleteReview({ id }) {
+export function* doDeleteReview({ reviewId, doctorId }) {
     try {
         const result = yield Swal.fire({
             title: 'Are you sure',
@@ -36,14 +36,14 @@ export function* doDeleteReview({ id }) {
         });
 
         if (result.isConfirmed) {
-            yield call(deleteReview, id);
+            yield call(deleteReview, reviewId);
 
             Swal.fire({
                 title: 'Deleted!',
                 text: 'Your review has been deleted.',
                 icon: 'success',
             });
-            const updatedReviews = yield call(getAllReviews, id);
+            const updatedReviews = yield call(getAllReviews, doctorId);
             yield put(setAllReviews(updatedReviews));
         }
     } catch (error) {

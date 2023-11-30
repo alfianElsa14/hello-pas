@@ -27,15 +27,13 @@ function Detail({ reviews, user, doctor }) {
     };
 
     const handleDelete = (reviewId) => {
-        dispatch(deleteReview(reviewId))
+        dispatch(deleteReview(reviewId, id))
     }
 
     useEffect(() => {
         dispatch(getDoctorById(id))
         dispatch(getAllReviews(id))
     }, [id])
-
-    // console.log(user.role, "<<<<");
 
     return (
         <div className={classes.detailContainer}>
@@ -48,7 +46,7 @@ function Detail({ reviews, user, doctor }) {
                     <div className={classes.rightSide}>
                         <h2>Dr. {doctor.username}</h2>
                         <p><strong>Practice Location: </strong>{doctor.practiceAt}</p>
-                        <p><strong>Consultation Price:</strong>{formatRupiah(doctor.price)}</p>
+                        <p><strong>Consultation Price:</strong> {formatRupiah(doctor.price)}</p>
                         <p><strong>Years of Experience:</strong> {doctor.yearExperience}</p>
                         <div>
                             <p><strong>Email:</strong> {doctor.email}</p>

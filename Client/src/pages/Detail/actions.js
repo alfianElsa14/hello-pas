@@ -16,9 +16,10 @@ export const addReview = (id, data) => ({
     data
 })
 
-export const deleteReview = (id) => ({
+export const deleteReview = (reviewId, doctorId) => ({
     type: DELETE_REVIEW,
-    id
+    reviewId,
+    doctorId
 })
 
 export const getDoctorById = (id) => ({
