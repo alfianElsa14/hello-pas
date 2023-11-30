@@ -1,7 +1,7 @@
 const { User } = require('../models')
 const { handleServerError, handleClientError, handleNotFoundError, handleValidationError } = require("../helper/handleError")
 const Joi = require('joi');
-const { compare } = require('../helper/bycrpt');
+const { compare, hash } = require('../helper/bycrpt');
 const { generateToken } = require('../helper/jwt');
 
 exports.verifyTokenUser = async (req, res) => {
@@ -12,7 +12,7 @@ exports.verifyTokenUser = async (req, res) => {
       console.error(error);
       handleServerError(res);
     }
-  };
+};
 
 exports.registerUser = async (req, res) => {
     try {
@@ -71,7 +71,6 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-        console.log(email)
 
         const schema = Joi.object({
             email: Joi.string().email().required(),
@@ -87,6 +86,7 @@ exports.loginUser = async (req, res) => {
             where: {
                 email: email,
             },
+            attributes: { exclude: [ 'createdAt', 'updatedAt'] }
         });
 
         if(!user) {
@@ -98,20 +98,15 @@ exports.loginUser = async (req, res) => {
         if (!passwordMatch) {
             return handleClientError(res, 401, 'Invalid password');
         }
-
+        
+        const formatedUser = user.toJSON()
+        delete formatedUser.password;
         const token = generateToken(user.id, 'user')
-
-        const dataResponse = {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-        }
 
         res.status(200).json({
             token: token,
             message: 'Login successful',
-            data: dataResponse,
+            data: formatedUser,
         });
     } catch (error) {
         console.log(error);
@@ -121,7 +116,7 @@ exports.loginUser = async (req, res) => {
 
 exports.editUser = async (req, res) => {
     try {
-        const { userId } = req.params
+        const userId = req.user.id
         const newData = req.body
         const userData = await User.findByPk(userId)
 
@@ -130,9 +125,10 @@ exports.editUser = async (req, res) => {
         }
 
         const schema = Joi.object({
-            username: Joi.string().required(),
-            email: Joi.string().required(),
-            phoneNumber: Joi.string().required()
+            username: Joi.string(),
+            email: Joi.string(),
+            phoneNumber: Joi.string(),
+            image: Joi.string()
         })
 
         const { error } = schema.validate(newData)
@@ -141,7 +137,7 @@ exports.editUser = async (req, res) => {
             return handleValidationError(res, error)
         }
 
-        const updatedImg = `http://localhost:3300/${req.file.path}`
+        const updatedImg = req.file.path
 
         console.log(updatedImg, "<<<<");
 
@@ -189,6 +185,31 @@ exports.getProfileUser = async (req, res) => {
         res.status(200).json(userData)
     } catch (error) {
         console.log(error);
+        return handleServerError(res)
+    }
+}
+
+exports.changePasswordUser = async (req, res) => {
+    try {
+        const userId = req.user.id
+        const { oldPassword, newPassword } = req.body;
+
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return handleNotFoundError(res, 'User');
+        }
+
+        const passwordMatch = compare(oldPassword, user.password);
+        if (!passwordMatch) {
+            return handleClientError(res, 401, 'Invalid old password');
+        }
+
+        user.password = hash(newPassword);
+        await user.save();
+
+        res.status(200).json({ message: 'Change password successfully' });
+    } catch (error) {
+        console.log(error)
         return handleServerError(res)
     }
 }

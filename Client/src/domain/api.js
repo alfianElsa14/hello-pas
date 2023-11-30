@@ -55,16 +55,24 @@ export const registerDoctor = (data) => callAPI(`${urls.doctor}/register`, 'post
 
 export const loginDoctor = (data) => callAPI(`${urls.doctor}/login`, 'post', {}, {}, data);
 
-export const userById = (id) => callAPI(`${urls.user}/${id}`, 'get');
+export const userById = () => callAPI(urls.user, 'get');
 
 export const userProfile = () => callAPI(urls.user, 'get')
 
 export const doctorProfile = () => callAPI(urls.doctor, 'get')
 
-export const editUser = (id, data) => callAPI(`${urls.user}/editUser/${id}`, 'put', {}, {}, data);
+export const changePasswordUser = (data) => callAPI(`${urls.user}/changePassword`, 'put', {}, {}, data)
+
+export const changePasswordDoctor = (data) => callAPI(`${urls.doctor}/changePassword`, 'put', {}, {}, data)
+
+export const editUser = (data) => callAPI(`${urls.user}/editUser`, 'put', {}, {}, data);
 
 export const getAppointmentsByUserID = (userId) => callAPI(`${urls.appointment}/user/${userId}`, 'GET');
 
 export const midtransPayment = (id) => callAPI(`${urls.appointment}/midtransToken/${id}`, 'post')
 
 export const appointmentStatus = (id) => callAPI(`${urls.appointment}/pay/${id}`, 'put')
+
+export const getAllDoctors = () => callAPI(`${urls.doctor}/allDoctors`, 'get')
+
+export const getDoctorById = (id) => callAPI(`${urls.doctor}/${id}`, 'get')

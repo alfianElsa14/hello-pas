@@ -11,6 +11,7 @@ import UserAppointment from '@pages/UserAppointment';
 import RegisterDoctor from '@pages/RegisterDoctor';
 import RegisterPatient from '@pages/RegisterPatient';
 import Profile from '@pages/Profile';
+import ChangePassword from '@pages/ChangePassword';
 
 const routes = [
   {
@@ -28,7 +29,7 @@ const routes = [
     layout: MainLayout,
   },
   {
-    path: '/detail',
+    path: '/detail/:id',
     name: 'detail',
     protected: true,
     component: Detail,
@@ -81,6 +82,13 @@ const routes = [
     name: 'Profile',
     protected: true,
     component: Profile,
+    layout: MainLayout,
+  },
+  {
+    path: '/change-password',
+    name: 'Change Password',
+    protected: true,
+    component: ChangePassword,
     layout: MainLayout,
   },
   { path: '*', name: 'Not Found', component: NotFound, layout: MainLayout, protected: false },

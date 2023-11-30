@@ -11,6 +11,8 @@ import { registerDoctorSaga } from '@pages/RegisterDoctor/saga';
 import { editSaga } from '@pages/EditUser/saga';
 import { profileSaga } from '@pages/Profile/saga';
 import { clientSaga } from '@containers/Client/saga';
+import { homeSaga } from '@pages/Home/saga';
+import { changePasswordSaga } from '@pages/ChangePassword/saga';
 
 export default function* rootSaga() {
   yield all([
@@ -24,5 +26,7 @@ export default function* rootSaga() {
     loginDoctorSaga(),
     profileSaga(),
     editSaga(),
+    homeSaga(),
+    changePasswordSaga(),
   ]);
 }
