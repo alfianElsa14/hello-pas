@@ -62,7 +62,7 @@
                         border: none;
                         background-color: #8CCA3C;
                         height: 40px;
-                        width: 100px;
+                        width: 160px;
                         border-radius: 5px;
                         font-weight: 500;
                         font-size: 15px;
@@ -91,6 +91,10 @@
 
         @include apply-at-xs2-size {
             width: 75%;
+        }
+
+        h4 {
+            margin-bottom: 20px;
         }
 
         .commentList {

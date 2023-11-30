@@ -9,6 +9,7 @@ import { selectUser } from '@containers/Client/selectors';
 import { editUser, getUsertById } from './actions';
 import { useNavigate } from 'react-router-dom';
 import config from '@config/index';
+import { FormattedMessage } from 'react-intl';
 
 function EditUser({ userData, user }) {
   const dispatch = useDispatch();
@@ -63,7 +64,7 @@ function EditUser({ userData, user }) {
           <div className={classes.picture}>
             <img src={formData.imageUrl || `${config.api.host}${userData.image}`} alt="" />
             <label htmlFor="image" className={classes.customFileButton}>
-              <button>Change</button>
+              <button><FormattedMessage id="app_change"/></button>
               <input type="file" id="image" name="image" onChange={handleImageChange} className={classes.fileInput} />
             </label>
           </div>
@@ -76,7 +77,7 @@ function EditUser({ userData, user }) {
             <input type="email" id="email" name="email" value={email} onChange={handleChange} />
           </div>
           <div className={classes.inputItem}>
-            <label htmlFor="phoneNumber">Phone Number</label>
+            <label htmlFor="phoneNumber"><FormattedMessage id="app_phone_number"/></label>
             <input type="number" id="phoneNumber" name="phoneNumber" value={phoneNumber} onChange={handleChange} />
           </div>
           <button type="submit" className={classes.buttonRegister}>

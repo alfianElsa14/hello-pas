@@ -3,21 +3,23 @@ const { handleServerError, handleClientError, handleValidationError, handleNotFo
 const Joi = require('joi');
 const { compare, hash } = require('../helper/bycrpt');
 const { generateToken } = require('../helper/jwt');
+const redisClient = require('../helper/redisClient');
+const redis = require('redis');
 
 exports.verifyTokenDoctor = async (req, res) => {
     try {
-      return res.status(200).json({ status: 'Success' });
-  
+        return res.status(200).json({ status: 'Success' });
+
     } catch (error) {
-      console.error(error);
-      handleServerError(res);
+        console.error(error);
+        handleServerError(res);
     }
 };
 
 exports.registerDoctor = async (req, res) => {
     try {
         const { username, email, password, phoneNumber, yearExperience, practiceAt, price } = req.body;
-        
+
         const schema = Joi.object({
             username: Joi.string().required(),
             email: Joi.string().email().required(),
@@ -26,7 +28,7 @@ exports.registerDoctor = async (req, res) => {
             yearExperience: Joi.number().required(),
             practiceAt: Joi.string().required(),
             price: Joi.number().required()
-          });
+        });
 
         const { error } = schema.validate(req.body);
         if (error) {
@@ -35,7 +37,7 @@ exports.registerDoctor = async (req, res) => {
 
         const existingUser = await Doctor.findOne({
             where: {
-              email: email,
+                email: email,
             },
         });
         if (existingUser) {
@@ -44,7 +46,7 @@ exports.registerDoctor = async (req, res) => {
 
         const existingPhone = await Doctor.findOne({
             where: {
-              phoneNumber: phoneNumber,
+                phoneNumber: phoneNumber,
             },
         });
 
@@ -91,12 +93,12 @@ exports.loginDoctor = async (req, res) => {
 
         const user = await Doctor.findOne({
             where: {
-              email: email,
+                email: email,
             },
-            attributes: { exclude: [ 'createdAt', 'updatedAt'] }
+            attributes: { exclude: ['createdAt', 'updatedAt'] }
         });
 
-        if(!user) {
+        if (!user) {
             return handleClientError(res, 400, 'User not found')
         }
 
@@ -117,15 +119,25 @@ exports.loginDoctor = async (req, res) => {
         });
     } catch (error) {
         console.log(error)
-        return  handleServerError(res)
+        return handleServerError(res)
     }
 }
 
 exports.getAllDoctor = async (req, res) => {
     try {
+        const cachedData = await redisClient.get('Doctors');
+
+        if (cachedData) {
+            const cachedResponse = JSON.parse(cachedData);
+            return res.status(200).json({ cached: true, data: cachedResponse });
+        };
+
         const data = await Doctor.findAll({
             attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
-        })
+        });
+
+        await redisClient.set('Doctors', JSON.stringify(data));
+
         res.status(200).json(data)
     } catch (error) {
         console.log(error);
@@ -135,7 +147,7 @@ exports.getAllDoctor = async (req, res) => {
 
 exports.getDoctorById = async (req, res) => {
     try {
-        const {doctorId} = req.params;
+        const { doctorId } = req.params;
         const doctorData = await Doctor.findByPk(doctorId, {
             attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
         });
@@ -159,10 +171,10 @@ exports.getProfileDoctor = async (req, res) => {
                 {
                     model: Review,
                     attributes: ['comment'],
-                        include: {
-                            model: User,
-                            attributes: ['username', 'image']
-                        }
+                    include: {
+                        model: User,
+                        attributes: ['username', 'image']
+                    }
                 }
             ]
         });

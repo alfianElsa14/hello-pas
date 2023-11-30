@@ -26,28 +26,28 @@ function HomeUser({ doctors }) {
     }, [])
     return (
         <div className={classes.container}>
-            <h1>Janji temu dokter</h1>
+            <h1><FormattedMessage id="app_doctor_list"/></h1>
             <div className={classes.banner}>
-                <h3>Buat janji mudah & bebas antri</h3>
+                <h3><FormattedMessage id="app_queue_free"/></h3>
                 <div className={classes.contentHeader}>
                     <div className={classes.iconList}>
                         <img src="https://www.halodoc.com/assets/img/hospital/webp/find_doctor.webp" alt="" />
-                        <p>Daftar Dokter</p>
+                        <p><FormattedMessage id="app_doctor_list"/></p>
                     </div>
                     <div className={classes.iconList}>
                         <img src="https://www.halodoc.com/assets/img/hospital/webp/come-hospital.webp" alt="" />
-                        <p>Tanpa Antri</p>
+                        <p><FormattedMessage id="app_without_queuing"/></p>
                     </div>
                     <div className={classes.iconList}>
                         <img src="https://www.halodoc.com/assets/img/hospital/webp/get-consult.webp" alt="" />
-                        <p>Atur jadwal</p>
+                        <p><FormattedMessage id="app_set_schedule"/></p>
                     </div>
                 </div>
             </div>
             <div className={classes.search}>
                 <input
                     type="search"
-                    placeholder="Cari Dokter . . ."
+                    placeholder="Search Dokter . . ."
                     value={searchTerm}
                     onChange={handleSearchChange}
                 />

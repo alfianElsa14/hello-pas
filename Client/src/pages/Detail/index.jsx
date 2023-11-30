@@ -11,6 +11,7 @@ import { selectUser } from '@containers/Client/selectors';
 import { useParams } from 'react-router-dom';
 import { formatRupiah } from '@utils/formatPrice';
 import config from '@config/index';
+import { FormattedMessage } from 'react-intl';
 
 
 function Detail({ reviews, user, doctor }) {
@@ -44,21 +45,21 @@ function Detail({ reviews, user, doctor }) {
                     </div>
                     <div className={classes.rightSide}>
                         <h2>Dr. {doctor.username}</h2>
-                        <p><strong>Practice Location: </strong>{doctor.practiceAt}</p>
-                        <p><strong>Consultation Price:</strong> {formatRupiah(doctor.price)}</p>
-                        <p><strong>Years of Experience:</strong> {doctor.yearExperience}</p>
+                        <p><strong><FormattedMessage id="app_practice_location"/>: </strong>{doctor.practiceAt}</p>
+                        <p><strong><FormattedMessage id="app_consul_price"/>:</strong> {formatRupiah(doctor.price)}</p>
+                        <p><strong><FormattedMessage id="app_year_exp"/>:</strong> {doctor.yearExperience} <FormattedMessage id="app_year"/></p>
                         <div>
                             <p><strong>Email:</strong> {doctor.email}</p>
                             <p><strong>Contact:</strong> {doctor.phoneNumber}</p>
                         </div>
                         <div className={classes.janji}>
-                            <button>buat janji</button>
+                            <button><FormattedMessage id="app_make_appointment"/></button>
                         </div>
                     </div>
                 </div>
             </div>
             <div className={classes.comment}>
-                <h4>Reviews</h4>
+                <h4><FormattedMessage id="app_reviews"/></h4>
                 {
                     reviews.map((el) => (
                         <div className={classes.commentList}>
