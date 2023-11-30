@@ -10,7 +10,8 @@ function* doGetAllDoctors() {
     const response = yield call(getAllDoctors);
     yield put(setAllDoctors(response));
   } catch (error) {
-    console.log(error);
+    // eslint-disable-next-line no-console
+    console.error(error);
   }
 }
 

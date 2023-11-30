@@ -32,6 +32,7 @@ const HomeDoctor = ({ user, appointments }) => {
 
   useEffect(() => {
     dispatch(getAppointments({ doctorId: user.id }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
