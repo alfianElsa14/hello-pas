@@ -20,7 +20,6 @@ function CardDoctor({ doctors }) {
                             <p className={classes.name}>Dr. {el.username}</p>
                             <p className={classes.address}>{el.practiceAt}</p>
                             <p className={classes.price}>{formatRupiah(el.price)}</p>
-                            <p>{`${config.api.host}${el.image}`}</p>
                         </div>
                     </div>
                 ))

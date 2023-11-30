@@ -1,15 +1,17 @@
-import PropTypes from 'prop-types';
-import classes from './style.module.scss';
-import { selectDoctorProfile, selectUserProfile } from './selector';
+import { useEffect } from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { getDoctorProfile, getUserProfile } from './actions';
-import { Avatar } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { selectRole } from '@containers/Client/selectors';
 import { FormattedMessage } from 'react-intl';
+
+import PropTypes from 'prop-types';
+import { selectDoctorProfile, selectUserProfile } from './selector';
+import { getDoctorProfile, getUserProfile } from './actions';
 import config from '@config/index';
+import { selectRole } from '@containers/Client/selectors';
+
+import { Avatar } from '@mui/material';
+import classes from './style.module.scss';
 
 const Profile = ({ userProfile, role, doctorProfile }) => {
   const dispatch = useDispatch();

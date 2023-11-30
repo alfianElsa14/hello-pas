@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
-import { connect, useDispatch } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { useNavigate } from 'react-router-dom';
-
-import { selectUserData } from './selector';
-import { selectUser } from '@containers/Client/selectors';
-import { editUser, getUsertById } from './actions';
 import classes from './style.module.scss';
 import { selectUserData } from './selector';
 import { connect, useDispatch } from 'react-redux';

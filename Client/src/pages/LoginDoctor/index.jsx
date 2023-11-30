@@ -1,12 +1,14 @@
-import PropTypes from 'prop-types';
-import { loginDoctor } from '@containers/Client/actions';
 import React, { useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+import PropTypes from 'prop-types';
 import { connect, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
+
+import { loginDoctor } from '@containers/Client/actions';
 import { selectLogin } from '@containers/Client/selectors';
+
 import classes from './style.module.scss';
-import { FormattedMessage } from 'react-intl';
 
 const LoginDoctor = ({ login }) => {
   const dispatch = useDispatch();
