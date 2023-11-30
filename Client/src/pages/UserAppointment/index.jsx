@@ -31,6 +31,9 @@ const UserAppointment = ({ user, appointments }) => {
   };
 
   useEffect(() => {
+    if (!user || user.role !== 'user')
+      navigate("/");
+
     if (user && user.id)
       dispatch(getAppointments({ userId: user.id }));
   }, []);
@@ -70,20 +73,28 @@ const UserAppointment = ({ user, appointments }) => {
                           <Avatar className={classes.img} />
                         }
                       </div>
-                      <div className={classes.description}>
-                        <div className={classes.name}>
-                          {appointment.Doctor.username}
-                        </div>
-                        <div className={classes.scheduleDay}>
-                          Hari, Tanggal: {formatDate(appointment.startTime)}
-                        </div>
-                        <div className={classes.scheduleHour}>
-                          Jam: {formatHour(appointment.startTime)} - {formatHour(appointment.endTime)} WIB
-                        </div>
-                        <div className={classes.complaint}>
-                          Keluhan: {appointment.complaint}
-                        </div>
-                      </div>
+                      <table>
+                        <tr>
+                          <td>Hari, Tanggal</td>
+                          <td>:{" "}</td>
+                          <td>{formatDate(appointment.startTime)}</td>
+                        </tr>
+                        <tr>
+                          <td>Jam</td>
+                          <td>:{" "}</td>
+                          <td>{formatHour(appointment.startTime)} - {formatHour(appointment.endTime)} WIB</td>
+                        </tr>
+                        <tr>
+                          <td>Keluhan</td>
+                          <td>:{" "}</td>
+                          <td>{appointment.complaint}</td>
+                        </tr>
+                        <tr>
+                          <td>Biaya</td>
+                          <td>:{" "}</td>
+                          <td>Rp {appointment.Doctor.price.toLocaleString()}</td>
+                        </tr>
+                      </table>
                     </div>
                     <Button
                       variant='outlined'
