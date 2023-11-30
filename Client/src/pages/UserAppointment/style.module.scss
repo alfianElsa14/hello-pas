@@ -104,4 +104,8 @@
       }
     }
   }
+
+  @media screen and (max-width: $screen-md-limit) {
+    margin-top: 57px;
+  }
 }
