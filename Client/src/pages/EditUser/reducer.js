@@ -1,5 +1,5 @@
 import { produce } from 'immer'
-import { SET_USER_BY_ID } from './constants';
+import { SET_DOCTOR_BY_ID, SET_USER_BY_ID } from './constants';
 
 export const initialState = {
     userData: {},
@@ -13,6 +13,8 @@ produce(state, (draft) => {
         case SET_USER_BY_ID:
             draft.userData = action.userData
             break;
+        case SET_DOCTOR_BY_ID:
+            draft.userData = action.userData
         default:
             break;
     }

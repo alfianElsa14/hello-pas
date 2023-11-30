@@ -36,4 +36,6 @@ export default {
   app_new_password: 'Password Baru',
   app_change: 'Ganti',
   app_reviews: 'Ulasan',
+  app_edit_profile: 'Ubah Profile',
+  app_submit: 'Submit'
 };
