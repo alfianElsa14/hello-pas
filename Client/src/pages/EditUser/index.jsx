@@ -8,12 +8,12 @@ import { createStructuredSelector } from 'reselect';
 import { selectUser } from '@containers/Client/selectors';
 import { editUser, getUsertById } from './actions';
 import { useNavigate } from 'react-router-dom';
+import config from '@config/index';
 
 function EditUser({ userData, user }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const id = user.id;
-  console.log(user);
 
   const [formData, setFormData] = useState({
     username: user.username,
@@ -61,7 +61,7 @@ function EditUser({ userData, user }) {
         <h1>Edit Profile</h1>
         <form onSubmit={handleSubmit}>
           <div className={classes.picture}>
-            <img src={formData.imageUrl || userData.image} alt="" />
+            <img src={formData.imageUrl || `${config.api.host}${userData.image}`} alt="" />
             <label htmlFor="image" className={classes.customFileButton}>
               <button>Change</button>
               <input type="file" id="image" name="image" onChange={handleImageChange} className={classes.fileInput} />

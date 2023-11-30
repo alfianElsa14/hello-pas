@@ -137,7 +137,7 @@ exports.editUser = async (req, res) => {
             return handleValidationError(res, error)
         }
 
-        const updatedImg = `http://localhost:3300/${req.file.path}`
+        const updatedImg = req.file.path
 
         console.log(updatedImg, "<<<<");
 

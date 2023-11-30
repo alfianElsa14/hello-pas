@@ -4,3 +4,6 @@ export const SET_ALL_REVIEWS = 'SET_ALL_REVIEWS'
 export const ADD_REVIEW = 'ADD_REVIEW'
 
 export const DELETE_REVIEW = 'DELETE_REVIEW'
+
+export const GET_DOCTOR_BY_ID = 'GET_DOCTOR_BY_ID'
+export const SET_DOCTOR_BY_ID = 'SET_DOCTOR_BY_ID'
