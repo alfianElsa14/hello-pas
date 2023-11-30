@@ -36,4 +36,6 @@ export default {
   app_new_password: 'New Password',
   app_change: 'Change',
   app_reviews: 'Reviews',
+  app_edit_profile: 'Edit Profile',
+  app_submit: 'Submit'
 };

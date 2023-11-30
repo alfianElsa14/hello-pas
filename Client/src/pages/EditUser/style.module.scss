@@ -4,12 +4,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
-    margin-top: 70px;
+    height: 130vh;
+    padding-top: 7rem;
 
     .wrapper {
-        padding: 0px 20px 10px;
-        width: 25%;
+        padding: 10px 20px 10px;
+        width: 80%;
+        max-width: 20rem;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 
@@ -76,6 +77,23 @@
                 label {
                     font-size: 0.6rem;
                     font-weight: 700;
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                .error {
+                    color: red;
+                    font-size: 0.5rem;
+                    font-weight: 400;
+                }
+
+                .readOnly{
+                    padding: 0.3rem;
+                    font-size: 0.6rem;
+                    margin-bottom: 1rem;
+                    border-radius: 5px;
+                    color: rgb(147, 147, 147);
+                    background-color: rgb(232, 232, 232);
                 }
 
                 input {
@@ -102,7 +120,7 @@
 
             button {
                 padding: 0.5rem;
-                background-color: blue;
+                background-color: green;
                 color: white;
                 border-radius: 4px;
                 cursor: pointer;

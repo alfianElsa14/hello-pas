@@ -1,6 +1,6 @@
 import { produce } from 'immer';
 
-import { LOGOUT, SET_LOGIN, SET_TOKEN, SET_USER } from '@containers/Client/constants';
+import { LOGOUT, SET_LOGIN, SET_TOKEN, SET_USER, SET_USER_IMAGE } from '@containers/Client/constants';
 
 export const initialState = {
   login: false,
@@ -21,6 +21,9 @@ const clientReducer = (state = initialState, action) =>
         break;
       case SET_USER:
         draft.user = action.user;
+        break;
+      case SET_USER_IMAGE:
+        draft.user.image = action.image;
         break;
       case LOGOUT:
         draft.user = null;

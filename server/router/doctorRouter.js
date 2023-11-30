@@ -6,7 +6,8 @@ const {
     getDoctorById, 
     getProfileDoctor, 
     verifyTokenDoctor, 
-    changePasswordDoctor 
+    changePasswordDoctor, 
+    editDoctor
 } = require('../controllers/doctorController')
 const userRouter = require('./userRouter')
 const authentication = require('../middleware/authentication')
@@ -22,5 +23,7 @@ doctorRouter.use(authentication)
 doctorRouter.post('/verify-token', verifyTokenDoctor)
 doctorRouter.get('/', getProfileDoctor)
 doctorRouter.put('/changePassword', changePasswordDoctor)
+doctorRouter.put('/editDoctor',upload.single('image'), editDoctor)
+
 
 module.exports = doctorRouter

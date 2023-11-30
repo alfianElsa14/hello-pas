@@ -139,8 +139,6 @@ exports.editUser = async (req, res) => {
 
         const updatedImg = req.file.path
 
-        console.log(updatedImg, "<<<<");
-
         const result = await User.update({
             username: newData.username,
             email: newData.email,
@@ -177,12 +175,14 @@ exports.getProfileUser = async (req, res) => {
         const userData = await User.findByPk(userId, {
             attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
         });
-
+        
         if (!userData) {
             return handleNotFoundError(res, 'User');
         }
 
-        res.status(200).json(userData)
+        const formatedUser = userData.toJSON();
+        formatedUser.role = 'user';
+        res.status(200).json(formatedUser)
     } catch (error) {
         console.log(error);
         return handleServerError(res)
