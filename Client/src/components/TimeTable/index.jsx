@@ -12,8 +12,10 @@ import {
   Toolbar,
   DateNavigator,
   TodayButton,
+  DayView,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { useState } from 'react';
+import { useMediaQuery } from 'react-responsive'
 
 import { formatHour } from '@utils/formatDate';
 import classes from "./style.module.scss";
@@ -30,7 +32,7 @@ const CustomAppointment = ({ data, children, ...restProps }) => (
     <div className={classes.appointmentCard}>
       <strong>{data.title}</strong>
       <div>{formatHour(data.startDate)} - {formatHour(data.endDate)} WIB</div>
-      <div>{data.status}</div>
+      <i>{data.status}</i>
     </div>
   </Appointments.Appointment>
 );
@@ -45,6 +47,8 @@ const TimeTable = ({ appointments }) => {
 
   const currentDateChange = (date) => setCurrentDate(date);
 
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 992px)' })
+
   return (
     <div>
       <Paper>
@@ -56,10 +60,11 @@ const TimeTable = ({ appointments }) => {
             currentDate={currentDate}
             onCurrentDateChange={currentDateChange}
           />
-          <WeekView
-            startDayHour={8}
-            endDayHour={20}
-          />
+          {isTabletOrMobile ? (
+            <DayView startDayHour={8} endDayHour={20} />
+          ) : (
+            <WeekView startDayHour={8} endDayHour={20} />
+          )}
           <Toolbar />
           <DateNavigator />
           <TodayButton />
