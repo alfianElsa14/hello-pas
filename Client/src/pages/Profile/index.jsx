@@ -46,6 +46,7 @@ const Profile = ({ userProfile, role, doctorProfile }) => {
           </div>
         );
       case 'doctor':
+        const hasReviews = doctorProfile && doctorProfile.Reviews && doctorProfile.Reviews.length > 0;
         return (
           <div className={classes.container}>
             <div className={classes.profileWrapper}>
@@ -66,7 +67,7 @@ const Profile = ({ userProfile, role, doctorProfile }) => {
                 <button>Change Password</button>
               </Link>
             </div>
-            <div className={classes.reviews}>Reviews</div>
+            {hasReviews && <div className={classes.reviews}>Reviews</div>}
             <div className={classes.cardContainer}>
               {doctorProfile &&
                 doctorProfile.Reviews &&

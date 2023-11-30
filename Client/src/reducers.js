@@ -11,6 +11,7 @@ import detailReducer from '@pages/Detail/reducer';
 import profileReducer from '@pages/EditUser/reducer';
 import { mapWithPersistor } from './persistence';
 import detailProfileReducer from '@pages/Profile/reducer';
+import changePasswordReducer from '@pages/ChangePassword/reducer';
 
 const storedReducers = {
   app: { reducer: appReducer, whitelist: storedAppState },
@@ -20,7 +21,8 @@ const storedReducers = {
   registerDoctor: { reducer: registerDoctorReducer },
   detail: { reducer: detailReducer },
   profile: { reducer: profileReducer },
-  detailProfile: {reducer: detailProfileReducer}
+  detailProfile: {reducer: detailProfileReducer},
+  changePassword: {reducer: changePasswordReducer}
 };
 
 const temporaryReducers = {
