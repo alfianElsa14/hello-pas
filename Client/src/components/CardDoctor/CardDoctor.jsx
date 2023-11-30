@@ -10,7 +10,7 @@ function CardDoctor({ doctors }) {
         <div className={classes.card}>
             {
                 doctors.map((el) => (
-                    <div className={classes.cardList}
+                    <div key={el.id} className={classes.cardList}
                     onClick={() => navigate(`/detail/${el.id}`)}
                     >
                         <img src={el.image} alt="" />

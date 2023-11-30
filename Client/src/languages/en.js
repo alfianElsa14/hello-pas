@@ -27,4 +27,10 @@ export default {
   app_price: 'Price',
   app_register: 'Register',
   
+  app_edit_profile: 'Edit Profile',
+  app_change_password: 'Change Password',
+  app_old_password: 'Old Password',
+  app_new_password: 'New Password',
+  app_change: 'Change',
+  app_reviews: 'Reviews'
 };

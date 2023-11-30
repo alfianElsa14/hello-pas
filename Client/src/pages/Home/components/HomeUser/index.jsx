@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
@@ -9,8 +9,17 @@ import { getAllDoctors } from '@pages/Home/actions';
 import { selectDoctors } from '@pages/Home/selectors';
 ;
 
-function HomeUser({doctors}) {
+function HomeUser({ doctors }) {
     const dispatch = useDispatch();
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const filteredDoctors = doctors.filter((doctor) =>
+        doctor.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
 
     useEffect(() => {
         dispatch(getAllDoctors())
@@ -36,24 +45,24 @@ function HomeUser({doctors}) {
                 </div>
             </div>
             <div className={classes.search}>
-                <input type="search"
-                    placeholder="Cari Dokter"
+                <input
+                    type="search"
+                    placeholder="Cari Dokter . . ."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
                 />
-                <button>
-                    search
-                </button>
             </div>
-            <CardDoctor doctors={doctors} />
+            <CardDoctor doctors={filteredDoctors} />
         </div>
     )
 }
 
 HomeUser.propTypes = {
     doctors: PropTypes.array,
-  };
-  
-  const mapStateToProps = createStructuredSelector({
+};
+
+const mapStateToProps = createStructuredSelector({
     doctors: selectDoctors,
-  });
-  
-  export default connect(mapStateToProps)(HomeUser);
+});
+
+export default connect(mapStateToProps)(HomeUser);

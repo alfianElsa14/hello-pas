@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { selectChangePassword } from './selector';
 import { selectRole } from '@containers/Client/selectors';
+import { FormattedMessage } from 'react-intl';
 
 const ChangePassword = ({ isChange, role }) => {
   const dispatch = useDispatch();
@@ -15,18 +16,48 @@ const ChangePassword = ({ isChange, role }) => {
     oldPassword: '',
     newPassword: '',
   });
+  const [error, setErrors] = useState({
+    oldPassword: '',
+    newPassword: '',
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
+    setErrors({ ...error, [name]: '' });
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    const errors = {};
+
+    if (!user.oldPassword.trim()) {
+      errors.oldPassword = 'is required';
+      isValid = false;
+    }
+
+    if (!user.newPassword.trim()) {
+      errors.newPassword = 'is required';
+      isValid = false;
+    } else if (user.newPassword.trim().length < 6) {
+      errors.newPassword = 'at least 6 characters';
+      isValid = false;
+    }
+
+    setErrors(errors);
+    return isValid;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (role === 'user') {
-      dispatch(changePasswordUser(user));
-    } else if (role === 'doctor') {
-      dispatch(changePasswordDoctor(user));
+    const isValid = validateForm();
+
+    if (isValid) {
+      if (role === 'user') {
+        dispatch(changePasswordUser(user));
+      } else if (role === 'doctor') {
+        dispatch(changePasswordDoctor(user));
+      }
     }
   };
 
@@ -35,15 +66,19 @@ const ChangePassword = ({ isChange, role }) => {
       navigate('/profile');
     }
   }, [isChange, navigate]);
-  console.log(isChange);
 
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
-        <div>Change Password</div>
+        <div className={classes.title}>
+          <FormattedMessage id="app_change_password" />
+        </div>
         <form onSubmit={handleSubmit}>
           <div className={classes.inputItem}>
-            <label htmlFor="oldPassword">Old Password</label>
+            <label htmlFor="oldPassword">
+              <FormattedMessage id="app_old_password" />
+              {error.oldPassword && <p className={classes.error}>{error.oldPassword}</p>}
+            </label>
             <input
               type="password"
               id="oldPassword"
@@ -53,7 +88,10 @@ const ChangePassword = ({ isChange, role }) => {
             />
           </div>
           <div className={classes.inputItem}>
-            <label htmlFor="newPassword">New Password</label>
+            <label htmlFor="newPassword">
+              <FormattedMessage id="app_new_password" />
+              {error.newPassword && <p className={classes.error}>{error.newPassword}</p>}
+            </label>
             <input
               type="password"
               id="newPassword"
@@ -63,7 +101,7 @@ const ChangePassword = ({ isChange, role }) => {
             />
           </div>
           <button type="submit" className={classes.buttonLogin}>
-            Change
+            <FormattedMessage id="app_change" />
           </button>
         </form>
       </div>
