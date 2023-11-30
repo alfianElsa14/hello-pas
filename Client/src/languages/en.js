@@ -25,5 +25,6 @@ export default {
   app_year_exp: 'Year Experience',
   app_practice_at: 'Practice At',
   app_price: 'Price',
-  app_register: 'Register'
+  app_register: 'Register',
+  
 };

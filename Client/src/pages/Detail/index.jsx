@@ -17,7 +17,6 @@ function Detail({ reviews, user, doctor }) {
     const dispatch = useDispatch();
     const { id } = useParams()
     const userId = user.id
-    const role = user.role
     const [newComment, setNewComment] = useState('');
 
     const handleCommentSubmit = (e) => {
