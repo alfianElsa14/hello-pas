@@ -57,55 +57,62 @@ const UserAppointment = ({ user, appointments }) => {
         <h1>My Appointments</h1>
         <section>
           <h2>Accepted Appointments</h2>
-          <>
-            {acceptedFutureAppointments.length === 0 ? (
-              <div className={classes.image}>
-                <img src={paidOffImage} alt='' />
-              </div>
-            ) : (
-              <div className={classes.acceptedAppointments}>
-                {acceptedFutureAppointments.map((appointment) => (
-                  <div key={appointment.id} className={classes.card}>
-                    <div className={classes.leftCard}>
-                      <div className={classes.cardImage}>
-                        {appointment.Doctor.image ?
-                          <img src={`${config.api.host}${appointment.Doctor.image}`} alt='' /> :
-                          <Avatar className={classes.img} />
-                        }
+  
+          {acceptedFutureAppointments.length === 0 ? (
+            <div className={classes.image}>
+              <img src={paidOffImage} alt='' />
+            </div>
+          ) : (
+            <div className={classes.acceptedAppointments}>
+              {acceptedFutureAppointments.map((appointment) => (
+                <div key={appointment.id} className={classes.card}>
+                  <div className={classes.leftCard}>
+                    <div className={classes.cardImage}>
+                      {appointment.Doctor.image ?
+                        <img src={`${config.api.host}${appointment.Doctor.image}`} alt='' /> :
+                        <Avatar className={classes.img} />
+                      }
+                    </div>
+                    <div className={classes.description}>
+                      <div className={classes.name}>
+                        {appointment.Doctor.username}
                       </div>
                       <table>
-                        <tr>
-                          <td>Hari, Tanggal</td>
-                          <td>:{" "}</td>
-                          <td>{formatDate(appointment.startTime)}</td>
-                        </tr>
-                        <tr>
-                          <td>Jam</td>
-                          <td>:{" "}</td>
-                          <td>{formatHour(appointment.startTime)} - {formatHour(appointment.endTime)} WIB</td>
-                        </tr>
-                        <tr>
-                          <td>Keluhan</td>
-                          <td>:{" "}</td>
-                          <td>{appointment.complaint}</td>
-                        </tr>
-                        <tr>
-                          <td>Biaya</td>
-                          <td>:{" "}</td>
-                          <td>Rp {appointment.Doctor.price.toLocaleString()}</td>
-                        </tr>
+                        <tbody>
+                          <tr>
+                            <td>Hari, Tanggal</td>
+                            <td>:{" "}</td>
+                            <td>{formatDate(appointment.startTime)}</td>
+                          </tr>
+                          <tr>
+                            <td>Jam</td>
+                            <td>:{" "}</td>
+                            <td>{formatHour(appointment.startTime)} - {formatHour(appointment.endTime)} WIB</td>
+                          </tr>
+                          <tr>
+                            <td>Keluhan</td>
+                            <td>:{" "}</td>
+                            <td>{appointment.complaint}</td>
+                          </tr>
+                          <tr>
+                            <td>Biaya</td>
+                            <td>:{" "}</td>
+                            <td>Rp {appointment.Doctor.price.toLocaleString()}</td>
+                          </tr>
+                        </tbody>
                       </table>
                     </div>
-                    <Button
-                      variant='outlined'
-                      className={classes.btn}
-                      onClick={() => handleCheckout(appointment.id)}
-                    >Bayar</Button>
                   </div>
-                ))}
-              </div>
-            )}
-          </>
+                  <Button
+                    variant='outlined'
+                    className={classes.btn}
+                    onClick={() => handleCheckout(appointment.id)}
+                  >Bayar</Button>
+                </div>
+              ))}
+            </div>
+          )}
+          
         </section>
         <section>
           <h2>Appointments</h2>

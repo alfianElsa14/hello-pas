@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import config from '@config/index';
 import { merge } from 'lodash';
 
@@ -68,6 +69,12 @@ export const changePasswordDoctor = (data) => callAPI(`${urls.doctor}/changePass
 export const editUser = (data) => callAPI(`${urls.user}/editUser`, 'put', {}, {}, data);
 
 export const getAppointmentsByUserID = (userId) => callAPI(`${urls.appointment}/user/${userId}`, 'GET');
+
+export const getAppointmentsByDoctorID = (doctorId) => callAPI(`${urls.appointment}/doctor/${doctorId}`, 'GET');
+
+export const acceptAppointment = (appointmentId) => callAPI(`${urls.appointment}/accept/${appointmentId}`, 'PUT');
+
+export const denyAppointment = (appointmentId) => callAPI(`${urls.appointment}/${appointmentId}`, 'DELETE');
 
 export const midtransPayment = (id) => callAPI(`${urls.appointment}/midtransToken/${id}`, 'post')
 
