@@ -1,15 +1,17 @@
-import { editUser, userById } from "@domain/api";
+import { editUser, userById, userProfile } from "@domain/api";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { EDIT_USER, GET_USER_BY_ID } from "./constants";
 import { setUserById } from "./actions";
 import Swal from "sweetalert2";
+import { setUserProfile } from "@pages/Profile/actions";
 
-export function* doEditUser({id, data}) {
+export function* doEditUser({data}) {
     try {
-        const response = yield call(editUser, id, data)
+        const response = yield call(editUser, data)
         Swal.fire("sukses edit profile");
-        const result = yield call(userById, id)
-        yield put(setUserById(result))
+        const result = yield call(userProfile)
+        // console.log(response, '<<<<<<<< saga')
+        yield put(setUserProfile(result))
     } catch (error) {
         console.log(error.response.status);
         if (error.response.status === 400) {
