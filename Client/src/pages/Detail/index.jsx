@@ -3,17 +3,21 @@ import PropTypes from 'prop-types';
 import classes from './style.module.scss'
 import { createStructuredSelector } from 'reselect';
 import { connect, useDispatch } from 'react-redux';
-import { selectReviews } from './selector';
-import { addReview, deleteReview, getAllReviews } from './actions';
+import { selectDoctorById, selectReviews } from './selector';
+import { addReview, deleteReview, getAllReviews, getDoctorById } from './actions';
 import { calculateTimeDifference } from '@utils/calculateDate';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { selectUser } from '@containers/Client/selectors';
+import { useParams } from 'react-router-dom';
+import { formatRupiah } from '@utils/formatPrice';
+import config from '@config/index';
 
 
-function Detail({ reviews, user }) {
+function Detail({ reviews, user, doctor }) {
     const dispatch = useDispatch();
-    const id = 1
+    const { id } = useParams()
     const userId = user.id
+    const role = user.role
     const [newComment, setNewComment] = useState('');
 
     const handleCommentSubmit = (e) => {
@@ -23,14 +27,13 @@ function Detail({ reviews, user }) {
     };
 
     const handleDelete = (reviewId) => {
-        dispatch(deleteReview(reviewId))
+        dispatch(deleteReview(reviewId, id))
     }
 
-
     useEffect(() => {
+        dispatch(getDoctorById(id))
         dispatch(getAllReviews(id))
     }, [id])
-
 
     return (
         <div className={classes.detailContainer}>
@@ -38,16 +41,19 @@ function Detail({ reviews, user }) {
             <div className={classes.content}>
                 <div className={classes.profileDoc}>
                     <div className={classes.leftSide}>
-                        <img src="https://img.lovepik.com/free-png/20210919/lovepik-doctor-image-display-png-image_400627899_wh1200.png" alt="" />
+                        <img src={doctor.image} alt="" />
                     </div>
                     <div className={classes.rightSide}>
-                        <h2>Agus Sudarsono</h2>
-                        <p><strong>Practice Location: </strong> jl.lurah RT 02 RW 03</p>
-                        <p><strong>Consultation Price:</strong> Rp.50.000</p>
-                        <p><strong>Years of Experience:</strong> 3</p>
+                        <h2>Dr. {doctor.username}</h2>
+                        <p><strong>Practice Location: </strong>{doctor.practiceAt}</p>
+                        <p><strong>Consultation Price:</strong> {formatRupiah(doctor.price)}</p>
+                        <p><strong>Years of Experience:</strong> {doctor.yearExperience}</p>
                         <div>
-                            <p><strong>Email:</strong> agus@gmail.com</p>
-                            <p><strong>Contact:</strong> 0811234567890</p>
+                            <p><strong>Email:</strong> {doctor.email}</p>
+                            <p><strong>Contact:</strong> {doctor.phoneNumber}</p>
+                        </div>
+                        <div className={classes.janji}>
+                            <button>buat janji</button>
                         </div>
                     </div>
                 </div>
@@ -59,7 +65,7 @@ function Detail({ reviews, user }) {
                         <div className={classes.commentList}>
                             <div className={classes.userComment}>
                                 <div className={classes.picture}>
-                                    <img src={el.User.image} alt="" />
+                                    <img src={`${config.api.host}${el.User.image}`} alt="" />
                                 </div>
                                 <div className={classes.isiComment}>
                                     <p className={classes.username}>{el.User.username}</p>
@@ -96,12 +102,14 @@ function Detail({ reviews, user }) {
 
 Detail.propTypes = {
     reviews: PropTypes.array,
-    user: PropTypes.object
+    user: PropTypes.object,
+    doctor: PropTypes.object
 };
 
 const mapStateToProps = createStructuredSelector({
     reviews: selectReviews,
-    user: selectUser
+    user: selectUser,
+    doctor: selectDoctorById
 });
 
 export default connect(mapStateToProps)(Detail);

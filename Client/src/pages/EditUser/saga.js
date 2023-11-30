@@ -10,7 +10,6 @@ export function* doEditUser({data}) {
         const response = yield call(editUser, data)
         Swal.fire("sukses edit profile");
         const result = yield call(userProfile)
-        // console.log(response, '<<<<<<<< saga')
         yield put(setUserProfile(result))
     } catch (error) {
         console.log(error.response.status);

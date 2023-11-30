@@ -51,6 +51,9 @@ exports.getAllReviews = async (req, res) => {
     try {
         const { doctorId } = req.params
         const dataReview = await Review.findAll({
+            where: {
+                doctorId
+            },
             include: [
                 {
                     model: User
@@ -59,10 +62,6 @@ exports.getAllReviews = async (req, res) => {
                     model: Doctor
                 }
             ]
-        }, {
-            where: {
-                doctorId
-            }
         })
         res.status(200).json(dataReview)
     } catch (error) {
@@ -86,7 +85,7 @@ exports.deleteReview = async (req, res) => {
             }
         })
 
-        res.status(200).json({message: "sukses delete", dataReview})
+        res.status(200).json({ message: "sukses delete", dataReview })
     } catch (error) {
         console.log(error);
         return handleServerError(res)

@@ -9,6 +9,7 @@ import { Avatar } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { selectRole } from '@containers/Client/selectors';
 import { FormattedMessage } from 'react-intl';
+import config from '@config/index';
 
 const Profile = ({ userProfile, role, doctorProfile }) => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const Profile = ({ userProfile, role, doctorProfile }) => {
             <div className={classes.profileWrapper}>
               <div>
                 {userProfile?.image ? (
-                  <img src={userProfile.image} alt="Profile" className={classes.img} />
+                  <img src={`${config.api.host}${userProfile.image}`} alt="Profile" className={classes.img} />
                 ) : (
                   <Avatar className={classes.img} />
                 )}
@@ -57,7 +58,7 @@ const Profile = ({ userProfile, role, doctorProfile }) => {
             <div className={classes.profileWrapper}>
               <div>
                 {doctorProfile?.image ? (
-                  <img src={doctorProfile.image} alt="Profile" className={classes.img} />
+                  <img src={`${config.api.host}${doctorProfile.image}`} alt="Profile" className={classes.img} />
                 ) : (
                   <Avatar className={classes.img} />
                 )}
