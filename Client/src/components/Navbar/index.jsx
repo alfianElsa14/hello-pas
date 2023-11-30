@@ -64,8 +64,8 @@ const Navbar = ({ login, user, title, locale, theme }) => {
         <div className={classes.toolbar}>
           {login && (
             <div className={classes.profile} onClick={handleClickProfile}>
-              {user && user.imageUrl ? (
-                <img src={`${config.api.host}${user.imageUrl}`} alt="" />
+              {user && user.image ? (
+                <img src={`${config.api.host}${user.image}`} alt="" />
               ) : (
                 <Avatar className={classes.img} />
               )}
