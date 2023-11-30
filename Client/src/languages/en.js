@@ -16,7 +16,7 @@ export default {
   app_email: 'Email',
   app_password: 'Password',
   app_login: 'Login',
-  app_dont_have : 'Don\'t have an account? click ',
+  app_dont_have: "Don't have an account? click ",
   app_here: 'here',
   app_register_doctor: 'Register Doctor',
   app_register_patient: 'Register Patient',
@@ -25,5 +25,9 @@ export default {
   app_year_exp: 'Year Experience',
   app_practice_at: 'Practice At',
   app_price: 'Price',
-  app_register: 'Register'
+  app_register: 'Register',
+  app_profile: 'Profile',
+  app_profile_and_reviews: 'Profile & Reviews',
+  app_appointments: 'Appointments',
+  app_logout: 'Logout',
 };

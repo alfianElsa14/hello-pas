@@ -16,7 +16,7 @@ export default {
   app_email: 'Email',
   app_password: 'Kata sandi',
   app_login: 'Masuk',
-  app_dont_have : 'Belum punya akun? klik ',
+  app_dont_have: 'Belum punya akun? klik ',
   app_here: 'disini',
   app_register_doctor: 'Registrasi Dokter',
   app_register_patient: 'Registrasi Pasien',
@@ -25,5 +25,9 @@ export default {
   app_year_exp: 'Pengalaman (tahun)',
   app_practice_at: 'Lokasi praktik',
   app_price: 'Harga',
-  app_register: 'Daftar'
+  app_register: 'Daftar',
+  app_profile: 'Profil',
+  app_profile_and_reviews: 'Profil & Ulasan',
+  app_appointments: 'Janji Temu',
+  app_logout: 'Keluar',
 };

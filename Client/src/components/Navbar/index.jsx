@@ -116,14 +116,18 @@ const Navbar = ({ login, user, title, locale, theme }) => {
             <ListItemIcon>
               <img src={profileIcon} alt="" className={classes.icon} />
             </ListItemIcon>
-            {user && user.role === 'user' ? 'Profile' : 'Profile & Reviews'}
+            {user && user.role === 'user' ? (
+              <FormattedMessage id="app_profile" />
+            ) : (
+              <FormattedMessage id="app_profile_and_reviews" />
+            )}
           </MenuItem>
           {user && user.role === 'user' && (
             <MenuItem onClick={() => navigate('/user/appointment')}>
               <ListItemIcon>
                 <img src={appointmentIcon} alt="" className={classes.icon} />
               </ListItemIcon>
-              Appointments
+              <FormattedMessage id="app_appointments" />
             </MenuItem>
           )}
           <Divider />
@@ -131,7 +135,7 @@ const Navbar = ({ login, user, title, locale, theme }) => {
             <ListItemIcon>
               <img src={logoutIcon} alt="" className={classes.icon} />
             </ListItemIcon>
-            Logout
+            <FormattedMessage id="app_logout" />
           </MenuItem>
         </Menu>
         <Menu open={open} anchorEl={menuPosition} onClose={handleClose}>
