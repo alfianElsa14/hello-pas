@@ -119,7 +119,7 @@ exports.editUser = async (req, res) => {
     try {
         const userId = req.user.id
         const newData = req.body
-        
+
         const userData = await User.findByPk(userId)
 
         if (!userData) {
@@ -194,12 +194,14 @@ exports.getProfileUser = async (req, res) => {
         const userData = await User.findByPk(userId, {
             attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
         });
-
+        
         if (!userData) {
             return handleNotFoundError(res, 'User');
         }
 
-        res.status(200).json(userData)
+        const formatedUser = userData.toJSON();
+        formatedUser.role = 'user';
+        res.status(200).json(formatedUser)
     } catch (error) {
         console.log(error);
         return handleServerError(res)

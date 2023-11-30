@@ -43,6 +43,8 @@ export default {
   app_practice_location: 'Lokasi praktek',
   app_consul_price: 'Harga Konsultasi',
   app_year: 'tahun',
-  app_make_appointment: 'buat janji'
+  app_make_appointment: 'buat janji',
   
+  app_edit_profile: 'Ubah Profile',
+  app_submit: 'Submit'
 };

@@ -5,6 +5,7 @@ import {
   SET_LOGIN,
   SET_TOKEN,
   SET_USER,
+  SET_USER_IMAGE,
   VERIFY_TOKEN,
 } from '@containers/Client/constants';
 
@@ -42,3 +43,8 @@ export const verifyToken = (user, navigate) => ({
   user,
   navigate,
 });
+
+export const setUserImage = (image) => ({
+  type: SET_USER_IMAGE,
+  image
+})

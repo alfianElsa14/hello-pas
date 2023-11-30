@@ -46,4 +46,6 @@ export default {
   app_year: 'years',
   app_make_appointment: 'make appointment',
   
+  app_edit_profile: 'Edit Profile',
+  app_submit: 'Submit'
 };

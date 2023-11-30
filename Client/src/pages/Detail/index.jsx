@@ -42,7 +42,7 @@ function Detail({ reviews, user, doctor }) {
             <div className={classes.content}>
                 <div className={classes.profileDoc}>
                     <div className={classes.leftSide}>
-                        <img src={doctor.image} alt="" />
+                        <img src={`${config.api.host}${doctor.image}`} alt="" />
                     </div>
                     <div className={classes.rightSide}>
                         <h2>Dr. {doctor.username}</h2>
