@@ -67,6 +67,8 @@ export const changePasswordDoctor = (data) => callAPI(`${urls.doctor}/changePass
 
 export const editUser = (data) => callAPI(`${urls.user}/editUser`, 'put', {}, {}, data);
 
+export const editDoctor = (data) => callAPI(`${urls.doctor}/editDoctor`, 'put', {}, {}, data)
+
 export const getAppointmentsByUserID = (userId) => callAPI(`${urls.appointment}/user/${userId}`, 'GET');
 
 export const midtransPayment = (id) => callAPI(`${urls.appointment}/midtransToken/${id}`, 'post')

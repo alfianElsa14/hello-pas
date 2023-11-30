@@ -171,7 +171,57 @@ exports.getProfileDoctor = async (req, res) => {
             return handleNotFoundError(res, 'Doctor');
         }
 
-        res.status(200).json(doctorData)
+        const formatedDoctor = doctorData.toJSON();
+        formatedDoctor.role = 'doctor';
+
+        res.status(200).json(formatedDoctor)
+    } catch (error) {
+        console.log(error);
+        return handleServerError(res)
+    }
+}
+
+exports.editDoctor = async (req, res) => {
+    try {
+        const doctorId = req.user.id
+        const newData = req.body
+        const doctorData = await Doctor.findByPk(doctorId)
+
+        if (!doctorData) {
+            return handleNotFoundError(res, 'Doctor');
+        }
+
+        const schema = Joi.object({
+            username: Joi.string(),
+            email: Joi.string(),
+            phoneNumber: Joi.string(),
+            image: Joi.string(),
+            practiceAt: Joi.string(),
+            price: Joi.number()
+        })
+
+        const { error } = schema.validate(newData)
+
+        if (error) {
+            return handleValidationError(res, error)
+        }
+
+        const updatedImg = req.file.path
+
+        const result = await Doctor.update({
+            username: newData.username,
+            email: newData.email,
+            phoneNumber: newData.phoneNumber,
+            image: updatedImg,
+            practiceAt: newData.practiceAt,
+            price: newData.price,
+        }, {
+            where: {
+                id: doctorId
+            }
+        })
+
+        res.status(200).json({ message: 'success', result })
     } catch (error) {
         console.log(error);
         return handleServerError(res)
