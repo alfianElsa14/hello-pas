@@ -8,6 +8,7 @@ import { getDoctorProfile, getUserProfile } from './actions';
 import { Avatar } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { selectRole } from '@containers/Client/selectors';
+import { FormattedMessage } from 'react-intl';
 import config from '@config/index';
 
 const Profile = ({ userProfile, role, doctorProfile }) => {
@@ -38,10 +39,14 @@ const Profile = ({ userProfile, role, doctorProfile }) => {
               <div className={classes.email}>{userProfile?.email}</div>
               <div className={classes.phoneNumber}>{userProfile?.phoneNumber}</div>
               <Link to="/edit">
-                <button>Edit Profile</button>
+                <button>
+                  <FormattedMessage id="app_edit_profile" />
+                </button>
               </Link>
               <Link to="/change-password">
-                <button>Change Password</button>
+                <button>
+                  <FormattedMessage id="app_change_password" />
+                </button>
               </Link>
             </div>
           </div>
@@ -62,13 +67,21 @@ const Profile = ({ userProfile, role, doctorProfile }) => {
               <div className={classes.email}>{doctorProfile?.email}</div>
               <div className={classes.phoneNumber}>{doctorProfile?.phoneNumber}</div>
               <Link to="/edit">
-                <button>Edit Profile</button>
+                <button>
+                  <FormattedMessage id="app_edit_profile" />
+                </button>
               </Link>
               <Link to="/change-password">
-                <button>Change Password</button>
+                <button>
+                  <FormattedMessage id="app_change_password" />
+                </button>
               </Link>
             </div>
-            {hasReviews && <div className={classes.reviews}>Reviews</div>}
+            {hasReviews && (
+              <div className={classes.reviews}>
+                <FormattedMessage id="app_reviews" />
+              </div>
+            )}
             <div className={classes.cardContainer}>
               {doctorProfile &&
                 doctorProfile.Reviews &&
