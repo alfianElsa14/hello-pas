@@ -8,8 +8,6 @@ export function* doEditUser({id, data}) {
     try {
         const response = yield call(editUser, id, data)
         Swal.fire("sukses edit profile");
-        const result = yield call(userById, id)
-        yield put(setUserById(result))
     } catch (error) {
         console.log(error.response.status);
         if (error.response.status === 400) {

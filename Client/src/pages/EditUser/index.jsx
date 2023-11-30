@@ -57,7 +57,7 @@ function EditUser({ userData, user }) {
                 <h1>Edit Profile</h1>
                 <form onSubmit={handleSubmit}>
                     <div className={classes.picture}>
-                        <img src={formData.imageUrl || userData.image} alt="" />
+                        <img src={formData.image || user.image} alt="" />
                         <label htmlFor="image" className={classes.customFileButton}>
                             <button>Change</button>
                             <input

@@ -1,4 +1,4 @@
-import { ADD_REVIEW, DELETE_REVIEW, GET_ALL_REVIEWS, SET_ALL_REVIEWS } from "./constants";
+import { ADD_REVIEW, DELETE_REVIEW, GET_ALL_REVIEWS, GET_DOCTOR_BY_ID, SET_ALL_REVIEWS, SET_DOCTOR_BY_ID } from "./constants";
 
 export const getAllReviews = (id) => ({
     type: GET_ALL_REVIEWS,
@@ -19,4 +19,14 @@ export const addReview = (id, data) => ({
 export const deleteReview = (id) => ({
     type: DELETE_REVIEW,
     id
+})
+
+export const getDoctorById = (id) => ({
+    type: GET_DOCTOR_BY_ID,
+    id
+})
+
+export const setDoctorById = (doctor) => ({
+    type: SET_DOCTOR_BY_ID,
+    doctor
 })

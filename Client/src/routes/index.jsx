@@ -28,7 +28,7 @@ const routes = [
     layout: MainLayout,
   },
   {
-    path: '/detail',
+    path: '/detail/:id',
     name: 'detail',
     protected: true,
     component: Detail,
