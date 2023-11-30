@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import classes from './style.module.scss'
-import CardDoctor from '@components/CardDoctor/CardDoctor';
 import { createStructuredSelector } from 'reselect';
+
+import CardDoctor from '@components/CardDoctor/CardDoctor';
 import { getAllDoctors } from '@pages/Home/actions';
 import { selectDoctors } from '@pages/Home/selectors';
-;
+
+import classes from './style.module.scss';
 
 function HomeUser({ doctors }) {
     const dispatch = useDispatch();
@@ -24,6 +25,8 @@ function HomeUser({ doctors }) {
     useEffect(() => {
         dispatch(getAllDoctors())
     }, [])
+
+    console.log(doctors, "<<<<");
     return (
         <div className={classes.container}>
             <h1><FormattedMessage id="app_doctor_list"/></h1>

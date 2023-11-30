@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types';
-import classes from './style.module.scss'
 import { createStructuredSelector } from 'reselect';
+import { FormattedMessage } from 'react-intl';
 import { connect, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+
 import { selectDoctorById, selectReviews } from './selector';
 import { addReview, deleteReview, getAllReviews, getDoctorById } from './actions';
 import { calculateTimeDifference } from '@utils/calculateDate';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { selectUser } from '@containers/Client/selectors';
-import { useParams } from 'react-router-dom';
 import { formatRupiah } from '@utils/formatPrice';
 import config from '@config/index';
-import { FormattedMessage } from 'react-intl';
 
+import DeleteIcon from '@mui/icons-material/Delete';
+import classes from './style.module.scss'
 
 function Detail({ reviews, user, doctor }) {
     const dispatch = useDispatch();

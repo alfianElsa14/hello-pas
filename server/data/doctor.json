@@ -4,7 +4,7 @@
         "email": "alfian@gmail.com",
         "password": "1234567",
         "phoneNumber": "0811234567890",
-        "image": "https://www.tagar.id/Asset/uploads2019/1571735426986-dokter.jpg",
+        "image": "public\\assets\\download5.jpg",
         "price": 50000,
         "yearExperience": 3,
         "practiceAt": "jl.lurah RT 02 RW 03"
@@ -14,7 +14,7 @@
         "email": "hajar@gmail.com",
         "password": "1234567",
         "phoneNumber": "0189876543210",
-        "image": "https://www.tagar.id/Asset/uploads2019/1571735426986-dokter.jpg",
+        "image": "public\\assets\\download1.jpg",
         "price": 70000,
         "yearExperience": 2,
         "practiceAt": "jl.casablanca RT 01 RW 02"
@@ -24,7 +24,7 @@
         "email": "jugo@gmail.com",
         "password": "1234567",
         "phoneNumber": "0819876543210",
-        "image": "https://www.tagar.id/Asset/uploads2019/1571735426986-dokter.jpg",
+        "image": "public\\assets\\download2.jpg",
         "price": 100000,
         "yearExperience": 3,
         "practiceAt": "jl. H.Keman RT 02 RW 03"
@@ -34,7 +34,7 @@
         "email": "mabrot@gmail.com",
         "password": "1234567",
         "phoneNumber": "0899876543210",
-        "image": "https://www.tagar.id/Asset/uploads2019/1571735426986-dokter.jpg",
+        "image": "public\\assets\\download3.jpg",
         "price": 75000,
         "yearExperience": 3,
         "practiceAt": "jl.Jendral Sudirman RT 02 RW 03"
@@ -44,7 +44,7 @@
         "email": "mahmud@gmail.com",
         "password": "1234567",
         "phoneNumber": "0839876543210",
-        "image": "https://www.tagar.id/Asset/uploads2019/1571735426986-dokter.jpg",
+        "image": "public\\assets\\download4.jpg",
         "price": 95000,
         "yearExperience": 3,
         "practiceAt": "jl. inajah RT 04 RW 03"
