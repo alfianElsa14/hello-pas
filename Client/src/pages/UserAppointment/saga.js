@@ -1,8 +1,8 @@
 import { setLoading } from '@containers/App/actions';
 import { takeLatest, call, put } from 'redux-saga/effects';
-import { appointmentStatus, getAppointmentsByUserID, midtransPayment } from '@domain/api';
+import { payAppointment, getAppointmentsByUserID, midtransPayment } from '@domain/api';
 import { EDIT_STATUS_APPOINTMENTS, GET_APPOINTMENTS, MIDTRANS_PAYMENT } from '@pages/UserAppointment/constants';
-import { setAppointments, setMidtransToken } from '@pages/UserAppointment/actions';
+import { changeStatusAppointment, setAppointments, setMidtransToken } from '@pages/UserAppointment/actions';
 
 function* doGetAppointments({ userId }) {
   yield put(setLoading(true));
@@ -15,34 +15,34 @@ function* doGetAppointments({ userId }) {
   yield put(setLoading(false));
 }
 
-export function* doMidtransPayment({ id, cbEditStatus }) {
+export function* doMidtransPayment({ appointmentId, cbEditStatus }) {
   try {
-    const result = yield call(midtransPayment, id)
-    yield put(setMidtransToken(result.token))
+    const result = yield call(midtransPayment, appointmentId);
+    yield put(setMidtransToken(result.token));
 
     window.snap.pay(result.token, {
       onSuccess: () => {
-        cbEditStatus && cbEditStatus()
+        cbEditStatus && cbEditStatus();
       },
-      onPending: function (result) {
-        console.log('Pembayaran tertunda:', result);
+      onPending: (result2) => {
+        console.log('Pembayaran tertunda:', result2);
       },
-      onError: function (result) {
-        console.log('Pembayaran gagal:', result);
+      onError: (result2) => {
+        console.log('Pembayaran gagal:', result2);
       },
-      onClose: function () {
+      onClose: () => {
         console.log('Widget ditutup tanpa menyelesaikan pembayaran');
-      }
+      },
     });
-
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
-export function* doEditStatusAppointment({ id }) {
+export function* doEditStatusAppointment({ appointmentId }) {
   try {
-    const response = yield call(appointmentStatus, id)
+    yield call(payAppointment, appointmentId);
+    yield put(changeStatusAppointment(appointmentId, 'paid'));
   } catch (error) {
     console.log(error);
   }
@@ -51,5 +51,5 @@ export function* doEditStatusAppointment({ id }) {
 export default function* userAppointmentSaga() {
   yield takeLatest(GET_APPOINTMENTS, doGetAppointments);
   yield takeLatest(MIDTRANS_PAYMENT, doMidtransPayment);
-  yield takeLatest(EDIT_STATUS_APPOINTMENTS, doEditStatusAppointment)
+  yield takeLatest(EDIT_STATUS_APPOINTMENTS, doEditStatusAppointment);
 }
