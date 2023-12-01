@@ -41,13 +41,13 @@ _Response (500 - Internal Server Error)_
 ## RESTful endpoints
 
 
-### GET /users
+### GET /reviews/getReviews/:doctorId
 
-> Get all users
+> Get all reviews by doctor id
 
 _Request Header_
 ```
-not needed
+Authentication: Bearer <jwt.token>
 ```
 
 _Request Body_
@@ -59,26 +59,45 @@ _Response (200)_
 ```
 [
     {
-        "id": 1,
-        "username": "alfian",
-        "email": "alfian@gmail.com",
-        "password": "$2a$10$ovSht3NEdqF0J4HfvbmmMukhKMqetn3zwXCl/6u9/xichYfD2ODzW",
-        "image": "http://localhost:3300/public\\assets\\profile-picture-icon-27.jpg",
-        "role": "admin",
-        "createdAt": "2023-11-22T01:55:01.000Z",
-        "updatedAt": "2023-11-24T04:21:56.000Z"
-    },
-    {
-        "id": 2,
-        "username": "kuya",
-        "email": "kuya@gmail.com",
-        "password": "$2a$10$bBSxBnzaTLPIBA0cJRGvYuR31vq/OOddakCiVUDGrEjUaY1ME5DhW",
-        "image": "http://localhost:3300/public\\assets\\pngtree-muslim-boy-profile-photo-png-image_8973295.png",
-        "role": "user",
-        "createdAt": "2023-11-22T01:55:01.000Z",
-        "updatedAt": "2023-11-24T05:56:01.000Z"
-    },
+        "id": 8,
+        "userId": 2,
+        "doctorId": 2,
+        "comment": "yahahaha",
+        "createdAt": "2023-11-29T14:02:20.000Z",
+        "updatedAt": "2023-11-29T14:02:20.000Z",
+        "User": {
+            "id": 2,
+            "username": "taufiqo",
+            "email": "taufiqo@gmail.com",
+            "password": "$2a$10$t0rjM2x8yU58aTzW4KgkxOW1j6sgiJfPxZ/aKkXjO9e2lz6.Cj3ke",
+            "phoneNumber": "0819876543210",
+            "image": "public\\assets\\a07d787b28d058e571d1efbb175cb3e5.jpg",
+            "createdAt": "2023-11-29T01:16:13.000Z",
+            "updatedAt": "2023-11-30T02:09:56.000Z"
+        },
+        "Doctor": {
+            "id": 2,
+            "username": "Ki hajar dewantara",
+            "email": "hajar@gmail.com",
+            "password": "$2a$10$d0gkc7wwJpytqqXzCw2GEeQBbyvNAUqEHk55btw8moydnMk9ync8O",
+            "phoneNumber": "0189876543210",
+            "image": "https://www.tagar.id/Asset/uploads2019/1571735426986-dokter.jpg",
+            "price": 70000,
+            "yearExperience": 2,
+            "practiceAt": "jl.casablanca RT 01 RW 02",
+            "createdAt": "2023-11-29T01:16:13.000Z",
+            "updatedAt": "2023-11-29T01:16:13.000Z"
+        }
+    }
 ]
+```
+_Response (401 - Error Forbidden)_
+```
+{
+    {
+    "message": "Authentication failed, you need token"
+}
+}
 ```
 
 ---

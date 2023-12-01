@@ -236,8 +236,6 @@ exports.editDoctor = async (req, res) => {
             price: Joi.number()
         })
 
-
-
         const { error } = schema.validate(newData)
 
         if (error) {
