@@ -6,7 +6,14 @@
     gap: 10px;
     grid-template-columns: repeat(1, 1fr);
 
-    @include apply-at-xs2-size {
+    @include apply-at-md-size {
+        margin-top: 50px;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    @include apply-at-xl-size {
         margin-top: 50px;
         display: grid;
         gap: 10px;
@@ -23,9 +30,12 @@
         cursor: pointer;
         gap: 30px;
 
-        @include apply-at-xs2-size {
-            width: 700px;
+        @include apply-at-md-size {
             height: 200px;
+        }
+
+        @include apply-at-xl-size {
+            width: 700px;
         }
 
         img {
@@ -35,7 +45,7 @@
             border: none;
             border-radius: 5px;
 
-            @include apply-at-xs2-size {
+            @include apply-at-md-size {
                 width: 150px;
                 height: 150px;
                 object-fit: cover;
@@ -59,7 +69,7 @@
                 font-size: 10px;
                 font-style: italic;
 
-                @include apply-at-xs2-size {
+                @include apply-at-md-size {
                     font-size: 15px;
                     font-style: italic;
                 }
