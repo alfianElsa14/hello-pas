@@ -76,7 +76,7 @@ exports.deleteReview = async (req, res) => {
         const dataReview = await Review.findByPk(reviewId)
 
         if (!dataReview) {
-            return res.status(404).json({ message: 'user not found' })
+            return res.status(404).json({ message: 'review not found' })
         }
 
         const result = await Review.destroy({
