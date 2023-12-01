@@ -8,7 +8,7 @@ import { connect, useDispatch } from 'react-redux';
 import { calculateTimeDifference } from '@utils/calculateDate';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { selectUser } from '@containers/Client/selectors';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { formatRupiah } from '@utils/formatPrice';
 import config from '@config/index';
 import { Button, IconButton } from '@mui/material';
@@ -18,10 +18,12 @@ import classes from './style.module.scss';
 import RequestDialog from './components/RequestDialog';
 
 const Detail = ({ reviews, user, doctor, availableAppointments }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
   const userId = user.id;
   const [newComment, setNewComment] = useState('');
+  const [hasMounted, setHasMounted] = useState(false);
   const [open, setOpen] = useState(false);
 
   const handleClickRequestAppointment = () => {
@@ -43,10 +45,22 @@ const Detail = ({ reviews, user, doctor, availableAppointments }) => {
   }
 
   useEffect(() => {
+    if (!user || user.role !== 'user') {
+      navigate("/");
+    } else {
+      setHasMounted(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
     dispatch(getDoctorById(id));
     dispatch(getAllReviews(id));
     dispatch(getAvailableAppointments(id));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
+
+  if (!hasMounted) return false;
 
   return (
     <div className={classes.detailContainer}>
@@ -66,7 +80,7 @@ const Detail = ({ reviews, user, doctor, availableAppointments }) => {
               <p><strong>Contact:</strong> {doctor.phoneNumber}</p>
             </div>
             <div className={classes.janji}>
-              <Button variant='contained' onClick={handleClickRequestAppointment}>
+              <Button variant='contained' className={classes.btn} onClick={handleClickRequestAppointment}>
                 Request Appointment
               </Button>
             </div>
