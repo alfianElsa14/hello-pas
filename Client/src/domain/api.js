@@ -74,6 +74,10 @@ export const getAppointmentsByUserID = (userId) => callAPI(`${urls.appointment}/
 
 export const getAppointmentsByDoctorID = (doctorId) => callAPI(`${urls.appointment}/doctor/${doctorId}`, 'GET');
 
+export const getAvailableAppointments = (doctorId) => callAPI(`${urls.appointment}/available/${doctorId}`, 'GET');
+
+export const createAppointment = (inputs) => callAPI(urls.appointment, "POST", {}, {}, inputs);
+
 export const acceptAppointment = (appointmentId) => callAPI(`${urls.appointment}/accept/${appointmentId}`, 'PUT');
 
 export const denyAppointment = (appointmentId) => callAPI(`${urls.appointment}/${appointmentId}`, 'DELETE');

@@ -12,15 +12,25 @@ import { useParams } from 'react-router-dom';
 import { formatRupiah } from '@utils/formatPrice';
 import config from '@config/index';
 import { Button, IconButton } from '@mui/material';
-import { selectDoctorById, selectReviews } from './selector';
-import { addReview, deleteReview, getAllReviews, getDoctorById } from './actions';
+import { selectAvailableAppointments, selectDoctorById, selectReviews } from './selector';
+import { addReview, deleteReview, getAllReviews, getAvailableAppointments, getDoctorById } from './actions';
 import classes from './style.module.scss';
+import RequestDialog from './components/RequestDialog';
 
-const Detail = ({ reviews, user, doctor }) => {
+const Detail = ({ reviews, user, doctor, availableAppointments }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const userId = user.id;
   const [newComment, setNewComment] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const handleClickRequestAppointment = () => {
+    setOpen(true);
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  }
 
   const handleCommentSubmit = (e) => {
     e.preventDefault();
@@ -33,8 +43,9 @@ const Detail = ({ reviews, user, doctor }) => {
   }
 
   useEffect(() => {
-    dispatch(getDoctorById(id))
-    dispatch(getAllReviews(id))
+    dispatch(getDoctorById(id));
+    dispatch(getAllReviews(id));
+    dispatch(getAvailableAppointments(id));
   }, [id])
 
   return (
@@ -55,7 +66,9 @@ const Detail = ({ reviews, user, doctor }) => {
               <p><strong>Contact:</strong> {doctor.phoneNumber}</p>
             </div>
             <div className={classes.janji}>
-              <Button variant='contained'>Request Appointment</Button>
+              <Button variant='contained' onClick={handleClickRequestAppointment}>
+                Request Appointment
+              </Button>
             </div>
           </div>
         </div>
@@ -99,6 +112,11 @@ const Detail = ({ reviews, user, doctor }) => {
             <button type='submit'>Comment</button>
           </form>
       </div>
+      <RequestDialog 
+        open={open} handleClose={handleClose} 
+        doctorId={parseInt(id, 10)} 
+        availableAppointments={availableAppointments} 
+      />
     </div>
   )
 }
@@ -106,13 +124,15 @@ const Detail = ({ reviews, user, doctor }) => {
 Detail.propTypes = {
   reviews: PropTypes.array,
   user: PropTypes.object,
-  doctor: PropTypes.object
+  doctor: PropTypes.object,
+  availableAppointments: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   reviews: selectReviews,
   user: selectUser,
-  doctor: selectDoctorById
+  doctor: selectDoctorById,
+  availableAppointments: selectAvailableAppointments,
 });
 
 export default connect(mapStateToProps)(Detail);

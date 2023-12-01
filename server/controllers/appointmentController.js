@@ -98,7 +98,7 @@ exports.getAvailableAppointments = async (req, res) => {
       const endTime = new Date(currentTime + 60 * 60 * 1000); // 1 hour duration
 
       // Check if the current appointment is within work hours
-      if (startTime.getHours() < workStartTime || startTime.getHours() >= workEndTime) {
+      if (startTime.getHours() === 23 || startTime.getHours() < workStartTime || endTime.getHours() >= workEndTime) {
         continue;
       }
 
@@ -193,7 +193,7 @@ exports.createAppointment = async (req, res) => {
       if (req.user.id === existBlockedAppointment.userId)
         return handleClientError(res, 400, "There is a schedule conflic on user!")
       else
-        return handleClientError(res, 400, "There is a schedule conflic on doctor!")
+        return handleClientError(res, 400, "There is a schedule conflic on doctor! Maybe refresh will help.")
     }
 
     const createdAppointment = await Appointment.create({...newData, userId: req.user.id});
