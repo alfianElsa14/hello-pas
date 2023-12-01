@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable prettier/prettier */
 /* eslint-disable arrow-body-style */
@@ -10,6 +11,7 @@ import config from '@config/index';
 import { Avatar, Button, Dialog } from '@mui/material';
 import { formatDate, formatHour } from '@utils/formatDate';
 import { acceptAppointment, denyAppointment } from '@pages/Home/actions';
+import { FormattedMessage } from 'react-intl';
 import classes from "./style.module.scss";
 
 const AppointmentCard = ({ appointment }) => {
@@ -58,18 +60,18 @@ const AppointmentCard = ({ appointment }) => {
             <table>
               <tbody>
                 <tr>
-                  <td>Hari, Tanggal</td>
-                  <td>:{" "}</td>
+                  <td><FormattedMessage id="app_day_date" /></td>
+                  <td>&nbsp;:&nbsp;</td>
                   <td>{formatDate(appointment.startTime)}</td>
                 </tr>
                 <tr>
-                  <td>Jam</td>
-                  <td>:{" "}</td>
+                  <td><FormattedMessage id="app_hour" /></td>
+                  <td>&nbsp;:&nbsp;</td>
                   <td>{formatHour(appointment.startTime)} - {formatHour(appointment.endTime)} WIB</td>
                 </tr>
                 <tr>
-                  <td>Keluhan</td>
-                  <td>:{" "}</td>
+                  <td><FormattedMessage id="app_complaint" /></td>
+                  <td>&nbsp;:&nbsp;</td>
                   <td>{appointment.complaint}</td>
                 </tr>
               </tbody>
@@ -78,10 +80,10 @@ const AppointmentCard = ({ appointment }) => {
         </div>
         <div className={classes.rightCard}>
           <Button variant='outlined' className={`${classes.accept}`} onClick={handleClickAccept}>
-            Accept
+            <FormattedMessage id="app_accept" />
           </Button>
           <Button variant='outlined' className={`${classes.deny}`} onClick={handleClickDeny}>
-            Deny
+            <FormattedMessage id="app_deny" />
           </Button>
         </div>
       </div>
@@ -89,25 +91,27 @@ const AppointmentCard = ({ appointment }) => {
       <Dialog open={open} onClose={handleClose}>
         <div className={classes.dialog}>
           <div className={classes.content}>
-            <h2>Verification</h2>
+            <h2>
+              <FormattedMessage id='app_verification' />
+            </h2>
             <div className={classes.message}>
               {
                 stateAction === 'accept' ? 
-                  "Do you really want to accept this request?" : 
-                  "Do you really want to reject this request?"
+                  (<FormattedMessage id='app_do_want_accept_request' />) : 
+                  (<FormattedMessage id='app_do_want_reject_request' />)
               }
             </div>
           </div>
           <div className={classes.buttons}>
             <Button variant="contained" className={classes.cancel} onClick={handleClose}>
-              Cancel
+              <FormattedMessage id='app_cancel' />
             </Button>
             <Button 
               variant='contained' 
               className={`${classes.confirm} ${stateAction === 'accept' ? classes.acceptBtn : classes.denyBtn}`} 
               onClick={handleClickYes}
             >
-              Yes
+              <FormattedMessage id='app_yes' />
             </Button>
           </div>
         </div>

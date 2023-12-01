@@ -12,6 +12,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { formatHour } from '@utils/formatDate';
 import { useNavigate } from 'react-router-dom';
 import { createAppointment } from '@pages/Detail/actions';
+import { FormattedMessage } from 'react-intl';
 import classes from "./style.module.scss";
 
 const RequestDialog = ({ open, handleClose, doctorId, availableAppointments }) => {
@@ -129,11 +130,15 @@ const RequestDialog = ({ open, handleClose, doctorId, availableAppointments }) =
     <Dialog open={open} onClose={handleClose}>
       <div className={classes.dialog}>
         <div className={classes.content}>
-          <h2>Appointment Request</h2>
+          <h2>
+            <FormattedMessage id='app_request_appointment' />
+          </h2>
           <form>
             <div className={classes.input}>
               <div className={classes.label}>
-                <label htmlFor="date">Appointment Date</label>
+                <label htmlFor="date">
+                  <FormattedMessage id='app_appointment_date' />
+                </label>
                 {errors.date && (
                   <p className={classes.error}>
                     {errors.date}
@@ -149,7 +154,9 @@ const RequestDialog = ({ open, handleClose, doctorId, availableAppointments }) =
             </div>
             <div className={classes.input}>
               <div className={classes.label}>
-                <label htmlFor="time">Appointment Time</label>
+                <label htmlFor="time">
+                  <FormattedMessage id='app_appointment_time' />
+                </label>
                 {errors.time && (
                   <p className={classes.error}>
                     {errors.time}
@@ -158,10 +165,14 @@ const RequestDialog = ({ open, handleClose, doctorId, availableAppointments }) =
               </div>
               {/* eslint-disable-next-line no-nested-ternary */}
               {!selectedDate ? (
-                  <div>You need to choose Date first</div>
+                  <div className={classes.message}>
+                    <FormattedMessage id="app_need_choose_date" />
+                  </div>
                 ) : (
                   availableTimeslots.length === 0 ? (
-                    <div>There are no timeslots available</div>
+                    <div className={classes.message}>
+                      <FormattedMessage id="app_no_time_available" />
+                    </div>
                   ) : (
                     <FormControl fullWidth>
                       <InputLabel id="demo-simple-select-label" />
@@ -185,7 +196,9 @@ const RequestDialog = ({ open, handleClose, doctorId, availableAppointments }) =
             </div>
             <div className={classes.input}>
               <div className={classes.label}>
-                <label htmlFor="complaint">Complaint</label>
+                <label htmlFor="complaint">
+                  <FormattedMessage id="app_complaint" />
+                </label>
                 {errors.complaint && (
                   <p className={classes.error}>
                     {errors.complaint}
@@ -203,13 +216,13 @@ const RequestDialog = ({ open, handleClose, doctorId, availableAppointments }) =
         </div>
         <div className={classes.buttons}>
           <Button variant="contained" className={classes.cancel} onClick={handleClose}>
-            Cancel
+            <FormattedMessage id="app_cancel" />
           </Button>
           <Button 
             variant='contained' 
             className={classes.send} onClick={handleClickSend}
           >
-            Send Request
+            <FormattedMessage id="app_send_request" />
           </Button>
         </div>
       </div>

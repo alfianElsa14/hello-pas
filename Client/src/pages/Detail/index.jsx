@@ -83,7 +83,7 @@ const Detail = ({ reviews, user, doctor, availableAppointments }) => {
             </div>
             <div className={classes.janji}>
               <Button variant='contained' className={classes.btn} onClick={handleClickRequestAppointment}>
-                Request Appointment
+                <FormattedMessage id="app_request_appointment" />
               </Button>
             </div>
           </div>
@@ -93,7 +93,7 @@ const Detail = ({ reviews, user, doctor, availableAppointments }) => {
         <h4><FormattedMessage id="app_reviews"/></h4>
         {
           reviews.map((el) => (
-            <div className={classes.commentList}>
+            <div key={el.id} className={classes.commentList}>
               <div className={classes.userComment}>
                 <div className={classes.picture}>
                   <img src={`${config.api.host}${el.User.image}`} alt="" />

@@ -11,6 +11,7 @@ import { getAppointments } from '@pages/Home/actions';
 
 import thinkingImage from '@static/images/thinking.svg';
 import TimeTable from '@components/TimeTable';
+import { FormattedMessage } from 'react-intl';
 import classes from "./style.module.scss";
 import AppointmentCard from '../AppointmentCard';
 
@@ -38,15 +39,19 @@ const HomeDoctor = ({ user, appointments }) => {
   return (
     <main className={classes.main}>
       <div className={classes.container}>
-        <h1>Dashboard</h1>
+        <h1><FormattedMessage id='app_dashboard' /></h1>
         <section>
-          <h2>Appointment Requests</h2>
+          <h2>
+            <FormattedMessage id='app_appointment_requests' />
+          </h2>
           {pendingFutureAppointments.length === 0 ? (
             <div className={classes.sectionImage}>
               <div className={classes.image}>
                 <img src={thinkingImage} alt='Sad' />
               </div>
-              <div className={classes.message}>Tidak ada permintaan janji temu</div>
+              <div className={classes.message}>
+                <FormattedMessage id='app_no_appointment_requests' />
+              </div>
             </div>
           ) : (
             <div className={classes.appointments}>
@@ -57,7 +62,9 @@ const HomeDoctor = ({ user, appointments }) => {
           )}
         </section>
         <section>
-          <h2>Appointments</h2>
+          <h2>
+            <FormattedMessage id='app_appointments' />
+          </h2>
           <TimeTable appointments={formattedAppointments} />
         </section>
       </div>
