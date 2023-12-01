@@ -1,4 +1,11 @@
-import { EDIT_STATUS_APPOINTMENTS, GET_APPOINTMENTS, MIDTRANS_PAYMENT, SET_APPOINTMENTS, SET_MIDTRANS_TOKEN } from '@pages/UserAppointment/constants';
+import {
+  CHANGE_STATUS_APPOINTMENT,
+  EDIT_STATUS_APPOINTMENTS,
+  GET_APPOINTMENTS,
+  MIDTRANS_PAYMENT,
+  SET_APPOINTMENTS,
+  SET_MIDTRANS_TOKEN,
+} from '@pages/UserAppointment/constants';
 
 export const setAppointments = (appointments) => ({
   type: SET_APPOINTMENTS,
@@ -10,19 +17,24 @@ export const getAppointments = ({ userId }) => ({
   userId,
 });
 
-export const midtransPayment = (id, cbEditStatus) => ({
+export const midtransPayment = (appointmentId, cbEditStatus) => ({
   type: MIDTRANS_PAYMENT,
-  id,
-  cbEditStatus
-})
+  appointmentId,
+  cbEditStatus,
+});
 
 export const setMidtransToken = (midtransToken) => ({
   type: SET_MIDTRANS_TOKEN,
-  midtransToken
-})
+  midtransToken,
+});
 
-export const editStatusAppointment = (id) => ({
+export const editStatusAppointment = (appointmentId) => ({
   type: EDIT_STATUS_APPOINTMENTS,
-  id
-})
+  appointmentId,
+});
 
+export const changeStatusAppointment = (appointmentId, status) => ({
+  type: CHANGE_STATUS_APPOINTMENT,
+  appointmentId,
+  status,
+});

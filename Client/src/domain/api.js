@@ -74,13 +74,17 @@ export const getAppointmentsByUserID = (userId) => callAPI(`${urls.appointment}/
 
 export const getAppointmentsByDoctorID = (doctorId) => callAPI(`${urls.appointment}/doctor/${doctorId}`, 'GET');
 
+export const getAvailableAppointments = (doctorId) => callAPI(`${urls.appointment}/available/${doctorId}`, 'GET');
+
+export const createAppointment = (inputs) => callAPI(urls.appointment, "POST", {}, {}, inputs);
+
 export const acceptAppointment = (appointmentId) => callAPI(`${urls.appointment}/accept/${appointmentId}`, 'PUT');
 
 export const denyAppointment = (appointmentId) => callAPI(`${urls.appointment}/${appointmentId}`, 'DELETE');
 
 export const midtransPayment = (id) => callAPI(`${urls.appointment}/midtransToken/${id}`, 'post')
 
-export const appointmentStatus = (id) => callAPI(`${urls.appointment}/pay/${id}`, 'put')
+export const payAppointment = (id) => callAPI(`${urls.appointment}/pay/${id}`, 'put')
 
 export const getAllDoctors = () => callAPI(`${urls.doctor}/allDoctors`, 'get')
 
