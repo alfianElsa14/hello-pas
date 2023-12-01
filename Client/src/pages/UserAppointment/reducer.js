@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { SET_APPOINTMENTS, SET_MIDTRANS_TOKEN } from './constants';
+import { CHANGE_STATUS_APPOINTMENT, SET_APPOINTMENTS, SET_MIDTRANS_TOKEN } from './constants';
 
 export const initialState = {
   appointments: [],
@@ -15,7 +15,17 @@ const userAppointmentReducer = (state = initialState, action) =>
         draft.appointments = action.appointments;
         break;
       case SET_MIDTRANS_TOKEN:
-        draft.midtransToken = action.midtransToken
+        draft.midtransToken = action.midtransToken;
+        break;
+      case CHANGE_STATUS_APPOINTMENT:
+        draft.appointments = draft.appointments.map((appointment) => {
+          if (appointment.id === action.appointmentId) {
+            return { ...appointment, status: action.status };
+          }
+          return appointment;
+        });
+        break;
+      default:
         break;
     }
   });

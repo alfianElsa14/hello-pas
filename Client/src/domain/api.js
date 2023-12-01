@@ -84,7 +84,7 @@ export const denyAppointment = (appointmentId) => callAPI(`${urls.appointment}/$
 
 export const midtransPayment = (id) => callAPI(`${urls.appointment}/midtransToken/${id}`, 'post')
 
-export const appointmentStatus = (id) => callAPI(`${urls.appointment}/pay/${id}`, 'put')
+export const payAppointment = (id) => callAPI(`${urls.appointment}/pay/${id}`, 'put')
 
 export const getAllDoctors = () => callAPI(`${urls.doctor}/allDoctors`, 'get')
 
