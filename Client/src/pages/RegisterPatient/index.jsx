@@ -1,12 +1,14 @@
-import PropTypes from 'prop-types';
-import { connect, useDispatch } from 'react-redux';
-import classes from './style.module.scss';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { connect, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
+
 import { register, resetRegisterStatus } from './actions';
 import { createStructuredSelector } from 'reselect';
 import { selectRegisterSucces } from './selector';
-import { FormattedMessage } from 'react-intl';
+
+import classes from './style.module.scss';
 
 const RegisterPatient = ({ isSuccess }) => {
   const dispatch = useDispatch();
@@ -64,7 +66,7 @@ const RegisterPatient = ({ isSuccess }) => {
       newErrors.phoneNumber = 'Phone number is required';
     } else if (!/^\d+$/.test(inputs.phoneNumber)) {
       valid = false;
-      newErrors.phoneNumber = 'Phone number should contain only numbers';
+      newErrors.phoneNumber = 'Should contain only numbers';
     }
 
     setErrors(newErrors);

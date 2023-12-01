@@ -1,9 +1,11 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable prettier/prettier */
 /* eslint-disable arrow-body-style */
-import { useEffect, useState } from 'react';
+
+import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
+import { FormattedMessage } from 'react-intl';
 import { connect, useDispatch } from 'react-redux';
 import { calculateTimeDifference } from '@utils/calculateDate';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -68,13 +70,13 @@ const Detail = ({ reviews, user, doctor, availableAppointments }) => {
       <div className={classes.content}>
         <div className={classes.profileDoc}>
           <div className={classes.leftSide}>
-            <img src={doctor.image} alt="" />
+            <img src={`${config.api.host}${doctor.image}`} alt="" />
           </div>
           <div className={classes.rightSide}>
             <h2>Dr. {doctor.username}</h2>
-            <p><strong>Practice Location: </strong>{doctor.practiceAt}</p>
-            <p><strong>Consultation Price:</strong> {formatRupiah(doctor.price)}</p>
-            <p><strong>Years of Experience:</strong> {doctor.yearExperience}</p>
+            <p><strong><FormattedMessage id="app_practice_location"/>: </strong>{doctor.practiceAt}</p>
+            <p><strong><FormattedMessage id="app_consul_price"/>:</strong> {formatRupiah(doctor.price)}</p>
+            <p><strong><FormattedMessage id="app_year_exp"/>:</strong> {doctor.yearExperience} <FormattedMessage id="app_year"/></p>
             <div>
               <p><strong>Email:</strong> {doctor.email}</p>
               <p><strong>Contact:</strong> {doctor.phoneNumber}</p>
@@ -88,43 +90,42 @@ const Detail = ({ reviews, user, doctor, availableAppointments }) => {
         </div>
       </div>
       <div className={classes.comment}>
-          <h4>Reviews</h4>
-          {
-            reviews.map((el) => (
-              <div key={el.id} className={classes.commentList}>
-                <div className={classes.userComment}>
-                  <div className={classes.picture}>
-                    <img src={`${config.api.host}${el.User.image}`} alt="" />
-                  </div>
-                  <div className={classes.isiComment}>
-                    <p className={classes.username}>{el.User.username}</p>
-                    <div className={classes.many}>{el.comment}</div>
-                  </div>
+        <h4><FormattedMessage id="app_reviews"/></h4>
+        {
+          reviews.map((el) => (
+            <div className={classes.commentList}>
+              <div className={classes.userComment}>
+                <div className={classes.picture}>
+                  <img src={`${config.api.host}${el.User.image}`} alt="" />
                 </div>
-                <div className={classes.date}>
-                  <p>{calculateTimeDifference(el.createdAt)}</p>
-                  {
-                    userId === el.User.id && (
-                      <IconButton onClick={() => handleDelete(el.id)}>
-                        <DeleteIcon className={classes.delete}
-                        />
-                      </IconButton>
-                    )
-                  }
+                <div className={classes.isiComment}>
+                  <p className={classes.username}>{el.User.username}</p>
+                  <div className={classes.many}>{el.comment}</div>
                 </div>
               </div>
-            ))
-          }
-          <form action="" className={classes.formComment} onSubmit={handleCommentSubmit}>
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)} />
-            <button type='submit'>Comment</button>
-          </form>
+              <div className={classes.date}>
+                <p>{calculateTimeDifference(el.createdAt)}</p>
+                {
+                  userId === el.User.id && (
+                    <IconButton onClick={() => handleDelete(el.id)}>
+                      <DeleteIcon className={classes.delete} />
+                    </IconButton>
+                  )
+                }
+              </div>
+          </div>
+          ))
+        }
+        <form action="" className={classes.formComment} onSubmit={handleCommentSubmit}>
+          <textarea
+            name=""
+            id=""
+            cols="30"
+            rows="10"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)} />
+          <button type='submit'>Comment</button>
+        </form>
       </div>
       <RequestDialog 
         open={open} handleClose={handleClose} 
@@ -132,8 +133,8 @@ const Detail = ({ reviews, user, doctor, availableAppointments }) => {
         availableAppointments={availableAppointments} 
       />
     </div>
-  )
-}
+  );
+};
 
 Detail.propTypes = {
   reviews: PropTypes.array,

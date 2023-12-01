@@ -3,6 +3,8 @@ const { handleServerError, handleClientError, handleNotFoundError, handleValidat
 const Joi = require('joi');
 const { compare, hash } = require('../helper/bycrpt');
 const { generateToken } = require('../helper/jwt');
+const redisClient = require('../helper/redisClient');
+const fs = require('fs');
 
 exports.verifyTokenUser = async (req, res) => {
     try {
@@ -72,6 +74,13 @@ exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        const loginAttemptsKey = `loginUser:${email}`;
+        const loginAttemptsCount = await redisClient.get(loginAttemptsKey);
+
+        if (loginAttemptsCount && parseInt(loginAttemptsCount) >= 3) {
+            return handleClientError(res, 401, 'Account locked, try again later.')
+        }
+
         const schema = Joi.object({
             email: Joi.string().email().required(),
             password: Joi.string().required(),
@@ -96,9 +105,16 @@ exports.loginUser = async (req, res) => {
         const passwordMatch = compare(password, user.password)
 
         if (!passwordMatch) {
+            if (loginAttemptsCount) {
+                await redisClient.incr(loginAttemptsKey);
+            } else {
+                await redisClient.set(loginAttemptsKey, 1, 'EX', 1800);
+            }
             return handleClientError(res, 401, 'Invalid password');
         }
         
+        await redisClient.del(loginAttemptsKey);
+
         const formatedUser = user.toJSON()
         delete formatedUser.password;
         const token = generateToken(user.id, 'user')
@@ -109,7 +125,6 @@ exports.loginUser = async (req, res) => {
             data: formatedUser,
         });
     } catch (error) {
-        console.log(error);
         return handleServerError(res)
     }
 }
@@ -118,11 +133,14 @@ exports.editUser = async (req, res) => {
     try {
         const userId = req.user.id
         const newData = req.body
+
         const userData = await User.findByPk(userId)
 
         if (!userData) {
             return handleNotFoundError(res, 'User');
         }
+
+        const oldImage = userData.image
 
         const schema = Joi.object({
             username: Joi.string(),
@@ -137,7 +155,7 @@ exports.editUser = async (req, res) => {
             return handleValidationError(res, error)
         }
 
-        const updatedImg = req.file.path
+        const updatedImg = req.file ? req.file.path : userData.image;
 
         const result = await User.update({
             username: newData.username,
@@ -150,7 +168,22 @@ exports.editUser = async (req, res) => {
             }
         })
 
-        res.status(200).json({ message: 'success', result })
+        if (result[0] > 0) {
+            if (req.file && oldImage) {
+                try {
+                    fs.unlinkSync(oldImage);
+                } catch (unlinkError) {
+                    console.error('Error deleting old image:', unlinkError);
+                }
+            }
+
+            return res.status(200).json({ message: 'success', result });
+
+        } else {
+
+            return res.status(500).json({ message: 'Failed to update user' });
+
+        }
     } catch (error) {
         console.log(error);
         return handleServerError(res)

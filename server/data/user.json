@@ -4,31 +4,34 @@
     "email": "daniel@gmail.com",
     "password": "1234567",
     "phoneNumber": "0817627777",
-    "image": "https://e7.pngegg.com/pngimages/507/702/png-clipart-profile-icon-simple-user-icon-icons-logos-emojis-users.png"
+    "image": "public\\assets\\download7.jpeg"
   },
   {
     "username": "Taufiqo",
     "email": "taufiqo@gmail.com",
     "password": "1234567",
     "phoneNumber": "0819876543210",
-    "image": "https://e7.pngegg.com/pngimages/507/702/png-clipart-profile-icon-simple-user-icon-icons-logos-emojis-users.png"
+    "image": "public\\assets\\download8.jpeg"
   },
   {
     "username": "Danen",
     "email": "danen@gmail.com",
     "password": "1234567",
-    "phoneNumber": "0819876543211"
+    "phoneNumber": "0819876543211",
+    "image": "https://e7.pngegg.com/pngimages/507/702/png-clipart-profile-icon-simple-user-icon-icons-logos-emojis-users.png"
   },
   {
     "username": "Dina",
     "email": "dina@gmail.com",
     "password": "1234567",
-    "phoneNumber": "0819876543212"
+    "phoneNumber": "0819876543212",
+    "image": "https://e7.pngegg.com/pngimages/507/702/png-clipart-profile-icon-simple-user-icon-icons-logos-emojis-users.png"
   },
   {
     "username": "Zoro",
     "email": "zoro@gmail.com",
     "password": "1234567",
-    "phoneNumber": "0819876543213"
+    "phoneNumber": "0819876543213",
+    "image": "https://e7.pngegg.com/pngimages/507/702/png-clipart-profile-icon-simple-user-icon-icons-logos-emojis-users.png"
   }
 ]

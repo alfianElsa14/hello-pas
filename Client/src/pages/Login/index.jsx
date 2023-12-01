@@ -1,13 +1,15 @@
-import doctor from '@static/images/doctor.png';
-import patient from '@static/images/patient.png';
+import { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import classes from './style.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
+
+import doctor from '@static/images/doctor.png';
+import patient from '@static/images/patient.png';
 import { selectLogin } from '@containers/Client/selectors';
-import { useEffect } from 'react';
+
+import classes from './style.module.scss';
 
 const Login = ({ login }) => {
   const navigate = useNavigate();

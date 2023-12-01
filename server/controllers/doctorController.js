@@ -3,21 +3,24 @@ const { handleServerError, handleClientError, handleValidationError, handleNotFo
 const Joi = require('joi');
 const { compare, hash } = require('../helper/bycrpt');
 const { generateToken } = require('../helper/jwt');
+const redisClient = require('../helper/redisClient');
+const fs = require('fs');
+
 
 exports.verifyTokenDoctor = async (req, res) => {
     try {
-      return res.status(200).json({ status: 'Success' });
-  
+        return res.status(200).json({ status: 'Success' });
+
     } catch (error) {
-      console.error(error);
-      handleServerError(res);
+        console.error(error);
+        handleServerError(res);
     }
 };
 
 exports.registerDoctor = async (req, res) => {
     try {
         const { username, email, password, phoneNumber, yearExperience, practiceAt, price } = req.body;
-        
+
         const schema = Joi.object({
             username: Joi.string().required(),
             email: Joi.string().email().required(),
@@ -26,7 +29,7 @@ exports.registerDoctor = async (req, res) => {
             yearExperience: Joi.number().required(),
             practiceAt: Joi.string().required(),
             price: Joi.number().required()
-          });
+        });
 
         const { error } = schema.validate(req.body);
         if (error) {
@@ -35,7 +38,7 @@ exports.registerDoctor = async (req, res) => {
 
         const existingUser = await Doctor.findOne({
             where: {
-              email: email,
+                email: email,
             },
         });
         if (existingUser) {
@@ -44,7 +47,7 @@ exports.registerDoctor = async (req, res) => {
 
         const existingPhone = await Doctor.findOne({
             where: {
-              phoneNumber: phoneNumber,
+                phoneNumber: phoneNumber,
             },
         });
 
@@ -52,7 +55,7 @@ exports.registerDoctor = async (req, res) => {
             return handleClientError(res, 400, 'Phone number already exists');
         }
 
-        const uploadedImg = `http://localhost:3300/${req.file.path}`
+        const uploadedImg = req.file.path
         console.log(uploadedImg)
 
         const newDoctor = await Doctor.create(
@@ -68,6 +71,12 @@ exports.registerDoctor = async (req, res) => {
             }
         );
 
+        const cacheDoctorExist = await redisClient.exists('allDoctor');
+        if (cacheDoctorExist) {
+            await redisClient.del('allDoctor');
+            console.log('Cache cleared successfully');
+        }
+        
         res.status(201).json({ data: newDoctor, message: 'Doctor created successfully' });
     } catch (error) {
         return handleServerError(res);
@@ -78,7 +87,13 @@ exports.loginDoctor = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        console.log(req.body)
+        const loginAttemptsKey = `loginDoctor:${email}`;
+        const loginAttemptsCount = await redisClient.get(loginAttemptsKey);
+
+        if (loginAttemptsCount && parseInt(loginAttemptsCount) >= 3) {
+            return handleClientError(res, 401, 'Account locked, try again later.')
+        }
+
         const schema = Joi.object({
             email: Joi.string().email().required(),
             password: Joi.string().required(),
@@ -91,20 +106,32 @@ exports.loginDoctor = async (req, res) => {
 
         const user = await Doctor.findOne({
             where: {
-              email: email,
+                email: email,
             },
-            attributes: { exclude: [ 'createdAt', 'updatedAt'] }
+            attributes: { exclude: ['createdAt', 'updatedAt'] }
         });
 
-        if(!user) {
-            return handleClientError(res, 400, 'User not found')
+        if (!user) {
+            if (loginAttemptsCount) {
+                await redisClient.incr(loginAttemptsKey);
+            } else {
+                await redisClient.set(loginAttemptsKey, 1, 'EX', 1800);
+            }
+            return handleClientError(res, 400, 'User not found');
         }
 
         const passwordMatch = compare(password, user.password)
 
         if (!passwordMatch) {
+            if (loginAttemptsCount) {
+                await redisClient.incr(loginAttemptsKey);
+            } else {
+                await redisClient.set(loginAttemptsKey, 1, 'EX', 1800);
+            }
             return handleClientError(res, 401, 'Invalid password');
         }
+
+        await redisClient.del(loginAttemptsKey);
 
         const formatedUser = user.toJSON()
         delete formatedUser.password;
@@ -116,17 +143,24 @@ exports.loginDoctor = async (req, res) => {
             data: formatedUser,
         });
     } catch (error) {
-        console.log(error)
         return  handleServerError(res)
     }
 }
 
 exports.getAllDoctor = async (req, res) => {
     try {
-        const data = await Doctor.findAll({
-            attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
-        })
-        res.status(200).json(data)
+        const redisKey = 'allDoctor'
+        const cachedDoctor = await redisClient.get(redisKey)
+
+        if (cachedDoctor) {
+            return res.status(200).json({ message: 'caching redis', data: JSON.parse(cachedDoctor) });
+        } else {
+            const doctors = await Doctor.findAll({
+                attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+            });
+            await redisClient.set(redisKey, JSON.stringify(doctors), 'EX', 3600);
+          return res.status(200).json({ message: 'Success', data: doctors });
+        }
     } catch (error) {
         console.log(error);
         return handleServerError(res)
@@ -135,7 +169,7 @@ exports.getAllDoctor = async (req, res) => {
 
 exports.getDoctorById = async (req, res) => {
     try {
-        const {doctorId} = req.params;
+        const { doctorId } = req.params;
         const doctorData = await Doctor.findByPk(doctorId, {
             attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
         });
@@ -159,10 +193,10 @@ exports.getProfileDoctor = async (req, res) => {
                 {
                     model: Review,
                     attributes: ['comment'],
-                        include: {
-                            model: User,
-                            attributes: ['username', 'image']
-                        }
+                    include: {
+                        model: User,
+                        attributes: ['username', 'image']
+                    }
                 }
             ]
         });
@@ -191,6 +225,8 @@ exports.editDoctor = async (req, res) => {
             return handleNotFoundError(res, 'Doctor');
         }
 
+        const oldImage = doctorData.image
+
         const schema = Joi.object({
             username: Joi.string(),
             email: Joi.string(),
@@ -206,7 +242,7 @@ exports.editDoctor = async (req, res) => {
             return handleValidationError(res, error)
         }
 
-        const updatedImg = req.file.path
+        const updatedImg = req.file ? req.file.path : userData.image;
 
         const result = await Doctor.update({
             username: newData.username,
@@ -221,7 +257,28 @@ exports.editDoctor = async (req, res) => {
             }
         })
 
-        res.status(200).json({ message: 'success', result })
+        const cacheDoctorExist = await redisClient.exists('allDoctor');
+        if (cacheDoctorExist) {
+            await redisClient.del('allDoctor');
+            console.log('Cache cleared successfully');
+        }
+
+        if (result[0] > 0) {
+            if (req.file && oldImage) {
+                try {
+                    fs.unlinkSync(oldImage);
+                } catch (unlinkError) {
+                    console.error('Error deleting old image:', unlinkError);
+                }
+            }
+
+            return res.status(200).json({ message: 'success', result });
+
+        } else {
+
+            return res.status(500).json({ message: 'Failed to update user' });
+
+        }
     } catch (error) {
         console.log(error);
         return handleServerError(res)

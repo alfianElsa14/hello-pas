@@ -26,6 +26,7 @@ export default {
   app_practice_at: 'Practice At',
   app_price: 'Price',
   app_register: 'Register',
+  
   app_profile: 'Profile',
   app_profile_and_reviews: 'Profile & Reviews',
   app_appointments: 'Appointments',
@@ -36,6 +37,15 @@ export default {
   app_new_password: 'New Password',
   app_change: 'Change',
   app_reviews: 'Reviews',
+  app_doctor_list: 'Doctor List',
+  app_queue_free: 'Make appointments easily & queue-free',
+  app_without_queuing: 'Without queuing',
+  app_set_schedule: 'Set a schedule',
+  app_practice_location: 'Practice location',
+  app_consul_price: 'Consultation Price',
+  app_year: 'years',
+  app_make_appointment: 'make appointment',
+  
   app_edit_profile: 'Edit Profile',
   app_submit: 'Submit'
 };
