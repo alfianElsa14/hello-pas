@@ -36,6 +36,15 @@ export default {
   app_new_password: 'Password Baru',
   app_change: 'Ganti',
   app_reviews: 'Ulasan',
+  app_doctor_list: 'Daftar Dokter',
+  app_queue_free: 'Buat janji mudah & bebas antri',
+  app_without_queuing: 'Tanpa antri',
+  app_set_schedule: 'Atur jadwal',
+  app_practice_location: 'Lokasi praktek',
+  app_consul_price: 'Harga Konsultasi',
+  app_year: 'tahun',
+  app_make_appointment: 'buat janji',
+  
   app_edit_profile: 'Ubah Profile',
   app_submit: 'Submit'
 };

@@ -12,7 +12,6 @@
         display: flex;
         flex-direction: column;
         width: 350px;
-        // width: 80%;
         border: 5px solid rgb(0, 210, 133);
         border-radius: 10px;
 
@@ -24,12 +23,10 @@
         .profileDoc {
             display: flex;
             flex-direction: column;
-            // flex-direction: row;
             align-items: center;
             padding: 20px;
             padding-left: 20px;
             gap: 50px;
-            // gap: 100px;
 
             @include apply-at-xs2-size {
                 flex-direction: row;
@@ -65,7 +62,7 @@
                         border: none;
                         background-color: #8CCA3C;
                         height: 40px;
-                        width: 100px;
+                        width: 160px;
                         border-radius: 5px;
                         font-weight: 500;
                         font-size: 15px;
@@ -86,8 +83,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 310px;
-        // width: 75%;
+        width: 350px;
         border: 5px solid rgb(0, 210, 133);
         border-radius: 10px;
         margin-top: 50px;
@@ -95,6 +91,10 @@
 
         @include apply-at-xs2-size {
             width: 75%;
+        }
+
+        h4 {
+            margin-bottom: 20px;
         }
 
         .commentList {
@@ -111,7 +111,6 @@
                 display: flex;
                 align-items: center;
                 padding: 0px 10px;
-                // padding: 0px 30px;
                 gap: 15px;
                 overflow: hidden;
 
@@ -122,9 +121,7 @@
 
                 img {
                     width: 23px;
-                    // width: 50px;
                     height: 23px;
-                    // height: 50px;
                     object-fit: cover;
                     border-radius: 50%;
                     border: none;
@@ -146,7 +143,6 @@
                     .username {
                         font-weight: 700;
                         font-size: 13px;
-                        // font-size: 20px;
                         margin: 0;
 
                         @include apply-at-xs2-size {
@@ -158,7 +154,6 @@
                         word-wrap: break-word;
                         display: block;
                         font-size: 10px;
-                        // font-size: 15px;
 
                         @include apply-at-xs2-size {
                             font-size: 15px;
@@ -179,7 +174,6 @@
                 p {
                     margin-right: 5px;
                     font-size: 5px;
-                    // font-size: 13px;
 
                     @include apply-at-xs2-size {
                         margin-right: 10px;
@@ -193,9 +187,7 @@
 
                     .delete {
                         width: 10px;
-                        // width: 25px;
                         height: 10px;
-                        // height: 25px;
                         cursor: pointer;
 
                         @include apply-at-xs2-size {
