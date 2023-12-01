@@ -40,13 +40,20 @@
         color: $color-harlequin;
       }
 
-      .image {
-        width: 6rem;
-        height: 6rem;
+      .sectionImage {
+        width: 100%;
+        @include directionY;
+        align-items: center;
+        gap: 0.5rem;
 
-        img {
-          width: 100%;
-          height: 100%;
+        .image {
+          width: 6rem;
+          height: 6rem;
+  
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
       }
 
