@@ -72,8 +72,7 @@ function EditUser({ userData, user, role }) {
         formData.append('email', email);
         formData.append('phoneNumber', phoneNumber);
         formData.append('image', image);
-        dispatch(editUser(id, formData));
-        navigate('/profile');
+        dispatch(editUser(id, formData, navigate));
       } else if (role === 'doctor') {
         const formData = new FormData();
         formData.append('username', username);
@@ -82,8 +81,7 @@ function EditUser({ userData, user, role }) {
         formData.append('image', image);
         formData.append('practiceAt', practiceAt);
         formData.append('price', price);
-        dispatch(editDoctor(id, formData));
-        navigate('/profile');
+        dispatch(editDoctor(id, formData, navigate));
       }
     }
   };

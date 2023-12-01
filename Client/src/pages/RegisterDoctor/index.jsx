@@ -82,7 +82,7 @@ const RegisterDoctor = ({ isSuccess }) => {
       newErrors.phoneNumber = 'Phone number is required';
     } else if (!/^\d+$/.test(inputs.phoneNumber)) {
       valid = false;
-      newErrors.phoneNumber = 'Phone number should contain only numbers';
+      newErrors.phoneNumber = 'Should contain only numbers';
     }
 
     if (!inputs.yearExperience) {

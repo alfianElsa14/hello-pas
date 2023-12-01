@@ -10,10 +10,11 @@ export const setUserById = (userData) => ({
     userData
 })
 
-export const editUser = (id, data) => ({
+export const editUser = (id, data, navigate) => ({
     type: EDIT_USER,
     id,
-    data
+    data,
+    navigate
 })
 
 export const getDoctorById = (id) => ({
@@ -26,8 +27,9 @@ export const setDoctorById = (userData) => ({
     userData
 })
 
-export const editDoctor = (id, data) => ({
+export const editDoctor = (id, data, navigate) => ({
     type: EDIT_DOCTOR,
     id,
-    data
+    data,
+    navigate
 })
