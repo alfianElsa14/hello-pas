@@ -3,6 +3,7 @@ const { handleServerError, handleClientError, handleValidationError, handleNotFo
 const Joi = require('joi');
 const { compare, hash } = require('../helper/bycrpt');
 const { generateToken } = require('../helper/jwt');
+const redisClient = require('../helper/redisClient');
 
 exports.verifyTokenDoctor = async (req, res) => {
     try {
@@ -52,7 +53,7 @@ exports.registerDoctor = async (req, res) => {
             return handleClientError(res, 400, 'Phone number already exists');
         }
 
-        const uploadedImg = `http://localhost:3300/${req.file.path}`
+        const uploadedImg = req.file.path
         console.log(uploadedImg)
 
         const newDoctor = await Doctor.create(
@@ -68,6 +69,12 @@ exports.registerDoctor = async (req, res) => {
             }
         );
 
+        const cacheDoctorExist = await redisClient.exists('allDoctor');
+        if (cacheDoctorExist) {
+            await redisClient.del('allDoctor');
+            console.log('Cache cleared successfully');
+        }
+        
         res.status(201).json({ data: newDoctor, message: 'Doctor created successfully' });
     } catch (error) {
         return handleServerError(res);
@@ -78,7 +85,13 @@ exports.loginDoctor = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        console.log(req.body)
+        const loginAttemptsKey = `loginDoctor:${email}`;
+        const loginAttemptsCount = await redisClient.get(loginAttemptsKey);
+
+        if (loginAttemptsCount && parseInt(loginAttemptsCount) >= 3) {
+            return handleClientError(res, 401, 'Account locked, try again later.')
+        }
+
         const schema = Joi.object({
             email: Joi.string().email().required(),
             password: Joi.string().required(),
@@ -96,15 +109,27 @@ exports.loginDoctor = async (req, res) => {
             attributes: { exclude: [ 'createdAt', 'updatedAt'] }
         });
 
-        if(!user) {
-            return handleClientError(res, 400, 'User not found')
+        if (!user) {
+            if (loginAttemptsCount) {
+                await redisClient.incr(loginAttemptsKey);
+            } else {
+                await redisClient.set(loginAttemptsKey, 1, 'EX', 1800);
+            }
+            return handleClientError(res, 400, 'User not found');
         }
 
         const passwordMatch = compare(password, user.password)
 
         if (!passwordMatch) {
+            if (loginAttemptsCount) {
+                await redisClient.incr(loginAttemptsKey);
+            } else {
+                await redisClient.set(loginAttemptsKey, 1, 'EX', 1800);
+            }
             return handleClientError(res, 401, 'Invalid password');
         }
+
+        await redisClient.del(loginAttemptsKey);
 
         const formatedUser = user.toJSON()
         delete formatedUser.password;
@@ -116,17 +141,24 @@ exports.loginDoctor = async (req, res) => {
             data: formatedUser,
         });
     } catch (error) {
-        console.log(error)
         return  handleServerError(res)
     }
 }
 
 exports.getAllDoctor = async (req, res) => {
     try {
-        const data = await Doctor.findAll({
-            attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
-        })
-        res.status(200).json(data)
+        const redisKey = 'allDoctor'
+        const cachedDoctor = await redisClient.get(redisKey)
+
+        if (cachedDoctor) {
+            return res.status(200).json({ message: 'caching redis', data: JSON.parse(cachedDoctor) });
+        } else {
+            const doctors = await Doctor.findAll({
+                attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+            });
+            await redisClient.set(redisKey, JSON.stringify(doctors), 'EX', 3600);
+          return res.status(200).json({ message: 'Success', data: doctors });
+        }
     } catch (error) {
         console.log(error);
         return handleServerError(res)
@@ -220,6 +252,12 @@ exports.editDoctor = async (req, res) => {
                 id: doctorId
             }
         })
+
+        const cacheDoctorExist = await redisClient.exists('allDoctor');
+        if (cacheDoctorExist) {
+            await redisClient.del('allDoctor');
+            console.log('Cache cleared successfully');
+        }
 
         res.status(200).json({ message: 'success', result })
     } catch (error) {

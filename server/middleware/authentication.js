@@ -10,6 +10,9 @@ const authentication = (req, res, next) => {
     const token = bearerToken.replace('Bearer ', '');
 
     const decodedToken = verifyToken(token);
+    if (!decodedToken) {
+      return handleClientError(res, 400, 'Token is invalid')
+    }
     req.user = decodedToken;
 
     next();

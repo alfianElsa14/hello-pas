@@ -3,6 +3,7 @@ const { handleServerError, handleClientError, handleNotFoundError, handleValidat
 const Joi = require('joi');
 const { compare, hash } = require('../helper/bycrpt');
 const { generateToken } = require('../helper/jwt');
+const redisClient = require('../helper/redisClient');
 
 exports.verifyTokenUser = async (req, res) => {
     try {
@@ -72,6 +73,13 @@ exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        const loginAttemptsKey = `loginUser:${email}`;
+        const loginAttemptsCount = await redisClient.get(loginAttemptsKey);
+
+        if (loginAttemptsCount && parseInt(loginAttemptsCount) >= 3) {
+            return handleClientError(res, 401, 'Account locked, try again later.')
+        }
+
         const schema = Joi.object({
             email: Joi.string().email().required(),
             password: Joi.string().required(),
@@ -96,9 +104,16 @@ exports.loginUser = async (req, res) => {
         const passwordMatch = compare(password, user.password)
 
         if (!passwordMatch) {
+            if (loginAttemptsCount) {
+                await redisClient.incr(loginAttemptsKey);
+            } else {
+                await redisClient.set(loginAttemptsKey, 1, 'EX', 1800);
+            }
             return handleClientError(res, 401, 'Invalid password');
         }
         
+        await redisClient.del(loginAttemptsKey);
+
         const formatedUser = user.toJSON()
         delete formatedUser.password;
         const token = generateToken(user.id, 'user')
@@ -109,7 +124,6 @@ exports.loginUser = async (req, res) => {
             data: formatedUser,
         });
     } catch (error) {
-        console.log(error);
         return handleServerError(res)
     }
 }
