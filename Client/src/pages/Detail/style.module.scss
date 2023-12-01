@@ -51,6 +51,7 @@
                 h2 {
                     margin-bottom: 10px;
                 }
+
                 p {
                     margin-bottom: 10px;
                 }
@@ -59,8 +60,8 @@
                     padding-top: 40px;
 
                     .btn {
-                      width: fit-content;
-                      height: fit-content;
+                        width: fit-content;
+                        height: fit-content;
                     }
 
                     button {
@@ -73,7 +74,7 @@
                         font-size: 15px;
                         cursor: pointer;
                     }
-                    
+
                     button:hover {
                         background-color: #407000;
                         color: white;
@@ -214,9 +215,14 @@
             width: 100%;
             margin-top: 20px;
 
-            input {
-                width: 100%;
-                height: 50px;
+            .formText {
+                resize: none;
+
+                textarea {
+                    width: 100%;
+                    height: 50px;
+                    
+                }
             }
 
             button {

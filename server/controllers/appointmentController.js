@@ -333,7 +333,7 @@ exports.midtransPayment = async (req, res) => {
     };
 
     const midtransToken = await snap.createTransaction(parameter)
-    res.status(200).json(midtransToken)
+    res.status(201).json(midtransToken)
   } catch (error) {
     console.error(error);
     handleServerError(res);
