@@ -1,0 +1,136 @@
+@import '@styles/base';
+
+// Reset
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Poppins;
+  color: #000;
+}
+
+.main {
+  margin-top: 70px;
+  position: relative;
+  background: $color-alabaster;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100%;
+  min-height: calc(100vh - 70px);
+  
+  .container {
+    width: 90%;
+    @include directionY;
+
+    h1 {
+      font-size: 160%;
+      margin-top: 1rem;
+      color: $color-harlequin-dark-shade-2;
+    }
+
+    section {
+      margin-top: 1rem;
+      @include directionY;
+      gap: 1rem;
+      margin-bottom: 1rem;
+
+      h2 {
+        font-size: 120%;
+        color: $color-harlequin;
+      }
+
+      .sectionImage {
+        width: 100%;
+        @include directionY;
+        align-items: center;
+        gap: 0.5rem;
+
+        .image {
+          width: 6rem;
+          height: 6rem;
+  
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+
+      .acceptedAppointments {
+        @include directionY;
+        gap: 1rem;
+
+        .card {
+          padding: 0.5rem;
+          height: 9rem;
+          @include directionX;
+          justify-content: space-between;
+          width: 100%;
+          box-shadow: 0 0 5px 0 $color-cool-gray;
+
+          .leftCard {
+            @include directionX;
+            gap: 0.5rem;
+            align-items: center;
+
+            .cardImage {
+              width: 7rem;
+              height: 7rem;
+            
+              img {
+                width: 100%;
+                height: 100%;
+              }
+  
+              .img {
+                width: 100%;
+                height: 100%;
+              }
+            }
+  
+            .description {
+              @include directionY;
+              gap: 0.5rem;
+              font-size: 90%;
+  
+              .name {
+                font-size: 100%;
+                font-weight: 500;
+                color: $color-harlequin-dark-shade-2;
+              }
+            }
+          }
+
+          .btn {
+            width: fit-content;
+            height: fit-content;
+            color: $color-harlequin-dark-shade-2;
+            border-color: $color-harlequin-dark-shade-2;
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: $screen-md-limit) {
+    margin-top: 57px;
+
+    .container {
+      section {
+        .acceptedAppointments {
+          .card {
+            height: fit-content;
+
+            @include directionY;
+            gap: 1rem;
+
+            .btn {
+              align-self: flex-end;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+@import '@styles/base';
+
+.card {
+    margin-top: 50px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(1, 1fr);
+
+    @include apply-at-md-size {
+        margin-top: 50px;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    @include apply-at-xl-size {
+        margin-top: 50px;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cardList {
+        border: 3px solid #8CCA3C;
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        height: 200px;
+        border-radius: 5px;
+        cursor: pointer;
+        gap: 30px;
+
+        @include apply-at-md-size {
+            height: 200px;
+        }
+
+        @include apply-at-xl-size {
+            width: 700px;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: none;
+            border-radius: 5px;
+
+            @include apply-at-md-size {
+                width: 150px;
+                height: 150px;
+                object-fit: cover;
+                border: none;
+                border-radius: 5px;
+            }
+
+        }
+
+        .data {
+
+            p {
+                margin-bottom: 15px;
+            }
+
+            .name {
+                font-weight: 700;
+            }
+
+            .address {
+                font-size: 10px;
+                font-style: italic;
+
+                @include apply-at-md-size {
+                    font-size: 15px;
+                    font-style: italic;
+                }
+            }
+        }
+    }
+
+    .cardList:hover {
+        background-color: #8CCA3C;
+    }
+}

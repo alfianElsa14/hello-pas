@@ -1,0 +1,234 @@
+@import '@styles/base';
+
+.detailContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 200px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 70px;
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        width: 350px;
+        border: 5px solid rgb(0, 210, 133);
+        border-radius: 10px;
+
+        @include apply-at-md-size {
+            width: 80%;
+        }
+
+
+        .profileDoc {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            padding-left: 20px;
+            gap: 50px;
+
+            @include apply-at-md-size {
+                flex-direction: row;
+                align-items: center;
+                gap: 100px;
+            }
+
+            .leftSide {
+                width: 300px;
+                height: 400px;
+                background-color: azure;
+                border-radius: 5px;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 5px;
+                }
+            }
+
+            .rightSide {
+                h2 {
+                    margin-bottom: 10px;
+                }
+                p {
+                    margin-bottom: 10px;
+                }
+
+                .janji {
+                    padding-top: 40px;
+
+                    .btn {
+                      width: fit-content;
+                      height: fit-content;
+                    }
+
+                    button {
+                        border: none;
+                        background-color: #8CCA3C;
+                        height: 40px;
+                        width: 160px;
+                        border-radius: 5px;
+                        font-weight: 500;
+                        font-size: 15px;
+                        cursor: pointer;
+                    }
+                    
+                    button:hover {
+                        background-color: #407000;
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+
+    .comment {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 350px;
+        border: 5px solid rgb(0, 210, 133);
+        border-radius: 10px;
+        margin-top: 50px;
+        padding: 20px;
+
+        @include apply-at-md-size {
+            width: 75%;
+        }
+
+        h4 {
+            margin-bottom: 20px;
+        }
+
+        .commentList {
+            display: flex;
+            justify-content: space-between;
+            border: 3px solid aqua;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            padding: 25px 0;
+            width: 100%;
+
+
+            .userComment {
+                display: flex;
+                align-items: center;
+                padding: 0px 10px;
+                gap: 15px;
+                overflow: hidden;
+
+                @include apply-at-md-size {
+                    padding: 0px 30px;
+                    gap: 30px;
+                }
+
+                img {
+                    width: 23px;
+                    height: 23px;
+                    border-radius: 50%;
+                    border: none;
+
+                    @include apply-at-md-size {
+                        width: 50px;
+                        height: 50px;
+                    }
+                }
+
+
+                .isiComment {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    gap: 10px;
+                    overflow: hidden;
+
+                    .username {
+                        font-weight: 700;
+                        font-size: 13px;
+                        margin: 0;
+
+                        @include apply-at-md-size {
+                            font-size: 20px;
+                        }
+                    }
+
+                    .many {
+                        word-wrap: break-word;
+                        display: block;
+                        font-size: 10px;
+
+                        @include apply-at-md-size {
+                            font-size: 15px;
+                        }
+                    }
+                }
+            }
+
+            .date {
+                margin-right: 5px;
+                display: flex;
+                align-items: center;
+
+                @include apply-at-md-size {
+                    margin-right: 20px;
+                }
+
+                p {
+                    margin-right: 5px;
+                    font-size: 5px;
+
+                    @include apply-at-md-size {
+                        margin-right: 10px;
+                        font-size: 13px;
+                    }
+                }
+
+                button {
+                    border: none;
+                    background-color: transparent;
+
+                    .delete {
+                        width: 10px;
+                        height: 10px;
+                        cursor: pointer;
+
+                        @include apply-at-md-size {
+                            width: 25px;
+                            height: 25px;
+                            cursor: pointer;
+                        }
+                    }
+
+                    .delete:hover {
+                        color: rgb(207, 0, 0);
+                    }
+                }
+            }
+        }
+
+        .formComment {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-top: 20px;
+
+            input {
+                width: 100%;
+                height: 50px;
+            }
+
+            button {
+                margin-top: 20px;
+                width: 140px;
+                height: 50px;
+                border: none;
+                border-radius: 5px;
+                background-color: rgb(0, 210, 133);
+                font-weight: 500;
+                cursor: pointer;
+            }
+        }
+    }
+}

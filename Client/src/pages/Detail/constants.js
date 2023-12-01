@@ -1,0 +1,9 @@
+export const GET_ALL_REVIEWS = 'Detail/GET_ALL_REVIEWS';
+export const SET_ALL_REVIEWS = 'Detail/SET_ALL_REVIEWS';
+export const ADD_REVIEW = 'Detail/ADD_REVIEW';
+export const DELETE_REVIEW = 'Detail/DELETE_REVIEW';
+export const GET_DOCTOR_BY_ID = 'Detail/GET_DOCTOR_BY_ID';
+export const SET_DOCTOR_BY_ID = 'Detail/SET_DOCTOR_BY_ID';
+export const GET_AVAILABLE_APPOINTMENTS = 'Detail/GET_AVAILABLE_APPOINTMENTS';
+export const SET_AVAILABLE_APPOINTMENTS = 'Detail/SET_AVAILABLE_APPOINTMENTS';
+export const CREATE_APPOINTMENT = 'Detail/CREATE_APPOINTMENT';

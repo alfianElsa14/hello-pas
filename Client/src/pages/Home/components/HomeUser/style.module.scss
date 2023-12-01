@@ -1,0 +1,110 @@
+@import '@styles/base';
+
+
+.container {
+    padding: 10px;
+    margin-top: 70px;
+
+    @include apply-at-md-size {
+        padding: 10px 50px;
+    }
+
+    .banner {
+        border: 5px solid #8CCA3C;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 300px;
+        border-radius: 5px;
+
+        @include apply-at-md-size {
+            border: 5px solid #8CCA3C;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+            border-radius: 5px;
+        }
+
+        h3 {
+            font-size: 10px;
+            margin-bottom: 40px;
+
+            @include apply-at-md-size {
+                font-size: 20px;
+                margin-top: 20px;
+            }
+        }
+
+        .contentHeader {
+            display: flex;
+
+            .iconList {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                padding-right: 5px;
+
+                @include apply-at-md-size {
+                    padding: 50px;
+                    padding-right: 50px;
+                }
+
+                img {
+                    width: 50px;
+
+                    @include apply-at-md-size {
+                        width: 70px;
+                    }
+                }
+
+                p {
+                    font-size: 10px;
+                    margin-top: 20px;
+                    font-weight: 500;
+
+                    @include apply-at-md-size {
+                        font-size: 15px;
+                        margin-top: 20px;
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+    }
+
+    .search {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+
+        input {
+            width: 1000px;
+            height: 40px;
+            border: none;
+            border-radius: 5px 0px 0px 5px;
+            padding: 20px;
+
+        }
+
+        button {
+            background-color: #8CCA3C;
+            color: black;
+            border: none;
+            height: 40px;
+            cursor: pointer;
+            width: 136px;
+            border-radius: 0px 5px 5px 0px;
+        }
+
+        button:hover {
+            background-color: #407000;
+            color: white;
+        }
+    }
+}

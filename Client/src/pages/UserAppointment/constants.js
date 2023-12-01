@@ -1,0 +1,6 @@
+export const SET_APPOINTMENTS = 'UserAppointment/SET_APPOINTMENTS';
+export const GET_APPOINTMENTS = 'UserAppointment/GET_APPOINTMENTS';
+export const MIDTRANS_PAYMENT = 'UserAppointment/MIDTRANS_PAYMENT';
+export const SET_MIDTRANS_TOKEN = 'UserAppointment/SET_MIDTRANS_TOKEN';
+export const EDIT_STATUS_APPOINTMENTS = 'UserAppointment/EDIT_STATUS_APPOINTMENTS';
+export const CHANGE_STATUS_APPOINTMENT = 'UserAppointment/CHANGE_STATUS_APPOINTMENT';
