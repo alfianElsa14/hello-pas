@@ -9,8 +9,9 @@ import { getAllDoctors } from '@pages/Home/actions';
 import { selectDoctors } from '@pages/Home/selectors';
 
 import classes from './style.module.scss';
+import { selectUser } from '@containers/Client/selectors';
 
-function HomeUser({ doctors }) {
+function HomeUser({ doctors, user }) {
     const dispatch = useDispatch();
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -26,7 +27,6 @@ function HomeUser({ doctors }) {
         dispatch(getAllDoctors())
     }, [])
 
-    console.log(doctors, "<<<<");
     return (
         <div className={classes.container}>
             <h1><FormattedMessage id="app_doctor_list"/></h1>
@@ -62,10 +62,12 @@ function HomeUser({ doctors }) {
 
 HomeUser.propTypes = {
     doctors: PropTypes.array,
+    user: PropTypes.object
 };
 
 const mapStateToProps = createStructuredSelector({
     doctors: selectDoctors,
+    user: selectUser
 });
 
 export default connect(mapStateToProps)(HomeUser);

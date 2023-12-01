@@ -90,7 +90,7 @@ const Profile = ({ userProfile, role, doctorProfile }) => {
                 doctorProfile.Reviews.map((review, index) => (
                   <div key={index} className={classes.cardWrapper}>
                     {review.User.image ? (
-                      <img src={review.User.image} alt="User Avatar" />
+                      <img src={`${config.api.host}${review.User.image}`} alt="User Avatar" />
                     ) : (
                       <Avatar className={classes.img} />
                     )}

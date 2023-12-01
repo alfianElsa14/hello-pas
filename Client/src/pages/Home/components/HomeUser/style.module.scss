@@ -18,6 +18,16 @@
         height: 300px;
         border-radius: 5px;
 
+        h3 {
+            font-size: 10px;
+            margin-bottom: 40px;
+
+            @include apply-at-xs2-size {
+                font-size: 20px;
+                margin-top: 20px;
+            }
+        }
+
         .contentHeader {
             display: flex;
 
