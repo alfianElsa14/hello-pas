@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable prettier/prettier */
 /* eslint-disable arrow-body-style */
@@ -16,6 +17,8 @@ import { Avatar, Button } from '@mui/material';
 import { formatDate, formatHour } from '@utils/formatDate';
 import { selectUser } from '@containers/Client/selectors';
 
+import { FormattedMessage } from 'react-intl';
+import { formatRupiah } from '@utils/formatPrice';
 import classes from "./style.module.scss";
 import TimeTable from '../../components/TimeTable';
 
@@ -44,7 +47,7 @@ const UserAppointment = ({ user, appointments }) => {
 
   const formattedAppointments = appointments.map((appointment) => ({
     id: appointment.id,
-    title: appointment.Doctor.username,
+    title: `Dr. ${appointment.Doctor.username}`,
     startDate: appointment.startTime,
     endDate: appointment.endTime,
     status: appointment.status,
@@ -54,13 +57,20 @@ const UserAppointment = ({ user, appointments }) => {
   return (
     <main className={classes.main}>
       <div className={classes.container}>
-        <h1>My Appointments</h1>
+        <h1><FormattedMessage id='app_my_appointments' /></h1>
         <section>
-          <h2>Accepted Appointments</h2>
+          <h2><FormattedMessage id='app_accepted_appointments' /></h2>
   
           {acceptedFutureAppointments.length === 0 ? (
             <div className={classes.image}>
-              <img src={paidOffImage} alt='' />
+              <div className={classes.sectionImage}>
+                <div className={classes.image}>
+                  <img src={paidOffImage} alt='Paid Off' />
+                </div>
+                <div className={classes.message}>
+                  <FormattedMessage id='app_no_appointment_requests_accepted' />
+                </div>
+              </div>
             </div>
           ) : (
             <div className={classes.acceptedAppointments}>
@@ -75,29 +85,29 @@ const UserAppointment = ({ user, appointments }) => {
                     </div>
                     <div className={classes.description}>
                       <div className={classes.name}>
-                        {appointment.Doctor.username}
+                        Dr. {appointment.Doctor.username}
                       </div>
                       <table>
                         <tbody>
                           <tr>
-                            <td>Hari, Tanggal</td>
-                            <td>:{" "}</td>
+                            <td><FormattedMessage id='app_day_date' /></td>
+                            <td>&nbsp;:&nbsp;</td>
                             <td>{formatDate(appointment.startTime)}</td>
                           </tr>
                           <tr>
-                            <td>Jam</td>
-                            <td>:{" "}</td>
+                            <td><FormattedMessage id='app_hour' /></td>
+                            <td>&nbsp;:&nbsp;</td>
                             <td>{formatHour(appointment.startTime)} - {formatHour(appointment.endTime)} WIB</td>
                           </tr>
                           <tr>
-                            <td>Keluhan</td>
-                            <td>:{" "}</td>
+                            <td><FormattedMessage id='app_complaint' /></td>
+                            <td>&nbsp;:&nbsp;</td>
                             <td>{appointment.complaint}</td>
                           </tr>
                           <tr>
-                            <td>Biaya</td>
-                            <td>:{" "}</td>
-                            <td>Rp {appointment.Doctor.price.toLocaleString()}</td>
+                            <td><FormattedMessage id='app_price' /></td>
+                            <td>&nbsp;:&nbsp;</td>
+                            <td>{formatRupiah(appointment.Doctor.price)}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -115,7 +125,7 @@ const UserAppointment = ({ user, appointments }) => {
           
         </section>
         <section>
-          <h2>Appointments</h2>
+          <h2><FormattedMessage id='app_appointments' /></h2>
           <TimeTable appointments={formattedAppointments} />
         </section>
       </div>

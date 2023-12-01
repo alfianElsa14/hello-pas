@@ -26,7 +26,6 @@ export default {
   app_practice_at: 'Practice At',
   app_price: 'Price',
   app_register: 'Register',
-  
   app_profile: 'Profile',
   app_profile_and_reviews: 'Profile & Reviews',
   app_appointments: 'Appointments',
@@ -45,7 +44,12 @@ export default {
   app_consul_price: 'Consultation Price',
   app_year: 'years',
   app_make_appointment: 'make appointment',
-  
-  app_edit_profile: 'Edit Profile',
-  app_submit: 'Submit'
+  app_submit: 'Submit',
+  app_my_appointments: 'My Appointments',
+  app_accepted_appointments: 'Accepted Appointments',
+  app_day_date: 'Day, Date',
+  app_hour: 'Hour',
+  app_complaint: 'Complaint',
+  app_pay: 'Pay',
+  app_no_appointment_requests_accepted: 'No appointment requests accepted',
 };

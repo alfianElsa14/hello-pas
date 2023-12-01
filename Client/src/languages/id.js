@@ -44,7 +44,12 @@ export default {
   app_consul_price: 'Harga Konsultasi',
   app_year: 'tahun',
   app_make_appointment: 'buat janji',
-  
-  app_edit_profile: 'Ubah Profile',
-  app_submit: 'Submit'
+  app_submit: 'Submit',
+  app_my_appointments: 'Janji Temu Saya',
+  app_accepted_appointments: 'Janji Temu yang Diterima (Accepted)',
+  app_day_date: 'Hari, Tanggal',
+  app_hour: 'Jam',
+  app_complaint: 'Keluhan',
+  app_pay: 'Bayar',
+  app_no_appointment_requests_accepted: 'Tidak ada permintaan janji temu yang diterima',
 };
