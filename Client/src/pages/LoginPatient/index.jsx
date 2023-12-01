@@ -1,12 +1,14 @@
-import PropTypes from 'prop-types';
-import { loginUser } from '@containers/Client/actions';
 import React, { useEffect, useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Form, Link, useNavigate } from 'react-router-dom';
+import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectLogin } from '@containers/Client/selectors';
-import classes from './style.module.scss';
 import { FormattedMessage } from 'react-intl';
+
+import { loginUser } from '@containers/Client/actions';
+import { selectLogin } from '@containers/Client/selectors';
+
+import classes from './style.module.scss';
 
 const LoginPatient = ({ login }) => {
   const dispatch = useDispatch();

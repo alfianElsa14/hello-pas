@@ -29,11 +29,20 @@
         }
 
         img {
-            width: 150px;
-            height: 150px;
-            object-fit: contain;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
             border: none;
             border-radius: 5px;
+
+            @include apply-at-xs2-size {
+                width: 150px;
+                height: 150px;
+                object-fit: cover;
+                border: none;
+                border-radius: 5px;
+            }
+
         }
 
         .data {

@@ -4,6 +4,7 @@ const Joi = require('joi');
 const { compare, hash } = require('../helper/bycrpt');
 const { generateToken } = require('../helper/jwt');
 const redisClient = require('../helper/redisClient');
+const fs = require('fs');
 
 exports.verifyTokenUser = async (req, res) => {
     try {
@@ -132,11 +133,14 @@ exports.editUser = async (req, res) => {
     try {
         const userId = req.user.id
         const newData = req.body
+
         const userData = await User.findByPk(userId)
 
         if (!userData) {
             return handleNotFoundError(res, 'User');
         }
+
+        const oldImage = userData.image
 
         const schema = Joi.object({
             username: Joi.string(),
@@ -151,7 +155,7 @@ exports.editUser = async (req, res) => {
             return handleValidationError(res, error)
         }
 
-        const updatedImg = req.file.path
+        const updatedImg = req.file ? req.file.path : userData.image;
 
         const result = await User.update({
             username: newData.username,
@@ -164,7 +168,22 @@ exports.editUser = async (req, res) => {
             }
         })
 
-        res.status(200).json({ message: 'success', result })
+        if (result[0] > 0) {
+            if (req.file && oldImage) {
+                try {
+                    fs.unlinkSync(oldImage);
+                } catch (unlinkError) {
+                    console.error('Error deleting old image:', unlinkError);
+                }
+            }
+
+            return res.status(200).json({ message: 'success', result });
+
+        } else {
+
+            return res.status(500).json({ message: 'Failed to update user' });
+
+        }
     } catch (error) {
         console.log(error);
         return handleServerError(res)

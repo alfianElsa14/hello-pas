@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import { setDoctorProfile, setUserProfile } from "@pages/Profile/actions";
 import { setUser, setUserImage } from "@containers/Client/actions";
 
-export function* doEditUser({data}) {
+export function* doEditUser({id, data, navigate}) {
     try {
         const response = yield call(editUser, data)
         Swal.fire("sukses edit profile");
@@ -14,6 +14,7 @@ export function* doEditUser({data}) {
         yield put(setUser(result))
         yield put(setUserImage(result.image))
         yield put(setUserProfile(result))
+        yield call(navigate, '/profile')
     } catch (error) {
         console.log(error.response.status);
         if (error.response.status === 400) {
@@ -25,7 +26,7 @@ export function* doEditUser({data}) {
     }
 }
 
-export function* doEditDoctor({data}) {
+export function* doEditDoctor({id, data, navigate}) {
     try {
         const response = yield call(editDoctor, data)
         Swal.fire("sukses edit profile");
@@ -33,8 +34,8 @@ export function* doEditDoctor({data}) {
         yield put(setUser(result))
         yield put(setUserImage(result.image))
         yield put(setDoctorProfile(result))
+        yield call(navigate, '/profile')
     } catch (error) {
-        console.log(error.response.status);
         if (error.response.status === 400) {
             const errorMessage = error.response.data.message || "Email or Password required";
             Swal.fire(errorMessage);
