@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { setLoading } from '@containers/App/actions';
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { payAppointment, getAppointmentsByUserID, midtransPayment } from '@domain/api';

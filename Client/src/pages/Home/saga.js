@@ -7,11 +7,8 @@ import { ACCEPT_APPOINTMENT, DENY_APPOINTMENT, GET_ALL_DOCTORS, GET_APPOINTMENTS
 
 function* doGetAllDoctors() {
   try {
-    console.log('test tet')
     const response = yield call(getAllDoctors);
-    console.log(response, '<< respon')
     yield put(setAllDoctors(response.data));
-    
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error);

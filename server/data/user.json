@@ -18,20 +18,20 @@
     "email": "danen@gmail.com",
     "password": "1234567",
     "phoneNumber": "0819876543211",
-    "image": "https://e7.pngegg.com/pngimages/507/702/png-clipart-profile-icon-simple-user-icon-icons-logos-emojis-users.png"
+    "image": null
   },
   {
     "username": "Dina",
     "email": "dina@gmail.com",
     "password": "1234567",
     "phoneNumber": "0819876543212",
-    "image": "https://e7.pngegg.com/pngimages/507/702/png-clipart-profile-icon-simple-user-icon-icons-logos-emojis-users.png"
+    "image": null
   },
   {
     "username": "Zoro",
     "email": "zoro@gmail.com",
     "password": "1234567",
     "phoneNumber": "0819876543213",
-    "image": "https://e7.pngegg.com/pngimages/507/702/png-clipart-profile-icon-simple-user-icon-icons-logos-emojis-users.png"
+    "image": null
   }
 ]
